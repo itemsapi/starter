@@ -1,0 +1,13 @@
+{
+    "name": "ItemsAPI starter",
+    "description": "ItemsAPI is an open source full text search backend",
+    "website": "http://www.itemsapi.com",
+    "success_url": "/",
+    "addons": ["searchbox"],
+    "env": {
+        "NODE_ENV": "production",
+        "PORT": "3000"
+    },
+    "repository": "https://github.com/itemsapi/itemsapi-starter",
+    "keywords": ["itemsapi", "elasticsearch", "node.js", "restful search backend"]
+}

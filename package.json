@@ -1,0 +1,24 @@
+{
+  "name": "itemsapi-starter",
+  "version": "1.0.0",
+  "description": "ItemsAPI demo starter",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itemsapi/itemsapi-starter.git"
+  },
+  "author": "Mateusz Rzepa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itemsapi/itemsapi-starter/issues"
+  },
+  "homepage": "https://github.com/itemsapi/itemsapi-starter#readme",
+  "dependencies": {
+    "itemsapi": "^1.0.17",
+    "nunjucks": "^2.4.2",
+    "winston": "^2.2.0"
+  }
+}
