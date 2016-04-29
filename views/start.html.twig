@@ -18,6 +18,8 @@
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="http://app.itemsapi.com" target="_blank">Dashboard</a></li>
+            <li role="presentation"><a href="https://itemsapi.readme.io" target="_blank">Documentation</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">ItemsAPI starter</h3>
@@ -26,11 +28,71 @@
       <div class="jumbotron">
         <h1>Welcome to ItemsAPI</h1>
         <p class="lead">With ItemsAPI you create search backend for mobile or web incredibly easy and fast</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
+        {#<p class="lead">Creating backend will take you no more than 5 minutes</p>#}
+        <p><a class="btn btn-lg btn-info" href="#first-step" role="button">Create backend in 5 minutes</a></p>
       </div>
 
+
+
+
       <div class="row marketing">
-        <div class="col-lg-6">
+
+        <h3 id="first-step">1. First step</h3>
+        <p>Put your collection configuration here</p>
+        <form method="POST" action="/add-collection">
+          <textarea class="form-control" rows="3" style="height:200px" name="collection"></textarea>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+        <h3>2. Second step</h3>
+        <p>Put link with json data (items) here</p>
+        {#<textarea class="form-control" rows="3"></textarea>#}
+        <form method="POST" action="/add-data">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Url with json data</label>
+            <input type="text" class="form-control" name="url" placeholder="Url">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+        <h3>3. Your backend is ready to go</h3>
+        <p>Your backend is ready to go. You will see your endpoints here</p>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Endpoint</th>
+              <th>Method</th>
+              <th>Desc</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><a href="/api/v1/items/cities" target="_blank">/api/v1/items/cities</a></td>
+            <td>GET</td>
+            <td>search items</td>
+          </tr>
+          <tr>
+            <td><a href="/api/v1/items/cities/:id" target="_blank">/api/v1/items/cities/:id</a></td>
+            <td>GET</td>
+            <td>get one item</td>
+          </tr>
+          <tr>
+            <td><a href="/api/v1/items/cities" target="_blank">/api/v1/items/cities</a></td>
+            <td>POST</td>
+            <td>create item or items</td>
+          </tr>
+          <tr>
+            <td><a href="/api/v1/items/cities/:id/similar" target="_blank">/api/v1/items/cities/:id/similar</a></td>
+            <td>GET</td>
+            <td>similar items</td>
+          </tr>
+          </tbody>
+        </table>
+
+        It is ideal for single page application like angular or react and for mobile apps (android or iOS)
+
+        {#<div class="col-lg-6">
           <h4>Subheading</h4>
           <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
 
@@ -50,7 +112,7 @@
 
           <h4>Subheading</h4>
           <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        </div>
+        </div>#}
       </div>
 
       <footer class="footer">

@@ -17,8 +17,14 @@
   },
   "homepage": "https://github.com/itemsapi/itemsapi-starter#readme",
   "dependencies": {
+    "bluebird": "^3.3.5",
+    "body-parser": "^1.15.0",
+    "bootstrap": "^3.3.6",
     "itemsapi": "^1.0.17",
+    "itemsapi-node": "^1.0.12",
+    "lodash": "^4.11.1",
     "nunjucks": "^2.4.2",
+    "request": "^2.72.0",
     "winston": "^2.2.0"
   }
 }
