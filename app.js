@@ -5,9 +5,26 @@ var itemsapi = require('itemsapi');
 var winston = require('winston')
 itemsapi.get('logger').info('it works!')
 
+
+var ELASTICSEARCH_URL = '127.0.0.1:9200';
+// heroku elasticsearch addon
+if (process.env.SEARCHBOX_URL) {
+  ELASTICSEARCH_URL = process.env.SEARCHBOX_URL;
+}
+
+var PORT = process.env.PORT;
+
+console.log(PORT);
+console.log(ELASTICSEARCH_URL);
+
 itemsapi.init({
+  server: {
+    port: PORT,
+    host: "0.0.0.0",
+    logger: false
+  },
   elasticsearch: {
-    host: '127.0.0.1:9200'
+    host: ELASTICSEARCH_URL
   },
   collections: {
     db: 'json',
@@ -16,7 +33,7 @@ itemsapi.init({
 })
 
 var ItemsAPI = require('itemsapi-node');
-var client = new ItemsAPI('http://localhost:3000/api/v1', 'cities');
+var client = new ItemsAPI('http://localhost:' + PORT + '/api/v1', 'cities');
 var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
 var _ = require('lodash');
