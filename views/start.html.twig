@@ -29,34 +29,41 @@
         <h1>Welcome to ItemsAPI</h1>
         <p class="lead">With ItemsAPI you create search backend for mobile or web incredibly easy and fast</p>
         {#<p class="lead">Creating backend will take you no more than 5 minutes</p>#}
-        <p><a class="btn btn-lg btn-info" href="#first-step" role="button">Create backend in 5 minutes</a></p>
+        <p><a class="btn btn-lg btn-success" href="#first-step" role="button">Create backend in 5 minutes</a></p>
       </div>
-
-
-
 
       <div class="row marketing">
 
+        {% if step == 1 %}
         <h3 id="first-step">1. First step</h3>
-        <p>Put your collection configuration here</p>
+        <p>Put your collection configuration here (i.e. copy and paste <a href="https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/collections/cities.json" target="_blank">that</a> content)</p>
         <form method="POST" action="/add-collection">
           <textarea class="form-control" rows="3" style="height:200px" name="collection"></textarea>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
+        {% else %}
+        <h3 id="first-step" style="color: #5cb85c;">1. First step</h3>
+        {% endif %}
 
+        {% if step <= 2 %}
         <h3>2. Second step</h3>
-        <p>Put link with json data (items) here</p>
+        <p>Put link with json data (items) here (i.e. copy that link <a href="https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/items/cities.json" target="_blank">that</a> here)</p>
         {#<textarea class="form-control" rows="3"></textarea>#}
         <form method="POST" action="/add-data">
           <div class="form-group">
-            <label for="exampleInputEmail1">Url with json data</label>
+            {#<label for="exampleInputEmail1">Url with json data</label>#}
             <input type="text" class="form-control" name="url" placeholder="Url">
           </div>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
+        {% else %}
+        <h3 style="color: #5cb85c;">2. Second step</h3>
+        {% endif %}
 
+
+        {% if step == 3 %}
         <h3>3. Your backend is ready to go</h3>
-        <p>Your backend is ready to go. You will see your endpoints here</p>
+        <p>Your backend is ready to go. There are few your endpoints here</p>
 
         <table class="table table-striped">
           <thead>
@@ -68,22 +75,22 @@
           </thead>
           <tbody>
           <tr>
-            <td><a href="/api/v1/items/cities" target="_blank">/api/v1/items/cities</a></td>
+            <td><a href="/api/v1/items/{{ name }}" target="_blank">/api/v1/items/{{ name }}</a></td>
             <td>GET</td>
             <td>search items</td>
           </tr>
           <tr>
-            <td><a href="/api/v1/items/cities/:id" target="_blank">/api/v1/items/cities/:id</a></td>
+            <td><a href="/api/v1/items/{{ name }}/:id" target="_blank">/api/v1/items/{{ name }}/:id</a></td>
             <td>GET</td>
             <td>get one item</td>
           </tr>
           <tr>
-            <td><a href="/api/v1/items/cities" target="_blank">/api/v1/items/cities</a></td>
+            <td><a href="/api/v1/items/{{ name }}" target="_blank">/api/v1/items/{{ name }}</a></td>
             <td>POST</td>
             <td>create item or items</td>
           </tr>
           <tr>
-            <td><a href="/api/v1/items/cities/:id/similar" target="_blank">/api/v1/items/cities/:id/similar</a></td>
+            <td><a href="/api/v1/items/{{ name }}/:id/similar" target="_blank">/api/v1/items/{{ name }}/:id/similar</a></td>
             <td>GET</td>
             <td>similar items</td>
           </tr>
@@ -95,7 +102,25 @@
           </tbody>
         </table>
 
-        It is ideal for single page application like angular or react and for mobile apps (android or iOS)
+        It is ideal for single page application like angular or react and for mobile apps (android or iOS) <br />
+        For more information about REST endpoints - let's try <a href="https://itemsapi.readme.io" target="_blank">documentation</a>
+
+        <br /><br/ >
+        {#Share info with world if you like project. More people means faster growth.#}
+
+
+
+        <div id="banner-share">
+          <iframe src="https://ghbtns.com/github-btn.html?user=itemsapi&amp;repo=itemsapi&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+          <a href="https://twitter.com/share" class="twitter-share-button" data-size="large">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+        {% else %}
+        <h3>3. Your backend will be ready in few minutes</h3>
+        <p>Usually it takes days or weeks to create search backend with another solutions</p>
+        {% endif %}
+
 
         {#<div class="col-lg-6">
           <h4>Subheading</h4>
