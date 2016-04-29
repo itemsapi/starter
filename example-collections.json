@@ -20,8 +20,7 @@
         "store": true
       },
       "province_icon": {
-        "type": "string",
-        "display": "image"
+        "type": "string"
       },
       "country": {
         "type": "string",
@@ -29,8 +28,7 @@
         "store": true
       },
       "country_icon": {
-        "type": "string",
-        "display": "image"
+        "type": "string"
       },
       "geo": {
         "type": "geo_point"
