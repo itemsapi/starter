@@ -17,29 +17,26 @@ itemsapi.init({
   }
 })
 
-// standard express syntax
-var express = itemsapi.get('express');
-express.get('/about-us', function(req, res) {
-  res.json({
-    name: 'itemsapi',
-    license: 'MIT'
-  });
-});
+// standard app syntax
+var app = itemsapi.get('express');
+
+var express = require('express');
+app.use('/bootstrap', express.static('node_modules/bootstrap'));
+app.use('/assets', express.static('assets'));
 
 var nunjucks = require('nunjucks');
-var nunenv = nunjucks.configure(express.get('views'), {
+var nunenv = nunjucks.configure(app.get('views'), {
   autoescape: true,
   noCache: true,
-  express: express
+  express: app
 })
 
-express.engine('html.twig', nunenv.render);
-express.set('view engine', 'html.twig');
-express.set('view cache', false);
+app.engine('html.twig', nunenv.render);
+app.set('view engine', 'html.twig');
+app.set('view cache', false);
 
-express.get('/', function(req, res) {
-  res.render('start', {
-  });
+app.get('/', function(req, res) {
+  res.render('start', {});
 });
 
 itemsapi.start(function serverStart(serverInstance) {
