@@ -12,25 +12,31 @@ var storage = require('node-persist');
 var express = require('express');
 var nunjucks = require('nunjucks');
 
-storage.initSync({
-  dir: __dirname + '/localstorage',
-});
 
-if (!storage.getItem('step')) {
-  storage.setItem('step', 1)
-  //storage.setItem('name')
-}
-
+var LOCAL_STORAGE = __dirname + '/localstorage';
 var ELASTICSEARCH_URL = '127.0.0.1:9200';
 // heroku elasticsearch addon
 if (process.env.SEARCHBOX_URL) {
   ELASTICSEARCH_URL = process.env.SEARCHBOX_URL;
+  // it is a hack because cannot detect heroku dir in easy way
+  // /app is a absolute directory of application
+  LOCAL_STORAGE = '/app/localstorage';
 }
 
 var PORT = process.env.PORT;
 
 console.log(PORT);
 console.log(ELASTICSEARCH_URL);
+console.log(__dirname);
+
+storage.initSync({
+  dir: LOCAL_STORAGE,
+});
+
+if (!storage.getItem('step')) {
+  storage.setItem('step', 1)
+}
+
 
 itemsapi.init({
   server: {
