@@ -18,9 +18,6 @@ var ELASTICSEARCH_URL = '127.0.0.1:9200';
 // heroku elasticsearch addon
 if (process.env.SEARCHBOX_URL) {
   ELASTICSEARCH_URL = process.env.SEARCHBOX_URL;
-  // it is a hack because cannot detect heroku dir in easy way
-  // /app is a absolute directory of application
-  LOCAL_STORAGE = '/app/localstorage';
 }
 
 var PORT = process.env.PORT;

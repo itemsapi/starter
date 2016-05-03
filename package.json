@@ -20,7 +20,7 @@
     "bluebird": "^3.3.5",
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
-    "itemsapi": "^1.0.17",
+    "itemsapi": "^1.0.19",
     "itemsapi-node": "^1.0.12",
     "lodash": "^4.11.1",
     "node-persist": "0.0.11",
