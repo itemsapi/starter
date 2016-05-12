@@ -21,7 +21,7 @@
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "express": "^4.13.4",
-    "itemsapi": "^1.0.19",
+    "itemsapi": "^1.0.20",
     "itemsapi-node": "^1.0.12",
     "lodash": "^4.11.1",
     "node-persist": "0.0.11",
