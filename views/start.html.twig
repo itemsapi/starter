@@ -42,11 +42,11 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
         {% else %}
-        <h3 id="first-step" style="color: #5cb85c;">1. First step</h3>
+        {#<h3 id="first-step" style="color: #5cb85c;">1. First step</h3>#}
         {% endif %}
 
         {% if step <= 2 %}
-        <h3>2. Second step</h3>
+        <h3>1. First step</h3>
         <p>Put link with json data (items) here (i.e. copy that link <a href="https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/items/cities.json" target="_blank">that</a> here)</p>
         {#<textarea class="form-control" rows="3"></textarea>#}
         <form method="POST" action="/add-data">
@@ -57,12 +57,12 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
         {% else %}
-        <h3 style="color: #5cb85c;">2. Second step</h3>
+        <h3 style="color: #5cb85c;">1. First step</h3>
         {% endif %}
 
 
         {% if step == 3 %}
-        <h3>3. Your backend is ready to go</h3>
+        <h3>2. Your backend is ready to go</h3>
         <p>Your backend is ready to go. There are few your endpoints here</p>
 
         <table class="table table-striped">
@@ -117,8 +117,8 @@
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
         {% else %}
-        <h3>3. Your backend will be ready in few minutes</h3>
-        <p>Usually it takes days or weeks to create search backend with another solutions</p>
+        <h3>2. Your backend will be ready soon!</h3>
+        <p>Usually it takes days or weeks to create search backend with another solutions.</p>
         {% endif %}
 
 
