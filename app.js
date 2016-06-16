@@ -31,7 +31,7 @@ storage.initSync({
 });
 
 if (!storage.getItem('step')) {
-  storage.setItem('step', 1)
+  storage.setItem('step', 2)
 }
 
 
@@ -83,7 +83,7 @@ app.all('*', function(req, res, next) {
 })
 
 app.get('/', function(req, res) {
-  if (storage.getItem('step') === 1) {
+  if (storage.getItem('step') < 3) {
     res.render('start', {});
   } else {
     req.client.getCollections()
@@ -95,6 +95,7 @@ app.get('/', function(req, res) {
   }
 });
 
+// not necessary anymore because system create that out of the box
 app.post('/add-collection', function(req, res) {
   var json = JSON.parse(req.body.collection)
 
@@ -114,24 +115,14 @@ app.post('/add-collection', function(req, res) {
 });
 
 app.post('/add-data', function(req, res) {
-  var url = req.body.url;
-  //url: 'https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/movies.json',
-  request.getAsync({
-    url: url,
-    json: true,
-    gzip: true
+  return req.client.createProject({
+    url: req.body.url
   })
   .then(function(result) {
-    return result.body
-  })
-  .then(function(items) {
-    return req.client.deleteAllItems()
-    .then(function() {
-      return req.client.addBulkItems(items)
-    })
-  })
-  .then(function() {
+    //console.log(result);
+    //var name = result.name;
     storage.setItem('step', 3)
+    storage.setItem('name', result.name)
     res.redirect('/');
   })
 });

@@ -1,6 +1,6 @@
 {
   "name": "itemsapi-starter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ItemsAPI demo starter",
   "main": "app.js",
   "scripts": {
@@ -21,8 +21,8 @@
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "express": "^4.13.4",
-    "itemsapi": "^1.0.20",
-    "itemsapi-node": "^1.0.12",
+    "itemsapi": "^1.0.33",
+    "itemsapi-node": "^1.0.14",
     "lodash": "^4.11.1",
     "node-persist": "0.0.11",
     "nunjucks": "^2.4.2",
