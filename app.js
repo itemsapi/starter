@@ -64,6 +64,10 @@ var nunenv = nunjucks.configure(app.get('views'), {
   express: app
 })
 
+.addFilter('debug', function(obj) {
+  return JSON.stringify(obj, null, 2);
+})
+
 app.engine('html.twig', nunenv.render);
 app.set('view engine', 'html.twig');
 app.set('view cache', false);
@@ -78,6 +82,7 @@ app.all('*', function(req, res, next) {
   //req.step = storage.getItem('step')
   nunenv.addGlobal('step', storage.getItem('step'));
   nunenv.addGlobal('name', storage.getItem('name'));
+  req.name = storage.getItem('name')
   console.log(storage.getItem('step'));
   next();
 })
@@ -86,11 +91,18 @@ app.get('/', function(req, res) {
   if (storage.getItem('step') < 3) {
     res.render('start', {});
   } else {
-    req.client.getCollections()
-    .then(function(result) {
-      console.log(JSON.stringify(result));
-      var name = result.data.items[0].name;
-      res.render('start', {});
+    Promise.all([req.client.getCollection(), req.client.search({})])
+    .spread(function(collection, items) {
+      //console.log(collection);
+      //console.log(items);
+      //console.log(req.name);
+      //console.log(JSON.stringify(result));
+      //var name = result.data.items[0].name;
+      //console.log(mapping);
+      res.render('start', {
+        items: items,
+        collection: collection
+      });
     })
   }
 });

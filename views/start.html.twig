@@ -9,6 +9,7 @@
     <title>ItemsAPI starter</title>
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/jumbotron.css" rel="stylesheet">
+    <link href="assets/prism.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -65,10 +66,13 @@
         <h3>2. Your backend is ready to go</h3>
         <p>Your backend is ready to go. There are few your endpoints here</p>
 
+        {% set itemId = items.data.items[0].id %}
+
         <table class="table table-striped">
           <thead>
             <tr>
               <th>Endpoint</th>
+              {#<th>Example</th>#}
               <th>Method</th>
               <th>Desc</th>
             </tr>
@@ -76,11 +80,13 @@
           <tbody>
           <tr>
             <td><a href="/api/v1/items/{{ name }}" target="_blank">/api/v1/items/{{ name }}</a></td>
+            {#<td><a href="/api/v1/items/{{ name }}" target="_blank">/api/v1/items/{{ name }}</a></td>#}
             <td>GET</td>
             <td>search items</td>
           </tr>
           <tr>
-            <td><a href="/api/v1/items/{{ name }}/:id" target="_blank">/api/v1/items/{{ name }}/:id</a></td>
+            <td><a href="/api/v1/items/{{ name }}/{{ itemId }}" target="_blank">/api/v1/items/{{ name }}/:id</a></td>
+            {#<td><a href="/api/v1/items/{{ name }}/:id" target="_blank">/api/v1/items/{{ name }}/{{ itemId }}</a></td>#}
             <td>GET</td>
             <td>get one item</td>
           </tr>
@@ -90,25 +96,27 @@
             <td>create item or items</td>
           </tr>
           <tr>
-            <td><a href="/api/v1/items/{{ name }}/:id/similar" target="_blank">/api/v1/items/{{ name }}/:id/similar</a></td>
+            <td><a href="/api/v1/items/{{ name }}/{{ itemId }}/similar" target="_blank">/api/v1/items/{{ name }}/:id/similar</a></td>
             <td>GET</td>
             <td>similar items</td>
           </tr>
-          {#<tr>
-            <td><a href="/api/v1/items/cities/_search" target="_blank">/api/v1/items/cities/_search</a></td>
+          <tr>
+            <td><a href="/api/v1/items/{{ name }}/_search" target="_blank">/api/v1/items/{{ name }}/_search</a></td>
             <td>POST</td>
-            <td>elasticsearch direct endpoint</td>
-          </tr>#}
+            <td>elasticsearch endpoint</td>
+          </tr>
           </tbody>
         </table>
 
         It is ideal for single page application like angular or react and for mobile apps (android or iOS) <br />
         For more information about REST endpoints - let's try <a href="https://itemsapi.readme.io" target="_blank">documentation</a>
 
+
+        <h4>Generated schema!</h4>
+
+        <pre><code class="language-js">{{ collection.schema | debug }}</code></pre>
+
         <br /><br/ >
-        {#Share info with world if you like project. More people means faster growth.#}
-
-
 
         <div id="banner-share">
           <iframe src="https://ghbtns.com/github-btn.html?user=itemsapi&amp;repo=itemsapi&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
@@ -150,5 +158,6 @@
       </footer>
 
     </div> <!-- /container -->
+    <script src="assets/prism.js"></script>
   </body>
 </html>
