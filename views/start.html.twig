@@ -114,7 +114,17 @@
 
         <h4>Generated schema!</h4>
 
-        <pre><code class="language-js">{{ collection.schema | debug }}</code></pre>
+        <div style="overflow-y: scroll; height:300px;">
+          <pre><code class="language-js">{{ collection.schema | debug }}</code></pre>
+        </div>
+
+        <br /><br/ >
+
+        <h4>Generated aggregations!</h4>
+
+        <div style="overflow-y: scroll; height:300px;">
+        <pre><code class="language-js">{{ collection.aggregations | debug }}</code></pre>
+        </div>
 
         <br /><br/ >
 
