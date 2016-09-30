@@ -2,7 +2,7 @@
 
 var itemsapi = require('itemsapi');
 var winston = require('winston')
-itemsapi.get('logger').info('it works!')
+//itemsapi.get('logger').info('it works!')
 var ItemsAPI = require('itemsapi-node');
 var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
