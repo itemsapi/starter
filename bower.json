@@ -1,0 +1,28 @@
+{
+  "name": "starter",
+  "description": "ItemsAPI starter",
+  "main": "app.js",
+  "authors": [
+    "Mateusz Rzepa"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "starter",
+    "itemsapi"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "urijs": "^1.18.2",
+    "history.js": "^1.8.0",
+    "lodash": "^4.17.2"
+  }
+}

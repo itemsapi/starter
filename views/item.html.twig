@@ -1,0 +1,99 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="main-container">
+  <div class="container" style="padding-left: 0">
+    <ol class="breadcrumb pull-left">
+      {#<li><a href="/"><i class="icon-home fa"></i></a></li>#}
+      <li><a href="/">Homepage</a></li>
+      <li><a href="/catalog">all items</a></li>
+      <li class="active">{{ item.name }}</li>
+    </ol>
+    <div class="pull-right">
+      <a href="/catalog">
+        <i class="fa fa-angle-double-left"></i> Back to results
+      </a>
+    </div>
+  </div>
+  <div class="container" style="padding-left: 0">
+    <div class="row">
+
+      <div class="col-sm-4">
+        <aside>
+          <div class="panel sidebar-panel">
+            <div class="">
+              <div class="panel-body text-center">
+                <div class="">
+                  <img src="{{ item.image }}" alt="{{ item.name }}" style="width: 300px" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+
+
+      <div class="col-sm-8">
+        <div class="">
+          <h1>{{ item.name }}</h1>
+          <span class="" style="margin-bottom: 0;">
+          </span>
+
+          <div class="">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped">
+                  <tbody>
+
+                  {% for key, val in item %}
+                  <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>
+                      {{ val }}
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+
+                <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/item.html.twig</strong></p>
+
+
+                <hr class="clearfix" />
+
+                <h4>{{ item.name }} - similar items (by tags)</h4>
+
+                <div class="row">
+                {% for element in similar %}
+                  <div class="col-sm-3 col-md-3">
+                    <div class="thumbnail" title="">
+                      <a href="/item/{{ element.id }}">
+                        <img src="{{ element.image }}" alt="{{ element.name }}">
+                      </a>
+                      <div class="caption">
+                        <p><a href="/item/{{ element.permalink }}">{{ element.name }}</a></p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+                </div>
+
+                <hr class="clearfix" />
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block before_body_end %}
+{% endblock %}
+

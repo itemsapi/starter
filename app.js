@@ -52,8 +52,11 @@ itemsapi.init({
 
 // standard app syntax
 var app = itemsapi.get('express');
+var urlHelper = require('./helpers/url');
+
 app.use('/bootstrap', express.static('node_modules/bootstrap'));
 app.use('/assets', express.static('assets'));
+app.use('/libs', express.static('bower_components'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -65,7 +68,23 @@ var nunenv = nunjucks.configure(app.get('views'), {
 })
 
 .addFilter('debug', function(obj) {
-  return JSON.stringify(obj, null, 2);
+  return JSON.stringify(obj, null, 2)
+})
+
+.addFilter('intval', function(obj) {
+  return parseInt(obj || 0, 10);
+})
+
+.addGlobal('in_array', function(element, array) {
+  array = array || [];
+  return array.indexOf(element) !== -1;
+})
+
+.addFilter('ceil', function(str) {
+  return Math.ceil(str);
+})
+.addFilter('build', function(str, data) {
+  return urlHelper.build(str, data);
 })
 
 app.engine('html.twig', nunenv.render);
@@ -77,35 +96,161 @@ app.set('view cache', false);
  * middleware route
  */
 app.all('*', function(req, res, next) {
+  //req.step = storage.getItem('step')
   var client = new ItemsAPI('http://localhost:' + PORT + '/api/v1', storage.getItem('name'));
   req.client = client;
-  //req.step = storage.getItem('step')
   nunenv.addGlobal('step', storage.getItem('step'));
   nunenv.addGlobal('name', storage.getItem('name'));
   req.name = storage.getItem('name')
-  console.log(storage.getItem('step'));
   next();
 })
 
-app.get('/', function(req, res) {
-  if (storage.getItem('step') < 3) {
+app.get(['/', '/catalog'], function(req, res) {
+  if (1 && storage.getItem('step') < 3) {
     res.render('start', {});
   } else {
-    Promise.all([req.client.getCollection(), req.client.search({})])
-    .spread(function(collection, items) {
-      //console.log(collection);
-      //console.log(items);
-      //console.log(req.name);
-      //console.log(JSON.stringify(result));
-      //var name = result.data.items[0].name;
-      //console.log(mapping);
-      res.render('start', {
-        items: items,
-        collection: collection
+
+
+    var page = parseInt(req.query.page, 10);
+    var is_ajax = req.query.is_ajax || req.xhr;
+
+    var sort = 'rating'
+
+    var filters = JSON.parse(req.query.filters || '{}');
+    var query = {
+      sort: sort,
+      query: req.query.query,
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: page,
+      aggs: req.query.filters,
+      per_page: 16
+    }
+
+    req.client.search(query)
+    .then(function(result) {
+
+      res.render('catalog', {
+        items: result.data.items,
+        pagination: result.pagination,
+        query: req.query.query,
+        page: page,
+        sort: sort,
+        is_ajax: is_ajax,
+        url: req.url,
+        aggregations: result.data.aggregations,
+        sortings: result.data.sortings,
+        filters: filters,
+        //sortings: sortings
       });
     })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).render('pages/error');
+    })
   }
-});
+})
+
+app.get('/category/:name', function(req, res) {
+  var name = req.params.name;
+  var path = 'category';
+  req.client.aggregation(name, {
+    per_page: 1000,
+    sort: '_term',
+    order: 'asc',
+    size: 500,
+    query_string: 'enabled:true OR _missing_:enabled'
+  })
+  .then(function(result) {
+    res.render(path, {
+      aggregation: result,
+      name: name
+    })
+  })
+})
+
+/**
+ * generate sitemap for website
+ */
+app.get('/sitemap.xml', function(req, res) {
+  /*if (!1) {
+    return res.status(404).json();
+  }*/
+
+  return res.set('Content-Type', 'text/xml').render('sitemap', {
+    url: 'url'
+  });
+})
+
+/**
+ * generate sitemap for website items
+ */
+app.get('/sitemap.item.xml', function(req, res) {
+  var query = {
+    sort: 'created_at',
+    query_string: 'enabled:true OR _missing_:enabled',
+    per_page: 6000
+  }
+
+  req.client.search(query)
+  .then(function(result) {
+    return res.set('Content-Type', 'text/xml').render('sitemap_item', {
+      items: result.data.items,
+      url: 'url'
+    });
+  })
+})
+
+app.get('/installation', function(req, res) {
+  res.render('start', {});
+})
+
+app.get('/api', function(req, res) {
+  res.render('api');
+})
+
+app.get('/item/:id', function(req, res) {
+  var path = 'item';
+
+  var getItemAsync;
+  var item;
+  var id = req.params.id
+
+  if (true) {
+    getItemAsync = req.client.getItem(req.params.id)
+  } else {
+    getItemAsync = req.client.getItemByKeyValue('permalink', req.params.permalink)
+  }
+
+
+  return getItemAsync
+  .then(function(result) {
+    item = result;
+
+    if (!item || item.enabled === false) {
+      return Promise.reject('Not found')
+    }
+  })
+  .then(function(result) {
+    var fields = ['tags'];
+    return Promise.all([
+      req.client.similar(id, {
+        fields: fields,
+        query_string: 'enabled:true OR _missing_:enabled'
+      })
+    ])
+  })
+  .spread(function(similar) {
+    console.log(similar);
+    return res.render(path, {
+      item: item,
+      similar: similar.data.items.slice(0, 4)
+    });
+  })
+  .catch(function(result) {
+    console.log(result);
+    return res.status(404).send('Sorry cant find that!');
+  })
+})
 
 // not necessary anymore because system create that out of the box
 app.post('/add-collection', function(req, res) {

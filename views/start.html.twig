@@ -18,7 +18,7 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation" class="active"><a href="/">Home</a></li>
             <li role="presentation"><a href="http://app.itemsapi.com" target="_blank">Dashboard</a></li>
             <li role="presentation"><a href="https://itemsapi.readme.io" target="_blank">Documentation</a></li>
           </ul>
@@ -164,6 +164,10 @@
           <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
         </div>#}
       </div>
+
+
+      {% block content %}
+      {% endblock %}
 
       <footer class="footer">
         <p>&copy; 2015-2016 <a href="https://www.itemsapi.com" target="_blank">ItemsAPI</a> - MIT License</p>

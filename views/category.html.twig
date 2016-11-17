@@ -1,0 +1,36 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+
+    <h2 class="title-2 uppercase"><strong> <i class="icon-briefcase"></i>{{ aggregation.meta.title }}</strong></h2>
+    <div class="row">
+      {% set buckets = aggregation.data.buckets %}
+      {% set columns = 3 %}
+
+      {% for nb in range(0, columns) %}
+      <div class="col-md-4 col-sm-4">
+        <ul class="list-unstyled list-underlined">
+
+          {% set size = (buckets.length / columns) | intval %}
+          {% set start = (nb) * size %}
+          {% set end = start + size %}
+
+          {% for agg in buckets.slice(start, end) %}
+          {% if agg.key %}
+          <li>
+          {#<a href="/filter/{{ name }}/{{ agg.permalink }}">{{ agg.key }}</a><small class="text-muted"> ({{ agg.doc_count }})</small>#}
+          {{ agg.key }}<small class="text-muted"> ({{ agg.doc_count }})</small>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}
