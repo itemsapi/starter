@@ -17,8 +17,8 @@ Deploy ItemsAPI starter instantly to heroku and start your app (backend creator)
 ## Manual installation
 
 - Install elasticsearch on your computer
-- `git clone git@github.com:itemsapi/itemsapi-starter.git`
-- `cd itemsapi-starter`
+- `git clone git@github.com:itemsapi/starter.git`
+- `cd starter`
 - `npm install`
 - `PORT=3000 npm start`
 
