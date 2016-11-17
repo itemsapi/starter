@@ -4,7 +4,7 @@
   "description": "ItemsAPI demo starter",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "postinstall": "./node_modules/.bin/bower cache clean && ./node_modules/.bin/bower install"
   },
   "repository": {
