@@ -275,9 +275,8 @@ app.post('/add-data', function(req, res) {
   return req.client.createProject({
     url: req.body.url
   })
+  .delay(2500)
   .then(function(result) {
-    //console.log(result);
-    //var name = result.name;
     storage.setItem('step', 3)
     storage.setItem('name', result.name)
     res.redirect('/');
