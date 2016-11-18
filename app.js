@@ -212,6 +212,7 @@ app.get('/installation', function(req, res) {
     });
   })
   .catch(function(err) {
+    console.log(err);
     return res.render('start', {
       elasticsearch_status: 500
     });
@@ -281,6 +282,7 @@ app.post('/add-collection', function(req, res) {
     res.redirect('/');
   })
   .catch(function(err) {
+    console.log(err);
     res.status(500).json({});
   })
 });
