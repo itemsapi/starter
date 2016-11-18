@@ -11,10 +11,10 @@ var bodyParser = require('body-parser');
 var storage = require('node-persist');
 var express = require('express');
 var nunjucks = require('nunjucks');
-
+var tcpPortUsed = require('tcp-port-used');
 
 var LOCAL_STORAGE = __dirname + '/localstorage';
-var ELASTICSEARCH_URL = '127.0.0.1:9200';
+var ELASTICSEARCH_URL = 'http://127.0.0.1:9200';
 // heroku elasticsearch addon
 if (process.env.SEARCHBOX_URL) {
   ELASTICSEARCH_URL = process.env.SEARCHBOX_URL;
@@ -200,8 +200,22 @@ app.get('/sitemap.item.xml', function(req, res) {
   })
 })
 
+
+
 app.get('/installation', function(req, res) {
-  res.render('start', {});
+  return request.getAsync({
+    url: ELASTICSEARCH_URL
+  })
+  .then(function(result) {
+    return res.render('start', {
+      elasticsearch_status: 200
+    });
+  })
+  .catch(function(err) {
+    return res.render('start', {
+      elasticsearch_status: 500
+    });
+  })
 })
 
 app.get('/api', function(req, res) {

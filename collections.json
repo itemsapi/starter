@@ -1,2 +1,713 @@
 [
+    {
+        "name": "ofyjdkxr",
+        "schema": {
+            "image": {
+                "type": "string",
+                "display": "image"
+            },
+            "name": {
+                "type": "string",
+                "store": true
+            },
+            "rating": {
+                "type": "float",
+                "store": true
+            },
+            "votes": {
+                "type": "integer",
+                "store": true
+            },
+            "year": {
+                "type": "integer",
+                "store": true
+            },
+            "description": {
+                "type": "string",
+                "store": true
+            },
+            "tags": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            },
+            "actors": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            }
+        },
+        "aggregations": {
+            "rating": {
+                "type": "range",
+                "field": "rating",
+                "title": "rating",
+                "ranges": [
+                    {
+                        "name": "5 - 6",
+                        "lte": 6
+                    },
+                    {
+                        "name": "6 - 7",
+                        "lte": 7,
+                        "gte": 6
+                    },
+                    {
+                        "name": "7 - 8",
+                        "lte": 8,
+                        "gte": 7
+                    },
+                    {
+                        "name": "8 - 9",
+                        "gte": 8
+                    }
+                ]
+            },
+            "votes": {
+                "type": "range",
+                "field": "votes",
+                "title": "votes",
+                "ranges": [
+                    {
+                        "name": "3066 - 4743",
+                        "lte": 4743
+                    },
+                    {
+                        "name": "4743 - 6420",
+                        "lte": 6420,
+                        "gte": 4743
+                    },
+                    {
+                        "name": "6420 - 8097",
+                        "lte": 8097,
+                        "gte": 6420
+                    },
+                    {
+                        "name": "8097 - 9774",
+                        "lte": 9774,
+                        "gte": 8097
+                    },
+                    {
+                        "name": "9774 - 11454",
+                        "gte": 9774
+                    }
+                ]
+            },
+            "year": {
+                "type": "range",
+                "field": "year",
+                "title": "year",
+                "ranges": [
+                    {
+                        "name": "1971 - 1978",
+                        "lte": 1978
+                    },
+                    {
+                        "name": "1978 - 1985",
+                        "lte": 1985,
+                        "gte": 1978
+                    },
+                    {
+                        "name": "1985 - 1992",
+                        "lte": 1992,
+                        "gte": 1985
+                    },
+                    {
+                        "name": "1992 - 1999",
+                        "lte": 1999,
+                        "gte": 1992
+                    },
+                    {
+                        "name": "1999 - 2010",
+                        "gte": 1999
+                    }
+                ]
+            },
+            "tags": {
+                "type": "terms",
+                "size": 15,
+                "field": "tags",
+                "title": "tags"
+            },
+            "actors": {
+                "type": "terms",
+                "size": 15,
+                "field": "actors",
+                "title": "actors"
+            }
+        },
+        "sortings": {
+            "name": {
+                "title": "name",
+                "type": "normal",
+                "order": "desc",
+                "field": "name"
+            },
+            "rating": {
+                "title": "rating",
+                "type": "normal",
+                "order": "desc",
+                "field": "rating"
+            },
+            "votes": {
+                "title": "votes",
+                "type": "normal",
+                "order": "desc",
+                "field": "votes"
+            },
+            "year": {
+                "title": "year",
+                "type": "normal",
+                "order": "desc",
+                "field": "year"
+            }
+        },
+        "created_at": "2016-11-17T09:39:14.269Z",
+        "updated_at": "2016-11-17T09:39:14.269Z"
+    },
+    {
+        "name": "oorauobf",
+        "schema": {
+            "image": {
+                "type": "string",
+                "display": "image"
+            },
+            "name": {
+                "type": "string",
+                "store": true
+            },
+            "rating": {
+                "type": "float",
+                "store": true
+            },
+            "votes": {
+                "type": "integer",
+                "store": true
+            },
+            "year": {
+                "type": "integer",
+                "store": true
+            },
+            "description": {
+                "type": "string",
+                "store": true
+            },
+            "tags": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            },
+            "actors": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            }
+        },
+        "aggregations": {
+            "rating": {
+                "type": "range",
+                "field": "rating",
+                "title": "rating",
+                "ranges": [
+                    {
+                        "name": "5 - 6",
+                        "lte": 6
+                    },
+                    {
+                        "name": "6 - 7",
+                        "lte": 7,
+                        "gte": 6
+                    },
+                    {
+                        "name": "7 - 8",
+                        "lte": 8,
+                        "gte": 7
+                    },
+                    {
+                        "name": "8 - 9",
+                        "gte": 8
+                    }
+                ]
+            },
+            "votes": {
+                "type": "range",
+                "field": "votes",
+                "title": "votes",
+                "ranges": [
+                    {
+                        "name": "3066 - 4743",
+                        "lte": 4743
+                    },
+                    {
+                        "name": "4743 - 6420",
+                        "lte": 6420,
+                        "gte": 4743
+                    },
+                    {
+                        "name": "6420 - 8097",
+                        "lte": 8097,
+                        "gte": 6420
+                    },
+                    {
+                        "name": "8097 - 9774",
+                        "lte": 9774,
+                        "gte": 8097
+                    },
+                    {
+                        "name": "9774 - 11454",
+                        "gte": 9774
+                    }
+                ]
+            },
+            "year": {
+                "type": "range",
+                "field": "year",
+                "title": "year",
+                "ranges": [
+                    {
+                        "name": "1971 - 1978",
+                        "lte": 1978
+                    },
+                    {
+                        "name": "1978 - 1985",
+                        "lte": 1985,
+                        "gte": 1978
+                    },
+                    {
+                        "name": "1985 - 1992",
+                        "lte": 1992,
+                        "gte": 1985
+                    },
+                    {
+                        "name": "1992 - 1999",
+                        "lte": 1999,
+                        "gte": 1992
+                    },
+                    {
+                        "name": "1999 - 2010",
+                        "gte": 1999
+                    }
+                ]
+            },
+            "tags": {
+                "type": "terms",
+                "size": 15,
+                "field": "tags",
+                "title": "tags"
+            },
+            "actors": {
+                "type": "terms",
+                "size": 15,
+                "field": "actors",
+                "title": "actors"
+            }
+        },
+        "sortings": {
+            "name": {
+                "title": "name",
+                "type": "normal",
+                "order": "desc",
+                "field": "name"
+            },
+            "rating": {
+                "title": "rating",
+                "type": "normal",
+                "order": "desc",
+                "field": "rating"
+            },
+            "votes": {
+                "title": "votes",
+                "type": "normal",
+                "order": "desc",
+                "field": "votes"
+            },
+            "year": {
+                "title": "year",
+                "type": "normal",
+                "order": "desc",
+                "field": "year"
+            }
+        },
+        "created_at": "2016-11-17T09:40:24.745Z",
+        "updated_at": "2016-11-17T09:40:24.745Z"
+    },
+    {
+        "name": "tstxolot",
+        "schema": {
+            "name": {
+                "type": "string",
+                "store": true
+            },
+            "director": {
+                "type": "string",
+                "index": "not_analyzed",
+                "store": true
+            },
+            "rating": {
+                "type": "float",
+                "store": true
+            },
+            "votes": {
+                "type": "integer",
+                "store": true
+            },
+            "year": {
+                "type": "integer",
+                "store": true
+            },
+            "image": {
+                "type": "string",
+                "display": "image"
+            },
+            "description": {
+                "type": "string",
+                "store": true
+            },
+            "tags": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            },
+            "actors": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            }
+        },
+        "aggregations": {
+            "director": {
+                "type": "terms",
+                "size": 15,
+                "field": "director",
+                "title": "director"
+            },
+            "rating": {
+                "type": "range",
+                "field": "rating",
+                "title": "rating",
+                "ranges": [
+                    {
+                        "name": "4 - 5",
+                        "lte": 5
+                    },
+                    {
+                        "name": "5 - 6",
+                        "lte": 6,
+                        "gte": 5
+                    },
+                    {
+                        "name": "6 - 7",
+                        "lte": 7,
+                        "gte": 6
+                    },
+                    {
+                        "name": "7 - 8",
+                        "lte": 8,
+                        "gte": 7
+                    },
+                    {
+                        "name": "8 - 9",
+                        "gte": 8
+                    }
+                ]
+            },
+            "votes": {
+                "type": "range",
+                "field": "votes",
+                "title": "votes",
+                "ranges": [
+                    {
+                        "name": "769 - 2906",
+                        "lte": 2906
+                    },
+                    {
+                        "name": "2906 - 5043",
+                        "lte": 5043,
+                        "gte": 2906
+                    },
+                    {
+                        "name": "5043 - 7180",
+                        "lte": 7180,
+                        "gte": 5043
+                    },
+                    {
+                        "name": "7180 - 9317",
+                        "lte": 9317,
+                        "gte": 7180
+                    },
+                    {
+                        "name": "9317 - 11454",
+                        "gte": 9317
+                    }
+                ]
+            },
+            "year": {
+                "type": "range",
+                "field": "year",
+                "title": "year",
+                "ranges": [
+                    {
+                        "name": "1941 - 1955",
+                        "lte": 1955
+                    },
+                    {
+                        "name": "1955 - 1969",
+                        "lte": 1969,
+                        "gte": 1955
+                    },
+                    {
+                        "name": "1969 - 1983",
+                        "lte": 1983,
+                        "gte": 1969
+                    },
+                    {
+                        "name": "1983 - 1997",
+                        "lte": 1997,
+                        "gte": 1983
+                    },
+                    {
+                        "name": "1997 - 2012",
+                        "gte": 1997
+                    }
+                ]
+            },
+            "tags": {
+                "type": "terms",
+                "size": 15,
+                "field": "tags",
+                "title": "tags"
+            },
+            "actors": {
+                "type": "terms",
+                "size": 15,
+                "field": "actors",
+                "title": "actors"
+            }
+        },
+        "sortings": {
+            "name": {
+                "title": "name",
+                "type": "normal",
+                "order": "desc",
+                "field": "name"
+            },
+            "director": {
+                "title": "director",
+                "type": "normal",
+                "order": "desc",
+                "field": "director"
+            },
+            "rating": {
+                "title": "rating",
+                "type": "normal",
+                "order": "desc",
+                "field": "rating"
+            },
+            "votes": {
+                "title": "votes",
+                "type": "normal",
+                "order": "desc",
+                "field": "votes"
+            },
+            "year": {
+                "title": "year",
+                "type": "normal",
+                "order": "desc",
+                "field": "year"
+            }
+        },
+        "created_at": "2016-11-18T09:21:33.711Z",
+        "updated_at": "2016-11-18T09:21:33.711Z"
+    },
+    {
+        "name": "mdrzzfor",
+        "schema": {
+            "name": {
+                "type": "string",
+                "store": true
+            },
+            "director": {
+                "type": "string",
+                "index": "not_analyzed",
+                "store": true
+            },
+            "rating": {
+                "type": "float",
+                "store": true
+            },
+            "votes": {
+                "type": "integer",
+                "store": true
+            },
+            "year": {
+                "type": "integer",
+                "store": true
+            },
+            "image": {
+                "type": "string",
+                "display": "image"
+            },
+            "description": {
+                "type": "string",
+                "store": true
+            },
+            "tags": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            },
+            "actors": {
+                "type": "string",
+                "display": "array",
+                "index": "not_analyzed",
+                "store": true
+            }
+        },
+        "aggregations": {
+            "director": {
+                "type": "terms",
+                "size": 15,
+                "field": "director",
+                "title": "director"
+            },
+            "rating": {
+                "type": "range",
+                "field": "rating",
+                "title": "rating",
+                "ranges": [
+                    {
+                        "name": "5 - 6",
+                        "lte": 6
+                    },
+                    {
+                        "name": "6 - 7",
+                        "lte": 7,
+                        "gte": 6
+                    },
+                    {
+                        "name": "7 - 8",
+                        "lte": 8,
+                        "gte": 7
+                    },
+                    {
+                        "name": "8 - 9",
+                        "gte": 8
+                    }
+                ]
+            },
+            "votes": {
+                "type": "range",
+                "field": "votes",
+                "title": "votes",
+                "ranges": [
+                    {
+                        "name": "3066 - 4743",
+                        "lte": 4743
+                    },
+                    {
+                        "name": "4743 - 6420",
+                        "lte": 6420,
+                        "gte": 4743
+                    },
+                    {
+                        "name": "6420 - 8097",
+                        "lte": 8097,
+                        "gte": 6420
+                    },
+                    {
+                        "name": "8097 - 9774",
+                        "lte": 9774,
+                        "gte": 8097
+                    },
+                    {
+                        "name": "9774 - 11454",
+                        "gte": 9774
+                    }
+                ]
+            },
+            "year": {
+                "type": "range",
+                "field": "year",
+                "title": "year",
+                "ranges": [
+                    {
+                        "name": "1971 - 1978",
+                        "lte": 1978
+                    },
+                    {
+                        "name": "1978 - 1985",
+                        "lte": 1985,
+                        "gte": 1978
+                    },
+                    {
+                        "name": "1985 - 1992",
+                        "lte": 1992,
+                        "gte": 1985
+                    },
+                    {
+                        "name": "1992 - 1999",
+                        "lte": 1999,
+                        "gte": 1992
+                    },
+                    {
+                        "name": "1999 - 2010",
+                        "gte": 1999
+                    }
+                ]
+            },
+            "tags": {
+                "type": "terms",
+                "size": 15,
+                "field": "tags",
+                "title": "tags"
+            },
+            "actors": {
+                "type": "terms",
+                "size": 15,
+                "field": "actors",
+                "title": "actors"
+            }
+        },
+        "sortings": {
+            "name": {
+                "title": "name",
+                "type": "normal",
+                "order": "desc",
+                "field": "name"
+            },
+            "director": {
+                "title": "director",
+                "type": "normal",
+                "order": "desc",
+                "field": "director"
+            },
+            "rating": {
+                "title": "rating",
+                "type": "normal",
+                "order": "desc",
+                "field": "rating"
+            },
+            "votes": {
+                "title": "votes",
+                "type": "normal",
+                "order": "desc",
+                "field": "votes"
+            },
+            "year": {
+                "title": "year",
+                "type": "normal",
+                "order": "desc",
+                "field": "year"
+            }
+        },
+        "created_at": "2016-11-18T09:26:54.260Z",
+        "updated_at": "2016-11-18T09:26:54.260Z"
+    }
 ]

@@ -27,13 +27,33 @@
       </div>
 
       <div class="jumbotron">
-        <h1>Welcome to ItemsAPI</h1>
-        <p class="lead">With ItemsAPI you create search backend for mobile or web easy and fast</p>
+        <h1>ItemsAPI Starter</h1>
+        <p class="lead">This is the young wordpress for quality catalogs / classifieds / recommendations / marketplaces</p>
         {#<p class="lead">Creating backend will take you no more than 5 minutes</p>#}
-        <p><a class="btn btn-lg btn-success" href="#first-step" role="button">Create search API now</a></p>
+        {#<p><a class="btn btn-lg btn-success" href="#first-step" role="button">Create application</a></p>#}
       </div>
 
       <div class="row marketing">
+
+
+{#glyphicon glyphicon-info-sign#}
+{#glyphicon glyphicon-exclamation-sign#}
+
+        {% if elasticsearch_status == 200 %}
+        <div class="alert alert-success" role="alert">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+          Your server environment seems to be prepared properly
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          There are some issues with elasticsearch. Please run elasticsearch on your server and refresh page.
+        </div>
+        {% endif %}
+
+        {% if elasticsearch_status == 200 %}
+        Welcome to very short ItemsAPI Starter installation process!<br />
+        After finishing below configuration you'll get auto-generated web application.
 
         {% if step == 1 %}
         <h3 id="first-step">1. First step</h3>
@@ -43,7 +63,6 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
         {% else %}
-        {#<h3 id="first-step" style="color: #5cb85c;">1. First step</h3>#}
         {% endif %}
 
         {% if step <= 2 %}
@@ -72,7 +91,6 @@
           <thead>
             <tr>
               <th>Endpoint</th>
-              {#<th>Example</th>#}
               <th>Method</th>
               <th>Desc</th>
             </tr>
@@ -80,13 +98,11 @@
           <tbody>
           <tr>
             <td><a href="/api/v1/items/{{ name }}" target="_blank">/api/v1/items/{{ name }}</a></td>
-            {#<td><a href="/api/v1/items/{{ name }}" target="_blank">/api/v1/items/{{ name }}</a></td>#}
             <td>GET</td>
             <td>search items</td>
           </tr>
           <tr>
             <td><a href="/api/v1/items/{{ name }}/{{ itemId }}" target="_blank">/api/v1/items/{{ name }}/:id</a></td>
-            {#<td><a href="/api/v1/items/{{ name }}/:id" target="_blank">/api/v1/items/{{ name }}/{{ itemId }}</a></td>#}
             <td>GET</td>
             <td>get one item</td>
           </tr>
@@ -137,32 +153,13 @@
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
         {% else %}
-        <h3>2. Your backend will be ready soon!</h3>
-        <p>Usually it takes days or weeks to create search backend with another solutions.</p>
+        <h3>2. Your web application will be ready soon!</h3>
+        <p>Usually it takes days or weeks to create search backend with another solutions.
+        With ItemsAPI it is extremely easy and fast</p>
         {% endif %}
 
+        {% endif %}
 
-        {#<div class="col-lg-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        </div>
-
-        <div class="col-lg-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        </div>#}
       </div>
 
 
