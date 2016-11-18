@@ -105,11 +105,11 @@ app.all('*', function(req, res, next) {
   next();
 })
 
-app.get(['/', '/catalog'], function(req, res) {
+app.get(['/', '/catalog'], function(req, res, next) {
   if (1 && storage.getItem('step') < 3) {
-    res.render('start', {});
+    return next()
+    //res.render('start', {});
   } else {
-
 
     var page = parseInt(req.query.page, 10);
     var is_ajax = req.query.is_ajax || req.xhr;
@@ -149,6 +149,25 @@ app.get(['/', '/catalog'], function(req, res) {
     })
   }
 })
+
+app.get(['/', '/installation'], function(req, res) {
+  return request.getAsync({
+    url: ELASTICSEARCH_URL
+  })
+  .then(function(result) {
+    return res.render('start', {
+      elasticsearch_status: 200
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    return res.render('start', {
+      elasticsearch_status: 500
+    });
+  })
+})
+
+
 
 app.get('/category/:name', function(req, res) {
   var name = req.params.name;
@@ -200,24 +219,6 @@ app.get('/sitemap.item.xml', function(req, res) {
   })
 })
 
-
-
-app.get('/installation', function(req, res) {
-  return request.getAsync({
-    url: ELASTICSEARCH_URL
-  })
-  .then(function(result) {
-    return res.render('start', {
-      elasticsearch_status: 200
-    });
-  })
-  .catch(function(err) {
-    console.log(err);
-    return res.render('start', {
-      elasticsearch_status: 500
-    });
-  })
-})
 
 app.get('/api', function(req, res) {
   res.render('api');
