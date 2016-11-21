@@ -289,9 +289,20 @@ app.post('/add-collection', function(req, res) {
 });
 
 app.post('/add-data', function(req, res) {
-  return req.client.createProject({
-    url: req.body.url
-  })
+  //return Promise.resolve()
+
+  var data = {
+  }
+
+  if (req.body.json) {
+    data.data = JSON.parse(req.body.json)
+  } else {
+    data.url = req.body.url
+  }
+
+  console.log(data);
+
+  return req.client.createProject(data)
   .delay(2500)
   .then(function(result) {
     storage.setItem('step', 3)
