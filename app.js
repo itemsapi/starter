@@ -13,6 +13,13 @@ var nunjucks = require('nunjucks');
 var tcpPortUsed = require('tcp-port-used');
 var config = require('./config/index').get();
 var colors = require('colors')
+var fs = require('fs');
+
+var figlet = require('figlet');
+
+console.log(figlet.textSync('itemsapi'))
+console.log('Ideas or issues - https://github.com/itemsapi/itemsapi/issues');
+console.log();
 
 var LOCAL_STORAGE = __dirname + '/localstorage';
 
@@ -36,6 +43,7 @@ itemsapi.init({
 // standard app syntax
 var app = itemsapi.get('express');
 var urlHelper = require('./helpers/url');
+var statusHelper = require('./helpers/status');
 
 app.use('/bootstrap', express.static('node_modules/bootstrap'));
 app.use('/assets', express.static('assets'));
@@ -135,22 +143,10 @@ app.get(['/', '/catalog'], function(req, res, next) {
 
 app.get(['/', '/installation'], function(req, res) {
   var url = config.elasticsearch.host
-  if (url.indexOf('http') === -1) {
-    url = 'http://' + url
-  }
-  return request.getAsync({
-    url: url
-  })
+
+  return statusHelper.elasticsearch(url)
   .then(function(result) {
-    return res.render('start', {
-      elasticsearch_status: 200
-    });
-  })
-  .catch(function(err) {
-    console.log(err);
-    return res.render('start', {
-      elasticsearch_status: 500
-    });
+    return res.render('start', result);
   })
 })
 
@@ -305,10 +301,28 @@ app.listen(config.server.port, function afterListen() {
     host = '127.0.0.1'
   }
 
-  itemsapi.get('logger').info('ItemsAPI started!'.green)
-  itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.green, host, port)
+  return statusHelper.elasticsearch(config.elasticsearch.host)
+  .then(function(result) {
+    itemsapi.get('logger').info('ItemsAPI started!'.green)
+
+    if (result.elasticsearch_status === 200) {
+      itemsapi.get('logger').info('Elasticsearch status -', 'OK'.green)
+    } else {
+      itemsapi.get('logger').info('Elasticsearch status -', 'Unavailable. Your application might not work properly'.red)
+      itemsapi.get('logger').info('Instructions about how to run Elasticsearch - https://github.com/itemsapi/itemsapi/blob/master/ELASTICSEARCH.md'.red)
+    }
+
+    if (!fs.existsSync('./bower_components')) {
+      itemsapi.get('logger').info('Bower packages were not installed properly'.red)
+      itemsapi.get('logger').info('Please run: '.red)
+      itemsapi.get('logger').info('./node_modules/.bin/bower cache clean && ./node_modules/.bin/bower install'.red)
+    }
+
+    itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.green, host, port)
+  })
+
 }).on('error', function(err){
   console.log('Cannot start with port %s'.red, config.server.port);
-  console.log('Try again with another port'.red);
+  console.log('Try again with another port i.e. `PORT=4000 npm start`'.red);
   process.exit()
 });
