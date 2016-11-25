@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "postinstall": "./node_modules/.bin/bower cache clean && ./node_modules/.bin/bower install"
+    "postinstall": "./node_modules/.bin/bower cache clean && ./node_modules/.bin/bower install && node post_install.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "bower": "^1.8.0",
+    "colors": "^1.1.2",
     "express": "^4.13.4",
     "itemsapi": "^1.0.54",
     "itemsapi-node": "^1.0.16",
