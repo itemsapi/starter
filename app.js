@@ -2,7 +2,6 @@
 
 var itemsapi = require('itemsapi');
 var winston = require('winston')
-//itemsapi.get('logger').info('it works!')
 var ItemsAPI = require('itemsapi-node');
 var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
@@ -12,19 +11,10 @@ var storage = require('node-persist');
 var express = require('express');
 var nunjucks = require('nunjucks');
 var tcpPortUsed = require('tcp-port-used');
+var config = require('./config/index').get();
+var colors = require('colors')
 
 var LOCAL_STORAGE = __dirname + '/localstorage';
-var ELASTICSEARCH_URL = 'http://127.0.0.1:9200';
-// heroku elasticsearch addon
-if (process.env.SEARCHBOX_URL) {
-  ELASTICSEARCH_URL = process.env.SEARCHBOX_URL;
-}
-
-var PORT = process.env.PORT;
-
-console.log(PORT);
-console.log(ELASTICSEARCH_URL);
-console.log(__dirname);
 
 storage.initSync({
   dir: LOCAL_STORAGE,
@@ -34,16 +24,9 @@ if (!storage.getItem('step')) {
   storage.setItem('step', 2)
 }
 
-
 itemsapi.init({
-  server: {
-    port: PORT,
-    host: "0.0.0.0",
-    logger: false
-  },
-  elasticsearch: {
-    host: ELASTICSEARCH_URL
-  },
+  server: config.server,
+  elasticsearch: config.elasticsearch,
   collections: {
     db: 'json',
     filename:  'collections.json'
@@ -97,7 +80,7 @@ app.set('view cache', false);
  */
 app.all('*', function(req, res, next) {
   //req.step = storage.getItem('step')
-  var client = new ItemsAPI('http://localhost:' + PORT + '/api/v1', storage.getItem('name'));
+  var client = new ItemsAPI('http://localhost:' + config.server.port + '/api/v1', storage.getItem('name'));
   req.client = client;
   nunenv.addGlobal('step', storage.getItem('step'));
   nunenv.addGlobal('name', storage.getItem('name'));
@@ -151,8 +134,12 @@ app.get(['/', '/catalog'], function(req, res, next) {
 })
 
 app.get(['/', '/installation'], function(req, res) {
+  var url = config.elasticsearch.host
+  if (url.indexOf('http') === -1) {
+    url = 'http://' + url
+  }
   return request.getAsync({
-    url: ELASTICSEARCH_URL
+    url: url
   })
   .then(function(result) {
     return res.render('start', {
@@ -166,8 +153,6 @@ app.get(['/', '/installation'], function(req, res) {
     });
   })
 })
-
-
 
 app.get('/category/:name', function(req, res) {
   var name = req.params.name;
@@ -300,8 +285,6 @@ app.post('/add-data', function(req, res) {
     data.url = req.body.url
   }
 
-  console.log(data);
-
   return req.client.createProject(data)
   .delay(2500)
   .then(function(result) {
@@ -311,8 +294,21 @@ app.post('/add-data', function(req, res) {
   })
 });
 
-itemsapi.start(function serverStart(serverInstance) {
-  var host = serverInstance.address().address;
-  var port = serverInstance.address().port;
-  itemsapi.get('logger').info('ItemsAPI started on http://%s:%s', host, port)
+/**
+ * express js listen
+ */
+app.listen(config.server.port, function afterListen() {
+  var host = this.address().address;
+  var port = this.address().port;
+
+  if (!host || host === '::') {
+    host = '127.0.0.1'
+  }
+
+  itemsapi.get('logger').info('ItemsAPI started!'.green)
+  itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.green, host, port)
+}).on('error', function(err){
+  console.log('Cannot start with port %s'.red, config.server.port);
+  console.log('Try again with another port'.red);
+  process.exit()
 });

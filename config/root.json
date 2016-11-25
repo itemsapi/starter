@@ -1,0 +1,11 @@
+{
+  "server": {
+    "port": 4000,
+    "host": "0.0.0.0",
+    "logger": false
+  },
+  "elasticsearch": {
+    "host": "127.0.0.1:9200",
+    "selector": "roundRobin"
+  }
+}
