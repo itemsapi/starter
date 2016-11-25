@@ -308,8 +308,11 @@ app.listen(config.server.port, function afterListen() {
     if (result.elasticsearch_status === 200) {
       itemsapi.get('logger').info('Elasticsearch status -', 'OK'.green)
     } else {
-      itemsapi.get('logger').info('Elasticsearch status -', 'Unavailable. Your application might not work properly'.red)
+      itemsapi.get('logger').info('Elasticsearch status -', config.elasticsearch.host.red + ' is unavailable.'.red)
+      itemsapi.get('logger').info('Your application might not work properly'.red)
       itemsapi.get('logger').info('Instructions about how to run Elasticsearch - https://github.com/itemsapi/itemsapi/blob/master/ELASTICSEARCH.md'.red)
+      itemsapi.get('logger').info('To start app with your custom elasticsearch url:'.red)
+      itemsapi.get('logger').info('ELASTICSEARCH_URL=http://localhost:9200 npm start'.red)
     }
 
     if (!fs.existsSync('./bower_components')) {
