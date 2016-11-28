@@ -14,6 +14,8 @@ var tcpPortUsed = require('tcp-port-used');
 var config = require('./config/index').get();
 var colors = require('colors')
 var fs = require('fs');
+var Promise = require('bluebird')
+var fs = Promise.promisifyAll(require('fs-extra'))
 
 var figlet = require('figlet');
 
@@ -97,7 +99,7 @@ app.all('*', function(req, res, next) {
 })
 
 app.get(['/', '/catalog'], function(req, res, next) {
-  if (1 && storage.getItem('step') < 3) {
+  if (!storage.getItem('step') || storage.getItem('step') < 3) {
     return next()
     //res.render('start', {});
   } else {
@@ -148,6 +150,17 @@ app.get(['/', '/installation'], function(req, res) {
   .then(function(result) {
     return res.render('start', result);
   })
+})
+
+/**
+ * be careful - it reset current installation
+ */
+app.get(['/reset'], function(req, res) {
+
+  storage.clearSync()
+  storage.setItem('step', 2)
+
+  return res.redirect('/')
 })
 
 app.get('/category/:name', function(req, res) {
@@ -237,7 +250,6 @@ app.get('/item/:id', function(req, res) {
     ])
   })
   .spread(function(similar) {
-    console.log(similar);
     return res.render(path, {
       item: item,
       similar: similar.data.items.slice(0, 4)
@@ -276,7 +288,17 @@ app.post('/add-data', function(req, res) {
   }
 
   if (req.body.json) {
-    data.data = JSON.parse(req.body.json)
+    try {
+      // check if we catch no error
+      data.data = JSON.parse(req.body.json);
+      //data.data = req.body.json
+    } catch (e) {
+      console.log('Your JSON is not valid. Please try again!'.red);
+      console.log('You can use https://jsonformatter.curiousconcept.com/ for JSON validation'.red)
+      return res.status(500).json({
+        message: 'Your JSON is not valid. Please try again!'
+      })
+    }
   } else {
     data.url = req.body.url
   }
