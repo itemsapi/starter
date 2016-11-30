@@ -1,11 +1,6 @@
-# itemsapi-starter
+# ItemsAPI starter
 
-This starter let you generate search app quickly!
-
-## ItemsAPI
-
-To find out more about ItemsAPI go to - <a href="https://itemsapi.readme.io" target="_blank">official documentation</a> or 
-<a href="https://github.com/itemsapi/itemsapi" target="_blank">ItemsAPI repo</a>
+This starter let you generate search application quickly!
 
 ## Heroku installation
 
@@ -23,3 +18,18 @@ Deploy ItemsAPI starter instantly to heroku and start your app (backend creator)
 - `PORT=3000 npm start`
 
 Open localhost:3000 and follow instruction in web creator
+
+## Features 
+
+- auto-generated filters
+- search
+- basic layout
+- items recommendation
+- item details
+- sitemap
+
+## Todo
+
+- reviews system
+- views counter
+- simple administration panel for data management
