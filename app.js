@@ -99,6 +99,8 @@ app.all('*', function(req, res, next) {
   // @TODO add all variables programatically
   res.locals.logo = config.template_variables.logo
   res.locals.title = config.template_variables.title
+  res.locals.image = config.template_variables.image
+  res.locals.hints = config.template_variables.hints
 
   next();
 })

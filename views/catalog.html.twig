@@ -98,7 +98,7 @@
         {% for item in items %}
         <div class="col-xs-3 col-md-3" style="height: 350px;">
           <a href="/item/{{ item.id }}" class="">
-            <img class="img-thumbnail" src="{{ item.image }}" alt="{{ item.name }}">
+            <img class="img-thumbnail" src="{% if item.image %}{{ item.image }}{% else %}{{ image }} {% endif %}" alt="{{ item.name }}">
             <p>{{ item.name }}</p>
           </a>
         </div>
@@ -107,7 +107,9 @@
 
       <div class="clearfix"></div>
 
-      <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/catalog.html.twig</strong></p>
+      {% if hints %}
+        <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/catalog.html.twig</strong></p>
+      {% endif %}
 
 
       <div class="pagination-bar text-center">

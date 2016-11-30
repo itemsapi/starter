@@ -28,7 +28,6 @@ if (isTest) {
 
 nconf.use('memory');
 if (fs.existsSync(configFile) !== false) {
-  console.log('exists');
   nconf.file('overrides', {file: configFile})
 }
 

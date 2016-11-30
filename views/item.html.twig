@@ -24,7 +24,7 @@
             <div class="">
               <div class="panel-body text-center">
                 <div class="">
-                  <img src="{{ item.image }}" alt="{{ item.name }}" style="width: 300px" />
+                  <img src="{% if element.image %}{{ element.image }}{% else %}{{ image }}{% endif %}" alt="{{ item.name }}" style="width: 300px" />
                 </div>
               </div>
             </div>
@@ -59,7 +59,9 @@
                   </tbody>
                 </table>
 
+                {% if hints %}
                 <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/item.html.twig</strong></p>
+                {% endif %}
 
 
                 <hr class="clearfix" />
