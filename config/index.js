@@ -2,6 +2,8 @@
 
 
 var _ = require('lodash');
+var nconf = require('nconf');
+var fs = require('fs');
 var isProduction = process.env.NODE_ENV === 'production';
 var isDevelopment = false
 
@@ -15,21 +17,18 @@ if (
 var isMocha = !!_.find(process.argv, function(val) {
   return val.indexOf('mocha') !== -1;
 });
-var isTest = process.env.NODE_ENV === 'test' || isMocha;
 
-var nconf = require('nconf');
-var fs = require('fs');
+var isTest = process.env.NODE_ENV === 'test' || isMocha;
 
 var configFile = __dirname + '/local.json';
 
 if (isTest) {
   configFile = __dirname + '/test.json';
-} else if (isDevelopment) {
-  configFile = __dirname + '/development.json';
 }
 
 nconf.use('memory');
 if (fs.existsSync(configFile) !== false) {
+  console.log('exists');
   nconf.file('overrides', {file: configFile})
 }
 

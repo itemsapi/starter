@@ -95,6 +95,11 @@ app.all('*', function(req, res, next) {
   nunenv.addGlobal('step', storage.getItem('step'));
   nunenv.addGlobal('name', storage.getItem('name'));
   req.name = storage.getItem('name')
+
+  // @TODO add all variables programatically
+  res.locals.logo = config.template_variables.logo
+  res.locals.title = config.template_variables.title
+
   next();
 })
 
