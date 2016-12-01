@@ -10,7 +10,7 @@
   },
   "template_variables": {
     "logo": "/assets/images/logo.jpg",
-    "title": "ItemsAPI Starter - movies",
+    "title": "ItemsAPI starter",
     "image": "http://placehold.it/300x400",
     "hints": true
   }
