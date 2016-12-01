@@ -11,7 +11,6 @@ module.exports = function(app) {
   app.get(['/', '/catalog'], function(req, res, next) {
     if (!storage.getItem('step') || storage.getItem('step') < 3) {
       return next()
-      //res.render('start', {});
     } else {
 
       var page = parseInt(req.query.page, 10);
@@ -31,8 +30,7 @@ module.exports = function(app) {
 
       req.client.search(query)
       .then(function(result) {
-
-        res.render('catalog', {
+        return res.render('basic/catalog', {
           items: result.data.items,
           pagination: result.pagination,
           query: req.query.query,
@@ -48,7 +46,9 @@ module.exports = function(app) {
       })
       .catch(function(err) {
         console.log(err);
-        return res.status(500).render('pages/error');
+        return res.status(500).json({
+          message: 'unexpected error'
+        });
       })
     }
   })
@@ -58,7 +58,7 @@ module.exports = function(app) {
 
     return statusHelper.elasticsearch(url)
     .then(function(result) {
-      return res.render('start', result);
+      return res.render('basic/start', result);
     })
   })
 
@@ -75,7 +75,6 @@ module.exports = function(app) {
 
   app.get('/category/:name', function(req, res) {
     var name = req.params.name;
-    var path = 'category';
     req.client.aggregation(name, {
       per_page: 1000,
       sort: '_term',
@@ -84,7 +83,7 @@ module.exports = function(app) {
       query_string: 'enabled:true OR _missing_:enabled'
     })
     .then(function(result) {
-      res.render(path, {
+      res.render('basic/category', {
         aggregation: result,
         name: name
       })
@@ -95,11 +94,7 @@ module.exports = function(app) {
    * generate sitemap for website
    */
   app.get('/sitemap.xml', function(req, res) {
-    /*if (!1) {
-      return res.status(404).json();
-      }*/
-
-    return res.set('Content-Type', 'text/xml').render('sitemap', {
+    return res.set('Content-Type', 'text/xml').render('basic/sitemap', {
       url: 'url'
     });
   })
@@ -116,20 +111,18 @@ module.exports = function(app) {
 
     req.client.search(query)
     .then(function(result) {
-      return res.set('Content-Type', 'text/xml').render('sitemap_item', {
+      return res.set('Content-Type', 'text/xml').render('basic/sitemap_item', {
         items: result.data.items,
         url: 'url'
       });
     })
   })
 
-
   app.get('/api', function(req, res) {
     res.render('api');
   })
 
   app.get('/item/:id', function(req, res) {
-    var path = 'item';
 
     var getItemAsync;
     var item;
@@ -160,7 +153,7 @@ module.exports = function(app) {
       ])
     })
     .spread(function(similar) {
-      return res.render(path, {
+      return res.render('basic/item', {
         item: item,
         similar: similar.data.items.slice(0, 4)
       });
