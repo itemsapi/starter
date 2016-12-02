@@ -58,7 +58,7 @@ module.exports = function(app) {
 
     return statusHelper.elasticsearch(url)
     .then(function(result) {
-      return res.render('basic/start', result);
+      return res.render('installation/start', result);
     })
   })
 
