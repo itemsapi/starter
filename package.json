@@ -1,6 +1,6 @@
 {
   "name": "itemsapi-starter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ItemsAPI demo starter",
   "main": "app.js",
   "scripts": {
@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/itemsapi/itemsapi-starter#readme",
   "dependencies": {
+    "JSONStream": "^1.2.1",
     "bluebird": "^3.3.5",
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
