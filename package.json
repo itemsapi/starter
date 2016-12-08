@@ -36,6 +36,7 @@
     "request": "^2.72.0",
     "tcp-port-used": "^0.1.2",
     "underscore": "^1.8.3",
+    "unicode": "^0.6.1",
     "urijs": "^1.18.2",
     "winston": "^2.2.0"
   }

@@ -108,7 +108,7 @@ app.listen(config.server.port, function afterListen() {
     if (!fs.existsSync('./bower_components')) {
       itemsapi.get('logger').info('Bower packages were not installed properly'.red)
       itemsapi.get('logger').info('Please run: '.red)
-      itemsapi.get('logger').info('./node_modules/.bin/bower cache clean && ./node_modules/.bin/bower install'.red)
+      itemsapi.get('logger').info('./node_modules/.bin/bower cache clean --allow-root && ./node_modules/.bin/bower install --allow-root'.red)
     }
 
     itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.green, host, port)
