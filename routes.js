@@ -16,13 +16,15 @@ module.exports = function(app) {
       var page = parseInt(req.query.page, 10);
       var is_ajax = req.query.is_ajax || req.xhr;
 
-      var sort = 'rating'
+      var sort = 'visits'
 
       var filters = JSON.parse(req.query.filters || '{}');
       var query = {
         sort: sort,
-        query: req.query.query,
-        query_string: 'enabled:true OR _missing_:enabled',
+        //query: req.query.query,
+        query_string: req.query.query,
+
+        //query_string: 'enabled:true OR _missing_:enabled',
         page: page,
         aggs: req.query.filters,
         per_page: 16

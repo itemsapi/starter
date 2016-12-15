@@ -12,6 +12,6 @@
     "logo": "/assets/images/logo.jpg",
     "title": "ItemsAPI starter",
     "image": "http://placehold.it/300x400",
-    "hints": true
+    "hints": false
   }
 }

@@ -23,6 +23,8 @@
   "dependencies": {
     "urijs": "^1.18.2",
     "history.js": "^1.8.0",
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "AdminLTE": "admin-lte#^2.3.8",
+    "codemirror": "^5.21.0"
   }
 }

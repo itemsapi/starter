@@ -1,0 +1,62 @@
+{% extends "layout.html.twig" %}
+
+{% macro form2(form, options = {}) %}
+<form class="form-horizontal" action="{{ options.action }}" method="POST">
+  <div class="box-body">
+    <textarea id="codemirror" name="row" style="width: 100%; height: 800px;">
+      {{ collection }}
+    </textarea>
+    <div class="box-footer">
+      <button type="submit" class="btn btn-info pull-right" style="margin-left: 5px;">Save</button>
+    </div>
+  </div>
+</form>
+{% endmacro %}
+
+
+{% block content %}
+<section class="content">
+
+  <!-- Horizontal Form -->
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Horizontal Form -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Edit collection</h3>
+        </div>
+
+        {{ form2(form, {}) }}
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <!-- Horizontal Form -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Show collection</h3>
+        </div>
+        <div class="box-body">
+          {#<p class="lead">Lead to emphasize importance</p>#}
+          <pre>
+            {{ collection }}
+          </pre>
+        </div>
+
+
+        <div class="box-header with-border">
+          <h3 class="box-title">Show mapping</h3>
+        </div>
+        <div class="box-body">
+          {#<p class="lead">Lead to emphasize importance</p>#}
+          <pre>
+            {{ mapping }}
+          </pre>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+{% endblock %}

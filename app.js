@@ -58,18 +58,32 @@ app.set('view cache', false);
 
 app.engine('html.twig', nunenv.render);
 
+
 /**
  * middleware route
  */
 app.all('*', function(req, res, next) {
-  //req.step = storage.getItem('step')
   var client = new ItemsAPI('http://localhost:' + config.server.port + '/api/v1', storage.getItem('name'));
   req.client = client;
+  next();
+})
+
+
+var admin = require('./admin');
+app.use('/admin', admin);
+
+//require('./config/passport')(app)
+
+
+
+/**
+ * middleware route
+ */
+app.all('*', function(req, res, next) {
   nunenv.addGlobal('step', storage.getItem('step'));
   nunenv.addGlobal('name', storage.getItem('name'));
   req.name = storage.getItem('name')
 
-  // @TODO add all variables programatically
   res.locals.logo = config.template_variables.logo
   res.locals.title = config.template_variables.title
   res.locals.image = config.template_variables.image

@@ -5,12 +5,18 @@ var urlHelper = require('./helpers/url');
  * template engine
  */
 module.exports = function(app) {
-  var nunenv = nunjucks.configure(app.get('views'), {
-    autoescape: true,
-    noCache: true,
-    express: app
-  })
 
+  var nunenv = new nunjucks.Environment(
+    new nunjucks.FileSystemLoader('views', {
+      autoescape: true,
+      watch: true,
+      noCache: true,
+    })
+  )
+
+  nunenv.express(app)
+
+  nunenv
   .addFilter('debug', function(obj) {
     return JSON.stringify(obj, null, 2)
   })
