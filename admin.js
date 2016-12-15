@@ -1,39 +1,5 @@
 var express = require('express');
 var admin = express();
-//var itemsapi = require('./config/itemsapi');
-
-
-//var ItemsAPI = require('itemsapi-node');
-//var ITEMSAPI_URL = 'http://localhost:4000/api/v1';
-
-//var config = require('./index').get();
-//var Promise = require('bluebird')
-//var _ = require('lodash')
-
-//var client = new ItemsAPI(ITEMSAPI_URL, 'movies');
-
-/*client({
-  name: 'movies',
-  backend: 'http://localhost:4000/api/v1'
-}).search({
-  query: 'test'
-})*/
-
-//var client = new ItemsAPI();
-
-/*module.exports = function(options) {
-  var itemsapi = new ItemsAPI()
-  options = options || {}
-
-  itemsapi.setParams({
-    name: options.collection || options.name,
-    backendUrl: options.backend || options.backendUrl || ITEMSAPI_URL
-  })
-
-  return itemsapi
-}*/
-
-
 
 var Promise = require('bluebird');
 var bodyParser = require('body-parser');
