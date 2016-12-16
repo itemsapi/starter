@@ -14,10 +14,10 @@ admin.use('/codemirror', express.static('bower_components/codemirror'));
 
 //var mongoose = require('mongoose');
 //var mongoose = require('./config/mongoose');
-//var passport = require('passport');
-//var LocalStrategy = require('passport-local').Strategy;
-//var config = require('./config/index').get();
-//var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var config = require('./config/index').get();
+var session = require('express-session');
 //var fixtures = require('node-mongoose-fixtures');
 //var urlHelper = require('./src/helpers/url');
 //var uiHelper = require('./src/helpers/ui');
@@ -44,6 +44,65 @@ admin.use(bodyParser.json({
 
 admin.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 admin.use(cookieParser());
+
+admin.use(session({
+  secret: 'starterx',
+  resave: false,
+  saveUninitialized: true
+}))
+
+admin.use(passport.initialize());
+admin.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(id, done) {
+  done(null, id)
+});
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+
+    if (username !== config.auth.username || password !== config.auth.password) {
+      return done(null, false, { message: 'Incorrect credentials' });
+    }
+
+    return done(null, {
+      username: username
+    })
+  }
+));
+
+admin.get('/login', function(req, res) {
+  return res.render('auth/login');
+});
+
+admin.post('/login', passport.authenticate('local', {
+  successRedirect: '/admin',
+  failureRedirect: '/admin/login'
+}));
+
+admin.get('/logout', function(req, res) {
+  req.logout();
+  return res.redirect('/');
+});
+
+
+admin.all('*', function(req, res, next) {
+  console.log('environment: ' + process.env.NODE_ENV)
+
+  console.log(req.user);
+  if (!req.user) {
+    return res.redirect('/admin/login');
+  }
+
+  var user = req.user;
+  nunenv.addGlobal('user', user);
+  next();
+})
+
 
 /**
  * dashboard
