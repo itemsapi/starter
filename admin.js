@@ -45,10 +45,19 @@ admin.use(bodyParser.json({
 admin.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 admin.use(cookieParser());
 
+var RedisStore = require('connect-redis')(session);
+
 admin.use(session({
-  secret: 'starterx',
-  resave: false,
-  saveUninitialized: true
+  secret: 'itemsapi admin 159',
+  saveUninitialized: false,
+  store: new RedisStore({
+    prefix: 'front_sess:',
+    host: config.redis.host,
+    port: config.redis.port,
+    pass: config.redis.auth_pass
+  }),
+  cookie: config.cookie,
+  resave: false
 }))
 
 admin.use(passport.initialize());

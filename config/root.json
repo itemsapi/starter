@@ -12,6 +12,15 @@
     "username": "admin",
     "password": "itemsapi"
   },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "auth_pass": ""
+  },
+  "cookie": {
+    "maxAge": 86400000,
+    "domain": ""
+  },
   "template_variables": {
     "logo": "/assets/images/logo.jpg",
     "title": "ItemsAPI starter",
