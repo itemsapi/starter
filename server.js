@@ -1,5 +1,6 @@
 'use strict';
 
+//var itemsapi = require('../itemsapi');
 var itemsapi = require('itemsapi');
 var ItemsAPI = require('itemsapi-node');
 var Promise = require('bluebird');

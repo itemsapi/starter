@@ -1,5 +1,6 @@
 var nunjucks = require('nunjucks');
 var urlHelper = require('./helpers/url');
+var _ = require('lodash')
 
 /**
  * template engine
@@ -28,6 +29,13 @@ module.exports = function(app) {
   .addGlobal('in_array', function(element, array) {
     array = array || [];
     return array.indexOf(element) !== -1;
+  })
+
+  .addFilter('slice', function(string, a, b) {
+    if (_.isString(string) || _.isArray(string)) {
+      return string.slice(a, b)
+    }
+    return string
   })
 
   .addFilter('ceil', function(str) {

@@ -100,9 +100,6 @@ admin.get('/logout', function(req, res) {
 
 
 admin.all('*', function(req, res, next) {
-  console.log('environment: ' + process.env.NODE_ENV)
-
-  console.log(req.user);
   if (!req.user) {
     return res.redirect('/admin/login');
   }
@@ -121,14 +118,39 @@ admin.get(['/', '/dashboard'], function (req, res) {
 })
 
 /**
+ * collection reindexing
+ */
+admin.get(['/collections/reindex'], function (req, res) {
+  req.client.getCollection()
+  .then(function(result) {
+    var new_index = result.index + '1'
+    return req.client.collectionReindex(undefined, {
+      new_index: new_index,
+      new_type: new_index
+    })
+  })
+  .then(function(result) {
+    res.redirect('/admin/collections/edit');
+  })
+})
+
+/**
+ * slugs reindexing
+ */
+admin.get(['/slugs/reindex'], function (req, res) {
+  req.client.slugsReindex()
+  .then(function(result) {
+    res.redirect('/admin/collections/edit');
+  })
+})
+
+/**
  * collections get edit
  */
 admin.get(['/collections/edit', '/collections/edit/:id'], function (req, res) {
   if (req.params.id) {
     req.client.setName(req.params.id)
   }
-
-  console.log(req.client);
 
   Promise.all([req.client.getCollection(), req.client.getMapping()])
   .spread(function(collection, mapping) {
@@ -149,7 +171,6 @@ admin.post(['/collections/edit', '/collections/edit/:id'], function (req, res) {
   }
 
   var json = JSON.parse(req.body.row)
-  console.log(json);
   req.client.updateCollection(json)
   .then(function(result) {
     console.log(result);

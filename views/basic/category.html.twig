@@ -22,7 +22,9 @@
           {% if agg.key %}
           <li>
           {#<a href="/filter/{{ name }}/{{ agg.permalink }}">{{ agg.key }}</a><small class="text-muted"> ({{ agg.doc_count }})</small>#}
-          {{ agg.key }}<small class="text-muted"> ({{ agg.doc_count }})</small>
+          {#{{ agg.key }}<small class="text-muted"> ({{ agg.doc_count }})</small>#}
+
+          <a href="/filter/{{ name }}/{{ agg.permalink }}">{{ agg.key }}</a><small class="text-muted"> ({{ agg.doc_count }})</small>
           </li>
           {% endif %}
           {% endfor %}

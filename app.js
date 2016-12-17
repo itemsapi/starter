@@ -7,6 +7,16 @@ var statusHelper = require('./helpers/status');
 var fs = require('fs');
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
+var redis_client = require('./config/redis')
+
+var printed = false;
+redis_client.on("error", function (err) {
+  if (!printed) {
+    itemsapi.get('logger').info('Redis is required for authentication and nice URLs..'.red)
+    itemsapi.get('logger').info('Without Redis application might not work properly'.red)
+    printed = true
+  }
+})
 
 /**
  * express js listen

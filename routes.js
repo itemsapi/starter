@@ -2,6 +2,9 @@ var storage = require('node-persist');
 var urlHelper = require('./helpers/url');
 var statusHelper = require('./helpers/status');
 var config = require('./config/index').get();
+var redis_client = require('./config/redis')
+var Promise = require('bluebird')
+var _ = require('lodash')
 
 /**
  * list of all routes
@@ -216,4 +219,66 @@ module.exports = function(app) {
       res.redirect('/');
     })
   });
+
+  /**
+   * filter results (SEO)
+   */
+  app.get('/filter/:aggregation/:name', function(req, res) {
+    var page = parseInt(req.query.page, 10) || 1;
+    var aggregation = req.params.aggregation;
+
+    var query = {
+      sort: 'most_votes',
+      query: req.query.query || '',
+      page: page,
+      query_string: 'enabled:true OR _missing_:enabled',
+      aggs: JSON.stringify({
+        [aggregation]: [req.params.name]
+      }),
+      per_page: 12
+    }
+
+    var key
+
+    if (req.name) {
+      key = req.name + '_' + req.params.aggregation + '_' + req.params.name;
+    }
+
+    Promise.all([req.client.search(query), redis_client.getAsync(key)])
+    .spread(function(result, filter_value) {
+      var sortings = _.map(result.data.sortings, function(v, k) {
+        return v;
+      })
+
+      if (filter_value) {
+        filter_value = JSON.parse(filter_value)
+      } else {
+        filter_value = req.params.name
+      }
+
+      res.render('basic/catalog', {
+        is_ajax: false,
+        items: result.data.items,
+        pagination: result.pagination,
+        query: req.query.query,
+        page: page,
+        filter: {
+          key: req.params.aggregation,
+          val: filter_value
+        },
+        url: req.url,
+        aggregations: result.data.aggregations,
+        sortings: sortings
+      })
+    })
+    .catch(function(err) {
+      return res.status(500).json({
+        error: 'error'
+      });
+    })
+  });
+
 }
+
+
+
