@@ -44,17 +44,13 @@ if (process.env.SEARCHBOX_URL) {
   nconf.set('elasticsearch:host', process.env.ELASTICSEARCH_URL);
 }
 
-if (process.env.REDIS_URL) {
-  //redis://h:p4ef2d87fd1e1eac40c08cc26d8c27413ae1afcc7a1c06d269bcad9d4fad25e74@ec2-79-125-8-9.eu-west-1.compute.amazonaws.com:17399
-  var redisConfig = configHelper.parseRedisUrl(process.env.REDIS_URL)
+var REDIS_URL = process.env.REDIS_URL || process.env.REDISTOGO_URL
+if (REDIS_URL) {
+  var redisConfig = configHelper.parseRedisUrl(REDIS_URL)
 
   if (redisConfig) {
     nconf.set('redis', redisConfig)
   }
-
-  //nconf.set('redis:host', 'ec2-79-125-8-9.eu-west-1.compute.amazonaws.com');
-  //nconf.set('redis:port', '17399');
-  //nconf.set('redis:auth_pass', 'p4ef2d87fd1e1eac40c08cc26d8c27413ae1afcc7a1c06d269bcad9d4fad25e74');
 }
 
 exports.get = function() {
