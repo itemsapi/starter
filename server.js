@@ -31,6 +31,7 @@ if (!storage.getItem('step')) {
 itemsapi.init({
   server: config.server,
   elasticsearch: config.elasticsearch,
+  redis: config.redis,
   collections: {
     db: 'json',
     filename:  'collections.json'
@@ -39,8 +40,8 @@ itemsapi.init({
 
 // standard app syntax
 var app = itemsapi.get('express');
-var urlHelper = require('./helpers/url');
-var statusHelper = require('./helpers/status');
+var urlHelper = require('./src/helpers/url');
+var statusHelper = require('./src/helpers/status');
 var nunenv = require('./nunenv')(app)
 
 app.use('/bootstrap', express.static('node_modules/bootstrap'));

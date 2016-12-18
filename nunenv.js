@@ -1,5 +1,5 @@
 var nunjucks = require('nunjucks');
-var urlHelper = require('./helpers/url');
+var urlHelper = require('./src/helpers/url');
 var _ = require('lodash')
 
 /**
