@@ -1,2 +1,5 @@
 {
+  "mongodb": {
+    "url": "localhost:27017/itemsapi-starter-test"
+  }
 }

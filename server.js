@@ -9,6 +9,7 @@ var _ = require('lodash');
 var bodyParser = require('body-parser');
 var express = require('express');
 var config = require('./config/index').get()
+var configService = require('./src/services/config')
 var colors = require('colors')
 var figlet = require('figlet')
 
@@ -58,11 +59,26 @@ app.engine('html.twig', nunenv.render);
  */
 app.all('*', function(req, res, next) {
 
-  req.is_installation = !storage.getItem('step') || storage.getItem('step') < 3
+  req.is_installation = true
+  req.step = 2
 
-  var client = new ItemsAPI('http://localhost:' + config.server.port + '/api/v1', storage.getItem('name'));
-  req.client = client;
-  next();
+  // not happy of that - config should be defined always
+  // in the beginning with default value
+  configService.getConfig()
+  .then(function(dynamic_config) {
+    req.dynamic_config = dynamic_config
+    if (dynamic_config.name) {
+      req.name = dynamic_config.name
+      req.step = dynamic_config.step
+      req.is_installation = false
+    }
+    var client = new ItemsAPI('http://localhost:' + config.server.port + '/api/v1', req.name)
+    req.client = client;
+    nunenv.addGlobal('step', req.step)
+    nunenv.addGlobal('name', req.name)
+    next();
+  })
+
 })
 
 var admin = require('./admin')
@@ -74,9 +90,6 @@ app.use('/admin', admin)
  * middleware route
  */
 app.all('*', function(req, res, next) {
-  nunenv.addGlobal('step', storage.getItem('step'));
-  nunenv.addGlobal('name', storage.getItem('name'));
-  req.name = storage.getItem('name')
 
   res.locals.logo = config.template_variables.logo
   res.locals.title = config.template_variables.title

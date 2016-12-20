@@ -47,6 +47,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "node-mongoose-fixtures": "^0.2.4",
     "should": "^11.1.2",
     "sinon": "^1.17.6",
     "supertest": "^2.0.1"

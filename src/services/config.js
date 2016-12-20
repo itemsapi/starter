@@ -1,21 +1,33 @@
 var _ = require('lodash')
-var mongoose = require('./mongoose')
+var mongoose = require('./../../config/mongoose')
+var Config = require('./../models/config')
 
 /**
  * reset config = reset app
  */
-exports.reset = function() {
-  return new Promise(function(resolve, reject) {
-    return resolve()
-  })
+exports.resetConfig = function() {
+  return Config.remove()
 }
 
 /**
  * override config with new values
  */
-exports.setConfig = function(obj) {
-  return new Promise(function(resolve, reject) {
-    return resolve()
+exports.setConfig = function(a, b) {
+  var data = a
+  if (_.isString(a) && _.isString(b)) {
+    data = {}
+    data[a] = b
+  }
+
+  return Config.findOne()
+  .then(function(res) {
+    if (!res) {
+      var config = new Config(data)
+      return config.save()
+    } else {
+      var config = _.assignIn(res, data)
+      return config.save()
+    }
   })
 }
 
@@ -24,9 +36,8 @@ exports.setConfig = function(obj) {
  * if empty then app is not installed yet
  */
 exports.getConfig = function(obj) {
-  return new Promise(function(resolve, reject) {
-    return resolve()
+  return Config.findOne()
+  .then(function(res) {
+    return res || {}
   })
 }
-
-module.exports = storage

@@ -28,7 +28,7 @@
 
       <div class="jumbotron">
         <h1>ItemsAPI Starter</h1>
-        <p class="lead">This is the young wordpress for quality catalogs / classifieds / recommendations / marketplaces</p>
+        <p class="lead">This is the system designed for quality catalogs / classifieds / recommendations / marketplaces</p>
         {#<p class="lead">Creating backend will take you no more than 5 minutes</p>#}
         {#<p><a class="btn btn-lg btn-success" href="#first-step" role="button">Create application</a></p>#}
       </div>
@@ -54,6 +54,8 @@
         {% if elasticsearch_status == 200 %}
         Welcome to very short ItemsAPI Starter installation process!<br />
         After finishing below configuration you'll get auto-generated web application.
+
+        (Step: {{ step }})
 
         {% if step == 1 %}
         <h3 id="first-step">1. First step</h3>
@@ -86,7 +88,12 @@
 
         {% if step == 3 %}
         <h3>2. Your backend is ready to go</h3>
-        <p>Your backend is ready to go. There are few your endpoints here</p>
+        <p>Your app is ready to go!</p>
+
+        <a href="/" target="_blank" class="btn btn-success">Open app</a>
+        <a href="/admin" target="_blank" class="btn btn-info">Open admin</a>
+
+        {#<p>Your backend is ready to go. There are few your endpoints here</p>
 
         {% set itemId = items.data.items[0].id %}
 
@@ -147,14 +154,14 @@
 
         <br />
         If you know how to improve or simplify that generator - or if you have an issue - write here <a href="https://github.com/itemsapi/itemsapi-starter/issues" target="_blank">https://github.com/itemsapi/itemsapi-starter/issues</a><br />
-        <br /><br/ >
+        <br /><br/ >#}
 
-        <div id="banner-share">
+        {#<div id="banner-share">
           <iframe src="https://ghbtns.com/github-btn.html?user=itemsapi&amp;repo=itemsapi&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
           <a href="https://twitter.com/share" class="twitter-share-button" data-size="large">Tweet</a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-        </div>
+        </div>#}
         {% else %}
         <h3>2. Your web application will be ready soon!</h3>
         <p>Usually it takes days or weeks to create search backend with another solutions.

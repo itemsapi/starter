@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var Config = new Schema({
   name: String,
+  step: { type: Number, default: 2 },
   modified_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now }
 })

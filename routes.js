@@ -1,4 +1,6 @@
-var storage = require('./config/storage');
+//var storage = require('./config/storage');
+
+var configService = require('./src/services/config')
 var urlHelper = require('./src/helpers/url');
 var statusHelper = require('./src/helpers/status');
 var config = require('./config/index').get();
@@ -72,7 +74,7 @@ module.exports = function(app) {
    */
   app.get(['/reset'], function(req, res) {
 
-    storage.reset()
+    configService.resetConfig()
     .then(function(result) {
       return res.redirect('/')
     })
@@ -180,8 +182,12 @@ module.exports = function(app) {
     })
     .then(function(result) {
       // if adding collection was successful we go into 2 step
-      storage.setItem('step', 2)
-      storage.setItem('name', json.name)
+      return configService.setConfig({
+        step: 2,
+        name: json.name
+      })
+    })
+    .then(function(result) {
       res.redirect('/');
     })
     .catch(function(err) {
@@ -215,8 +221,14 @@ module.exports = function(app) {
     return req.client.createProject(data)
     .delay(2500)
     .then(function(result) {
-      storage.setItem('step', 3)
-      storage.setItem('name', result.name)
+      //storage.setItem('step', 3)
+      //storage.setItem('name', result.name)
+      return configService.setConfig({
+        step: 3,
+        name: result.name
+      })
+    })
+    .then(function(result) {
       res.redirect('/');
     })
   });
