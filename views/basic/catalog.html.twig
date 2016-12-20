@@ -105,39 +105,46 @@
 
       <div class="clearfix"></div>
 
-      <h3>List of items ({{pagination.total}})</h3>
+      {% if filter and not filter_original_value %}
+        <h3>Not configured yet</h3>
+        <p style="margin-top: 10px;">Nice URL's are not configured. You can do that in admin panel.
+        <br />Please ask <a target="_blank" href="https://github.com/itemsapi/starter/issues">https://github.com/itemsapi/starter/issues</a> for more informations</p>
+      {% else %}
+        <h3>List of items ({{pagination.total}})</h3>
 
-      <div class="items">
-        {% for item in items %}
-        <div class="col-xs-3 col-md-3" style="height: 350px;">
-          <a href="/item/{{ item.id }}" class="">
-            <img class="img-thumbnail" src="{% if item.image %}{{ item.image }}{% else %}{{ image }} {% endif %}" alt="{{ item.name }}">
-            <p>{{ item.name }}</p>
-          </a>
-        </div>
-        {% endfor %}
-      </div>
-
-      <div class="clearfix"></div>
-
-      {% if hints %}
-        <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/catalog.html.twig</strong></p>
-      {% endif %}
-
-
-      <div class="pagination-bar text-center">
-        <ul class="pagination">
-          {% set pages_count = ((pagination.total | int) / (pagination.per_page | int)) | ceil  %}
-          {% if pages_count > 8 %}
-          {% set pages_count = 8 %}
-          {% endif %}
-          {% for pag in range(1, pages_count + 1) %}
-          <li {% if (not page and pag == 1) or pag == page %}class="active"{% endif %}><a href="{{ url | build({page: pag}) }}">{{ pag }}</a></li>
+        <div class="items">
+          {% for item in items %}
+          <div class="col-xs-3 col-md-3" style="height: 350px;">
+            <a href="/item/{{ item.id }}" class="">
+              <img class="img-thumbnail" src="{% if item.image %}{{ item.image }}{% else %}{{ image }} {% endif %}" alt="{{ item.name }}">
+              <p>{{ item.name }}</p>
+            </a>
+          </div>
           {% endfor %}
-          {% set next = page + 1 %}
-          <li><a class="pagination-btn" href="/catalog?page={{ page + 1 }}">Next &raquo;</a></li>
-        </ul>
-      </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        {% if hints %}
+          <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/catalog.html.twig</strong></p>
+        {% endif %}
+
+
+        <div class="pagination-bar text-center">
+          <ul class="pagination">
+            {% set pages_count = ((pagination.total | int) / (pagination.per_page | int)) | ceil  %}
+            {% if pages_count > 8 %}
+            {% set pages_count = 8 %}
+            {% endif %}
+            {% for pag in range(1, pages_count + 1) %}
+            <li {% if (not page and pag == 1) or pag == page %}class="active"{% endif %}><a href="{{ url | build({page: pag}) }}">{{ pag }}</a></li>
+            {% endfor %}
+            {% set next = page + 1 %}
+            <li><a class="pagination-btn" href="/catalog?page={{ page + 1 }}">Next &raquo;</a></li>
+          </ul>
+        </div>
+
+      {% endif %}
     </div>
   </div>
 </div>

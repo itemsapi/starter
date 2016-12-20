@@ -15,7 +15,8 @@ module.exports = function(app) {
 
   app.get(['/', '/catalog'], function(req, res, next) {
     if (req.is_installation) {
-      return next()
+      //return next()
+      return res.redirect('/installation')
     } else {
 
       var page = parseInt(req.query.page, 10);
@@ -219,17 +220,15 @@ module.exports = function(app) {
     }
 
     return req.client.createProject(data)
-    .delay(2500)
+    .delay(1500)
     .then(function(result) {
-      //storage.setItem('step', 3)
-      //storage.setItem('name', result.name)
       return configService.setConfig({
         step: 3,
         name: result.name
       })
     })
     .then(function(result) {
-      res.redirect('/');
+      res.redirect('/installation');
     })
   });
 
@@ -258,10 +257,12 @@ module.exports = function(app) {
     }
 
     Promise.all([req.client.search(query), redis_client.getAsync(key)])
-    .spread(function(result, filter_value) {
+    .spread(function(result, filter_original_value) {
       var sortings = _.map(result.data.sortings, function(v, k) {
         return v;
       })
+
+      var filter_value = filter_original_value
 
       if (filter_value) {
         filter_value = JSON.parse(filter_value)
@@ -280,6 +281,7 @@ module.exports = function(app) {
           val: filter_value
         },
         url: req.url,
+        filter_original_value: filter_original_value,
         aggregations: result.data.aggregations,
         sortings: sortings
       })

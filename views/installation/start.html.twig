@@ -19,8 +19,8 @@
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="/">Home</a></li>
-            <li role="presentation"><a href="http://app.itemsapi.com" target="_blank">Dashboard</a></li>
-            <li role="presentation"><a href="https://itemsapi.readme.io" target="_blank">Documentation</a></li>
+            {#<li role="presentation"><a href="http://app.itemsapi.com" target="_blank">Dashboard</a></li>#}
+            {#<li role="presentation"><a href="https://itemsapi.readme.io" target="_blank">Documentation</a></li>#}
           </ul>
         </nav>
         <h3 class="text-muted">ItemsAPI starter</h3>
@@ -93,6 +93,20 @@
         <a href="/" target="_blank" class="btn btn-success">Open app</a>
         <a href="/admin" target="_blank" class="btn btn-info">Open admin</a>
 
+
+        <table class="table table-striped" style="width: 50%; margin-top: 10px;">
+          <tr>
+            <td>Login</td>
+            <td>admin</td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td>itemsapi</td>
+            {#<td><b>itemsapi</b></td>#}
+          </tr>
+        </table>
+
+
         {#<p>Your backend is ready to go. There are few your endpoints here</p>
 
         {% set itemId = items.data.items[0].id %}
@@ -164,8 +178,8 @@
         </div>#}
         {% else %}
         <h3>2. Your web application will be ready soon!</h3>
-        <p>Usually it takes days or weeks to create search backend with another solutions.
-        With ItemsAPI it is extremely easy and fast</p>
+        <p>Usually it takes weeks or months to create search application with another solutions.
+        With ItemsAPI it's easy and fast</p>
         {% endif %}
 
         {% endif %}
@@ -177,7 +191,7 @@
       {% endblock %}
 
       <footer class="footer">
-        <p>&copy; 2015-2016 <a href="https://www.itemsapi.com" target="_blank">ItemsAPI</a> - MIT License</p>
+        <p>&copy; 2015-2016 <a href="https://www.itemsapi.com" target="_blank">ItemsAPI</a></p>
       </footer>
 
     </div> <!-- /container -->
