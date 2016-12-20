@@ -8,6 +8,7 @@ var fs = require('fs');
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var redis_client = require('./config/redis')
+var mongoose_conn = require('./config/mongoose')
 
 var printed = false;
 redis_client.on("error", function (err) {
@@ -16,6 +17,14 @@ redis_client.on("error", function (err) {
     itemsapi.get('logger').info('Without Redis application might not work properly'.red)
     printed = true
   }
+})
+
+var mongo_error = false
+
+mongoose_conn.on('error', err => {
+  mongo_error = true
+  itemsapi.get('logger').info('MongoDB is required..'.red)
+  itemsapi.get('logger').info('Please run MongoDB and restart application'.red)
 })
 
 /**
@@ -49,7 +58,12 @@ app.listen(config.server.port, function afterListen() {
       itemsapi.get('logger').info('./node_modules/.bin/bower cache clean --allow-root && ./node_modules/.bin/bower install --allow-root'.red)
     }
 
-    itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.green, host, port)
+    if (!mongo_error) {
+      itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.green, host, port)
+    } else {
+      //itemsapi.get('logger').info('Open http://%s:%s in your browser to continue!'.red)
+    }
+
   })
 
 }).on('error', function(err){

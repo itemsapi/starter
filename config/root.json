@@ -9,7 +9,7 @@
     "selector": "roundRobin"
   },
   "mongodb": {
-    "url": "localhost:27017/itemsapi-starter"
+    "uri": "localhost:27017/itemsapi-starter"
   },
   "auth": {
     "username": "admin",

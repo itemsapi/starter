@@ -17,6 +17,7 @@ console.log(figlet.textSync('itemsapi'))
 console.log('Ideas or issues - https://github.com/itemsapi/itemsapi/issues');
 console.log();
 
+
 var storage = require('./config/storage')
 
 itemsapi.init({
@@ -24,7 +25,7 @@ itemsapi.init({
   elasticsearch: config.elasticsearch,
   redis: config.redis,
   mongodb: {
-    uri: config.mongodb.url
+    uri: config.mongodb.uri
   },
   collections: {
     db: 'mongodb'
@@ -65,6 +66,7 @@ app.all('*', function(req, res, next) {
   // not happy of that - config should be defined always
   // in the beginning with default value
   configService.getConfig()
+  .timeout(2000)
   .then(function(dynamic_config) {
     req.dynamic_config = dynamic_config
     if (dynamic_config.name) {
@@ -78,7 +80,11 @@ app.all('*', function(req, res, next) {
     nunenv.addGlobal('name', req.name)
     next();
   })
-
+  .catch(function(err) {
+    return res.status(500).json({
+      message: 'unexpected error - probably mongodb is required'
+    });
+  })
 })
 
 var admin = require('./admin')
