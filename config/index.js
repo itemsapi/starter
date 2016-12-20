@@ -53,6 +53,11 @@ if (REDIS_URL) {
   }
 }
 
+var MONGODB_URL = process.env.MONGODB_URI || process.env.MONGODB_URL
+if (MONGODB_URL) {
+  nconf.set('mongodb:url', MONGODB_URL)
+}
+
 exports.get = function() {
   return nconf.get();
 }

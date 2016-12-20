@@ -7,35 +7,31 @@ var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
 var _ = require('lodash');
 var bodyParser = require('body-parser');
-var storage = require('node-persist');
 var express = require('express');
-var tcpPortUsed = require('tcp-port-used');
-var config = require('./config/index').get();
+var config = require('./config/index').get()
 var colors = require('colors')
-var figlet = require('figlet');
+var figlet = require('figlet')
 
 console.log(figlet.textSync('itemsapi'))
 console.log('Ideas or issues - https://github.com/itemsapi/itemsapi/issues');
 console.log();
 
-var LOCAL_STORAGE = __dirname + '/localstorage';
-
-storage.initSync({
-  dir: LOCAL_STORAGE,
-});
-
-if (!storage.getItem('step')) {
-  storage.setItem('step', 2)
-}
+var storage = require('./config/storage')
 
 itemsapi.init({
   server: config.server,
   elasticsearch: config.elasticsearch,
   redis: config.redis,
+  mongodb: {
+    uri: config.mongodb.url
+  },
   collections: {
+    db: 'mongodb'
+  },
+  /*collections: {
     db: 'json',
     filename:  'collections.json'
-  }
+  }*/
 })
 
 // standard app syntax
@@ -57,11 +53,13 @@ app.set('view cache', false);
 
 app.engine('html.twig', nunenv.render);
 
-
 /**
  * middleware route
  */
 app.all('*', function(req, res, next) {
+
+  req.is_installation = !storage.getItem('step') || storage.getItem('step') < 3
+
   var client = new ItemsAPI('http://localhost:' + config.server.port + '/api/v1', storage.getItem('name'));
   req.client = client;
   next();

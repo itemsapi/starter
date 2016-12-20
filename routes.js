@@ -1,4 +1,4 @@
-var storage = require('node-persist');
+var storage = require('./config/storage');
 var urlHelper = require('./src/helpers/url');
 var statusHelper = require('./src/helpers/status');
 var config = require('./config/index').get();
@@ -12,7 +12,7 @@ var _ = require('lodash')
 module.exports = function(app) {
 
   app.get(['/', '/catalog'], function(req, res, next) {
-    if (!storage.getItem('step') || storage.getItem('step') < 3) {
+    if (req.is_installation) {
       return next()
     } else {
 
@@ -72,10 +72,11 @@ module.exports = function(app) {
    */
   app.get(['/reset'], function(req, res) {
 
-    storage.clearSync()
-    storage.setItem('step', 2)
+    storage.reset()
+    .then(function(result) {
+      return res.redirect('/')
+    })
 
-    return res.redirect('/')
   })
 
   app.get('/category/:name', function(req, res) {

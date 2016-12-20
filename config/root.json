@@ -8,6 +8,9 @@
     "host": "127.0.0.1:9200",
     "selector": "roundRobin"
   },
+  "mongodb": {
+    "url": "localhost:27017/itemsapi-starter"
+  },
   "auth": {
     "username": "admin",
     "password": "itemsapi"
