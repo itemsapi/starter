@@ -63,6 +63,7 @@ app.all('*', function(req, res, next) {
 
   req.is_installation = true
   req.step = 2
+  req.base_url = req.protocol + '://' + req.get('host')
 
   return configService.getConfig()
   .timeout(2000)

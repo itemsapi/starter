@@ -1,0 +1,13 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+{% for item in items %}
+<url>
+{% if item.permalink %}
+  <loc>{{ url }}/item/{{ item.permalink }}</loc>
+{% else %}
+  <loc>{{ url }}/item/{{ item.id }}</loc>
+{% endif %}
+
+</url>
+{% endfor %}
+</urlset>

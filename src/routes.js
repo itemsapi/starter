@@ -103,8 +103,8 @@ module.exports = function(app) {
    * generate sitemap for website
    */
   app.get('/sitemap.xml', function(req, res) {
-    return res.set('Content-Type', 'text/xml').render('basic/sitemap', {
-      url: 'url'
+    return res.set('Content-Type', 'text/xml').render('general/sitemap', {
+      url: req.base_url
     });
   })
 
@@ -120,9 +120,9 @@ module.exports = function(app) {
 
     req.client.search(query)
     .then(function(result) {
-      return res.set('Content-Type', 'text/xml').render('basic/sitemap_item', {
+      return res.set('Content-Type', 'text/xml').render('general/sitemap_item', {
         items: result.data.items,
-        url: 'url'
+        url: req.base_url
       });
     })
   })

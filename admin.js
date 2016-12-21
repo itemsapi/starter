@@ -135,7 +135,15 @@ admin.all('*', function(req, res, next) {
  * dashboard
  */
 admin.get(['/', '/dashboard'], function (req, res) {
-  return res.render('dashboard')
+  Promise.all([req.client.search({
+
+  })])
+  .spread(function(items) {
+    //console.log(items);
+    return res.render('dashboard', {
+      items_count: items.pagination.total
+    })
+  })
 })
 
 

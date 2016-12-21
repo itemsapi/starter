@@ -1,4 +1,59 @@
 {% extends "layout.html.twig" %}
 /
 {% block content %}
+
+<section class="content">
+
+  <div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">Items</span>
+          <span class="info-box-number">{{ items_count }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <i class="fa fa-text-width"></i>
+          <h3 class="box-title">Welcome to ItemsAPI Starter</h3>
+        </div>
+        <div class="box-body">
+          <p>This is administration panel for ItemsAPI (version 1.0)</p>
+
+
+          <p>This is a place for:</p>
+          <ul>
+            <li>Items management</li>
+            <li>Collection configuration</li>
+            <li>Website configuration</li>
+          </ul>
+
+          <p>Functionality is quite poor now but it's getting better</p>
+          <p>If you find a bug or you have some idea - please send it to <a target="_blank" href="https://github.com/itemsapi/starter/issues">https://github.com/itemsapi/starter/issues</a></p>
+
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+
+</section>
+
 {% endblock %}
