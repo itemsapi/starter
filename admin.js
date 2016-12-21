@@ -19,7 +19,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/index').get();
 var session = require('express-session');
 //var fixtures = require('node-mongoose-fixtures');
-//var urlHelper = require('./src/helpers/url');
+var urlHelper = require('./src/helpers/url');
 //var uiHelper = require('./src/helpers/ui');
 
 var nunjucks = require('nunjucks');
@@ -33,6 +33,27 @@ var nunenv = new nunjucks.Environment(
 )
 
 nunenv.express(admin)
+
+nunenv
+
+.addFilter('debug', function(obj) {
+  return JSON.stringify(obj, null, 2);
+}).addFilter('build', function(str, data) {
+  return urlHelper.build(str, data);
+}).addFilter('slice', function(string, a, b) {
+  if (_.isString(string)) {
+    return string.slice(a, b)
+  }
+  return string
+})
+
+.addFilter('ceil', function(str) {
+  return Math.ceil(str);
+}).addFilter('date', function(obj) {
+  if (obj) {
+    return moment(obj).format('MM/DD/YYYY h:mm a');
+  }
+})
 
 admin.set('view engine', 'html.twig');
 admin.set('view cache', false);
@@ -115,6 +136,110 @@ admin.all('*', function(req, res, next) {
  */
 admin.get(['/', '/dashboard'], function (req, res) {
   return res.render('dashboard')
+})
+
+
+/**
+ * items list
+ */
+admin.get('/items', function (req, res) {
+  var page = parseInt(req.query.page, 10);
+  var aggregation = req.params.aggregation;
+
+  var obj = {
+    sort: 'most_votes',
+    per_page: 20,
+    query: req.query.query,
+    page: page,
+    aggs: req.query.filters
+  }
+
+  if (req.query.waiting) {
+    obj.query_string = 'enabled: false'
+  } else {
+    obj.query_string = 'enabled:true OR _missing_:enabled'
+  }
+
+  var search = req.client.search(obj);
+
+  Promise.delay(0).then(function() {
+    return [search];
+  }).spread(function(result) {
+    res.render('items/list', {
+      items: result.data.items,
+      pagination: result.pagination,
+      aggregations: result.data.aggregations
+    });
+  })
+})
+
+/**
+ * items delete
+ */
+admin.all(['/items/delete/:id'], function(req, res) {
+  var id = req.params.id;
+  req.client.deleteItem(id)
+  .then(function(result) {
+    return res.redirect('/admin/items');
+  })
+});
+
+/**
+ * enable / disable item
+ */
+admin.get(['/items/enable/:id'], function(req, res) {
+  var id = req.params.id;
+  var item
+  var enabled = JSON.parse(req.query.enabled)
+
+  req.client.getItem(id)
+  .then(function(result) {
+    return req.client.partialUpdateItem(id, {
+      enabled: enabled
+    })
+  })
+  .then(function(result) {
+    return res.redirect('/admin/items/rawedit/' + id)
+  })
+  .catch(function(result) {
+    console.log(result);
+    return res.status(500).send('error');
+  })
+});
+
+/**
+ * items raw edit
+ */
+admin.get(['/items/rawedit/:id'], function(req, res) {
+  var id = req.params.id;
+  var images
+
+
+  return req.client.getItem(id)
+  .then(function(result) {
+    return res.render('items/rawedit', {
+      id: id,
+      json: JSON.stringify(result, null, 4),
+      item: result,
+      images: images
+    })
+  })
+});
+
+/**
+ * items raw edit
+ */
+admin.post(['/items/rawedit/:id'], function(req, res) {
+  var id = req.params.id;
+  var json = JSON.parse(req.body.row)
+
+  json.modified_at = new Date()
+  console.log(json)
+
+  return req.client.partialUpdateItem(id, json)
+  .then(function(result) {
+    return res.redirect('/admin/items/rawedit/' + id)
+  })
 })
 
 /**

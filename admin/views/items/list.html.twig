@@ -1,0 +1,80 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Items</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Permalink</th>
+                  <th>Image</th>
+                  {#<th>Likes</th>
+                  <th>Visits</th>#}
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+
+                    {% for row in items %}
+
+                    <tr>
+                      <td>{{ row.id }}</td>
+                      <td>{{ row.name }}</td>
+                      <td>{{ row.permalink }}</td>
+                      <td>
+                        <img style="width: 70px;" src="{{ row.image }}" />
+                      </td>
+                      {#<td>{{ row.likes_count }}</td>
+                      <td>{{ row.page_views }}</td>#}
+
+                    <td><a href="/admin/items/rawedit/{{ row.id }}">Edit</a></td>
+                    <td><a onclick="return confirm('Are you sure?')" href="/admin/items/delete/{{ row.id }}">Delete</a></td>
+
+                  </tr>
+
+                {% endfor %}
+              </tbody>
+
+            </table>
+            </div>
+            <!-- /.box-body -->
+
+            <div class="box-footer clearfix">
+
+              {% set pages_count = ((pagination.total | int) / (pagination.per_page | int)) | ceil  %}
+              {% set page = (pagination.page | int) %}
+              {% if pages_count > 8 %}
+              {% set pages_count = 8 %}
+              {% endif %}
+
+
+              <ul class="pagination pull-right">
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                {#<li><a href="#">«</a></li>#}
+
+
+                {% if pages_count > 1 %}
+                  {% for pag in range(1, pages_count + 1) %}
+                  <li {% if (not page and pag == 1) or pag == page %}class="active"{% endif %}><a href="{{ url | build({page: pag}) }}">{{ pag }}</a></li>
+                  {% endfor %}
+                {% endif %}
+                <li><a href="#">»</a></li>
+              </ul>
+            </div>
+
+
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+{% endblock %}
