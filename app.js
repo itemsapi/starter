@@ -6,6 +6,10 @@ var config = require('./config/index').get();
 var statusHelper = require('./src/helpers/status');
 var fs = require('fs');
 var Promise = require('bluebird')
+Promise.config({
+  warnings: false
+})
+
 var fs = Promise.promisifyAll(require('fs-extra'))
 var redis_client = require('./config/redis')
 var mongoose_conn = require('./config/mongoose')

@@ -12,6 +12,7 @@ var config = require('./config/index').get()
 var configService = require('./src/services/config')
 var colors = require('colors')
 var figlet = require('figlet')
+var mongoose = require('./config/mongoose')
 
 console.log(figlet.textSync('itemsapi'))
 console.log('Ideas or issues - https://github.com/itemsapi/itemsapi/issues');
@@ -63,9 +64,7 @@ app.all('*', function(req, res, next) {
   req.is_installation = true
   req.step = 2
 
-  // not happy of that - config should be defined always
-  // in the beginning with default value
-  configService.getConfig()
+  return configService.getConfig()
   .timeout(2000)
   .then(function(dynamic_config) {
     req.dynamic_config = dynamic_config
@@ -78,7 +77,7 @@ app.all('*', function(req, res, next) {
     req.client = client;
     nunenv.addGlobal('step', req.step)
     nunenv.addGlobal('name', req.name)
-    next();
+    return next()
   })
   .catch(function(err) {
     return res.status(500).json({

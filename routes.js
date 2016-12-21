@@ -13,7 +13,7 @@ var _ = require('lodash')
  */
 module.exports = function(app) {
 
-  app.get(['/', '/catalog'], function(req, res, next) {
+  app.get(['/', '/catalog'], function(req, res) {
     if (req.is_installation) {
       //return next()
       return res.redirect('/installation')
@@ -36,7 +36,7 @@ module.exports = function(app) {
         per_page: 16
       }
 
-      req.client.search(query)
+      return req.client.search(query)
       .then(function(result) {
         return res.render('basic/catalog', {
           items: result.data.items,
