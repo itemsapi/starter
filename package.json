@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "postinstall": "./node_modules/.bin/bower cache clean --allow-root && ./node_modules/.bin/bower install --allow-root && node post_install.js"
+    "postinstall": "./node_modules/.bin/bower cache clean --allow-root && ./node_modules/.bin/bower install --allow-root && node ./src/post_install.js"
   },
   "repository": {
     "type": "git",

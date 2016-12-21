@@ -41,7 +41,7 @@ itemsapi.init({
 var app = itemsapi.get('express');
 var urlHelper = require('./src/helpers/url');
 var statusHelper = require('./src/helpers/status');
-var nunenv = require('./nunenv')(app)
+var nunenv = require('./src/nunenv')(app)
 
 app.use('/bootstrap', express.static('node_modules/bootstrap'));
 app.use('/assets', express.static('assets'));
@@ -104,6 +104,6 @@ app.all('*', function(req, res, next) {
   next();
 })
 
-require('./routes')(app)
+require('./src/routes')(app)
 
 module.exports = itemsapi

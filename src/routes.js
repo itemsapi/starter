@@ -1,10 +1,10 @@
 //var storage = require('./config/storage');
 
-var configService = require('./src/services/config')
-var urlHelper = require('./src/helpers/url');
-var statusHelper = require('./src/helpers/status');
-var config = require('./config/index').get();
-var redis_client = require('./config/redis')
+var configService = require('./services/config')
+var urlHelper = require('./helpers/url');
+var statusHelper = require('./helpers/status');
+var config = require('./../config/index').get();
+var redis_client = require('./../config/redis')
 var Promise = require('bluebird')
 var _ = require('lodash')
 
