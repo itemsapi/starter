@@ -70,18 +70,6 @@ module.exports = function(app) {
     })
   })
 
-  /**
-   * be careful - it reset current installation
-   */
-  app.get(['/reset'], function(req, res) {
-
-    configService.resetConfig()
-    .then(function(result) {
-      return res.redirect('/')
-    })
-
-  })
-
   app.get('/category/:name', function(req, res) {
     var name = req.params.name;
     req.client.aggregation(name, {

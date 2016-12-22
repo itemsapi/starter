@@ -20,6 +20,7 @@ var config = require('./config/index').get();
 var session = require('express-session');
 //var fixtures = require('node-mongoose-fixtures');
 var urlHelper = require('./src/helpers/url');
+var configService = require('./src/services/config');
 //var uiHelper = require('./src/helpers/ui');
 
 var nunjucks = require('nunjucks');
@@ -146,6 +147,26 @@ admin.get(['/', '/dashboard'], function (req, res) {
   })
 })
 
+/**
+ * dashboard
+ */
+admin.get(['/settings'], function (req, res) {
+  Promise.all([])
+  .spread(function() {
+    return res.render('settings', {
+    })
+  })
+})
+
+/**
+ * be careful - it reset current installation
+ */
+admin.get(['/reset'], function(req, res) {
+  configService.resetConfig()
+  .then(function(result) {
+    return res.redirect('/installation')
+  })
+})
 
 /**
  * items list

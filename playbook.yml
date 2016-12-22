@@ -1,0 +1,129 @@
+---
+- hosts: 127.0.0.1
+#- hosts: do
+
+  sudo: true
+  user: root
+  vars:
+    user: root
+    mongodb_version: 3.0.12
+    #app_git: git@github.com:itemsapi/starter.git
+    app_git: https://github.com/itemsapi/starter.git
+    app_dir: /var/www/itemsapi-starter
+
+  handlers:
+    - name: restart mongodb
+      service: name=mongod state=restarted
+    - name: restart elasticsearch
+      service: name=elasticsearch state=restarted
+    - name: restart nginx
+      action: service name=nginx state=restarted enabled=yes
+
+  tasks:
+    - name: update apt cache
+      apt: update_cache=yes
+
+    - name: add add-apt-repostory
+      apt: pkg=software-properties-common state=present update_cache=yes
+      sudo: yes 
+        
+    - name: add add-apt-repostory
+      apt: pkg=python-software-properties state=present update_cache=yes
+      sudo: yes 
+      when: ansible_distribution_release == "precise"
+
+    - name: add webupd8 ppa
+      apt_repository: repo='ppa:webupd8team/java'
+
+    - name: update
+      shell: apt-get update
+      sudo: yes
+
+    - name: auto accept oracle jdk license
+      shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+      sudo: yes
+
+    - name: install java8
+      shell: apt-get install -y oracle-java8-installer ca-certificates
+      sudo: yes
+
+    - name: ES package
+      sudo: yes
+      shell: wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+      shell: echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-1.7.list
+
+    - name: install ES
+      apt: name=elasticsearch state=present force=yes update_cache=yes
+      notify:
+        - restart elasticsearch
+
+    - name: start es
+      shell: service elasticsearch start
+      sudo: yes
+
+    - name: install priorited packages
+      apt: name={{ item }} state=present
+      with_items:
+        - build-essential
+        - redis-server
+        - git
+
+    - name: MongoDB | Import the public key used by the package management system
+      apt_key: keyserver=keyserver.ubuntu.com id=7F0CEB10
+    - name: MongoDB | Create a list file
+      lineinfile: dest=/etc/apt/sources.list.d/mongodb-org-3.0.list line="deb http://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.0 multiverse" state=present create=yes
+    - name: MongoDB | Install the packages
+      apt: name={{ item }}={{ mongodb_version }} state=present update_cache=yes
+      with_items:
+        - mongodb-org
+        - mongodb-org-server
+        - mongodb-org-shell
+        - mongodb-org-mongos
+        - mongodb-org-tools
+      notify:
+        - restart mongodb
+
+    - shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
+    - name: APT | Install NodeJS
+      apt: pkg={{ item }} state=installed
+      with_items: 
+        - nodejs
+
+    - name: Install global npm
+      npm: name=npm global=yes
+
+    - name: Install global pm2
+      npm: name=pm2 global=yes
+
+    - name: Install global bower
+      npm: name=bower global=yes
+
+    - name: Install itemsapi-cli
+      npm: name=itemsapi-cli global=yes
+
+    - name: Creates directory for itemsapi cloud
+      file: path={{ app_dir }} state=directory mode=0775
+
+    - name: checkout itemsapi cloud
+      sudo: no
+      git: repo={{ app_git }} dest={{ app_dir }} accept_hostkey=True force=yes
+
+    - name: NPM update via package.json
+      sudo: no
+      npm: path={{ app_dir }}
+
+    - shell: ./node_modules/.bin/bower cache clean --allow-root && ./node_modules/.bin/bower install --allow-root
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: pm2 kill
+      sudo: no
+      command: pm2 kill
+
+    #- name: pm2 start app
+    - shell: NODE_ENV=production pm2 start app.js --name starter
+      #sudo: no
+      #command: NODE_ENV=production pm2 start app.js --name starter
+      args:
+        chdir: "{{ app_dir }}"
