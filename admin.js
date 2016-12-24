@@ -1,11 +1,12 @@
-var express = require('express');
+var express = require('express')
 var admin = express();
 
-var Promise = require('bluebird');
-var bodyParser = require('body-parser');
+var Promise = require('bluebird')
+var bodyParser = require('body-parser')
 
-var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser')
 var moment = require('moment')
+var _ = require('lodash')
 
 admin.use('/lte/plugins', express.static('bower_components/AdminLTE/plugins'));
 admin.use('/lte/bootstrap', express.static('bower_components/AdminLTE/bootstrap'));
@@ -18,7 +19,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/index').get();
 var session = require('express-session');
-//var fixtures = require('node-mongoose-fixtures');
 var urlHelper = require('./src/helpers/url');
 var configService = require('./src/services/config');
 //var uiHelper = require('./src/helpers/ui');
@@ -148,13 +148,47 @@ admin.get(['/', '/dashboard'], function (req, res) {
 })
 
 /**
- * dashboard
+ * show settings page
  */
 admin.get(['/settings'], function (req, res) {
   Promise.all([])
   .spread(function() {
     return res.render('settings', {
+      row: req.dynamic_config
     })
+  })
+})
+
+/**
+ * edit settings and redirect
+ */
+admin.post(['/settings'], function (req, res) {
+
+  var default_form_values = {
+    is_installation: false,
+    is_sitemap: false,
+    hints: false
+  }
+
+  var merge = _.chain(default_form_values)
+  .merge(req.body)
+  .mapValues(function(o) {
+    if (o === 'on') {
+      return true
+    }
+    return o
+  })
+  .value()
+
+  //console.log(merge);
+
+  configService.setConfig(merge)
+  .then(function(result) {
+    return res.redirect('/admin/settings')
+  })
+  .catch(function(result) {
+    console.log(result);
+    return res.status(500).send('error');
   })
 })
 

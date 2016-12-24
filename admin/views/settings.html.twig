@@ -13,21 +13,53 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form">
+        <form role="form" action="" method="POST">
           <div class="box-body">
             <div class="form-group">
-              <label for="exampleInputEmail1">Title</label>
-              <input type="email" class="form-control" disabled placeholder="Enter email">
+              <label for="">Page title</label>
+              <input type="text" name="title" class="form-control" value="{{ row.title }}" placeholder="Page title..">
             </div>
-            {#<div class="form-group">
-              <label for="exampleInputFile">File input</label>
-              <input type="file" id="exampleInputFile">
-
-              <p class="help-block">Example block-level help text here.</p>
+            <div class="form-group">
+              <label for="">Recommendation field (similar items)</label>
+              <input type="text" name="recommendation_field" class="form-control" value="{{ row.recommendation_field }}" placeholder="Enter ID..">
+            </div>
+            <div class="form-group">
+              <label for="">Website logo</label>
+              <input type="text" name="logo" class="form-control" name="logo" value="{{ row.logo }}" placeholder="Enter ID..">
+            </div>
+            <div class="form-group">
+              <label for="">Fallback image</label>
+              <input type="text" class="form-control" name="fallback_image" value="{{ row.fallback_image }}" placeholder="Enter ID..">
+            </div>
+            <div class="form-group">
+              <label for="">Google analytics ID</label>
+              <input type="text" name="ga_id" class="form-control" placeholder="Enter ID..">
             </div>
             <div class="checkbox">
               <label>
-                <input type="checkbox"> Check me out
+                <input name="is_installation" {% if row.is_installation %}checked="checked"{% endif %} type="checkbox"> Installation page
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input name="is_sitemap" {% if row.is_sitemap %}checked="checked"{% endif %} type="checkbox"> Sitemap
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input name="hints" {% if row.hints %}checked="checked"{% endif %} type="checkbox"> Hints
+              </label>
+            </div>
+
+            {#{{ row | debug }}#}
+            {#<div class="checkbox">
+              <label>
+                <input type="checkbox" disabled> Comments
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" disabled> Public
               </label>
             </div>#}
           </div>
@@ -39,18 +71,20 @@
         </form>
       </div>
 
+
+
+
+    </div>
+    <div class="col-md-6">
       <div class="box box-info">
         <div class="box-header with-border">
           <h3 class="box-title">Settings</h3>
         </div>
 
         <div class="box-body">
-          <a href="/admin/reset" type="button" class="btn btn-default btn-danger btn-block">Reset application</a>
+          <a href="/admin/reset" onclick="return confirm('It will reset all your data. Are you sure?')" type="button" class="btn btn-default btn-danger btn-block">Reset application</a>
         </div>
       </div>
-
-
-
     </div>
   </div>
 </section>

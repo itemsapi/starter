@@ -61,7 +61,14 @@ module.exports = function(app) {
     }
   })
 
-  app.get(['/', '/installation'], function(req, res) {
+  app.get(['/installation'], function(req, res) {
+
+    if (!req.settings.is_installation) {
+      return res.status(404).json({
+        message: 'Not found'
+      });
+    }
+
     var url = config.elasticsearch.host
 
     return statusHelper.elasticsearch(url)
@@ -91,6 +98,13 @@ module.exports = function(app) {
    * generate sitemap for website
    */
   app.get('/sitemap.xml', function(req, res) {
+
+    if (!req.settings.is_sitemap) {
+      return res.status(404).json({
+        message: 'Not found'
+      })
+    }
+
     return res.set('Content-Type', 'text/xml').render('general/sitemap', {
       url: req.base_url
     });
@@ -100,6 +114,13 @@ module.exports = function(app) {
    * generate sitemap for website items
    */
   app.get('/sitemap.item.xml', function(req, res) {
+
+    if (!req.settings.is_sitemap) {
+      return res.status(404).json({
+        message: 'Not found'
+      })
+    }
+
     var query = {
       sort: 'created_at',
       query_string: 'enabled:true OR _missing_:enabled',
@@ -152,6 +173,7 @@ module.exports = function(app) {
     .spread(function(similar) {
       return res.render('basic/item', {
         item: item,
+        id: id,
         similar: similar.data.items.slice(0, 4)
       });
     })

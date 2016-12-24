@@ -73,11 +73,15 @@ app.all('*', function(req, res, next) {
       req.name = dynamic_config.name
       req.step = dynamic_config.step
       req.is_installation = false
+      req.settings = dynamic_config
+      res.locals.settings = dynamic_config
     }
     var client = new ItemsAPI('http://localhost:' + config.server.port + '/api/v1', req.name)
     req.client = client;
-    nunenv.addGlobal('step', req.step)
-    nunenv.addGlobal('name', req.name)
+    //nunenv.addGlobal('step', req.step)
+    //nunenv.addGlobal('name', req.name)
+    res.locals.step = req.step
+    res.locals.name = req.name
     return next()
   })
   .catch(function(err) {
@@ -97,11 +101,13 @@ app.use('/admin', admin)
  */
 app.all('*', function(req, res, next) {
 
-  res.locals.logo = config.template_variables.logo
-  res.locals.title = config.template_variables.title
-  res.locals.image = config.template_variables.image
-  res.locals.hints = config.template_variables.hints
+  //res.locals.logo = config.template_variables.logo
+  //res.locals.title = config.template_variables.title
+  //res.locals.image = config.template_variables.image
+  //res.locals.hints = config.template_variables.hints
 
+  res.locals  = _.assignIn(res.locals, config.template_variables)
+  res.locals.settings  = req.settings
   next();
 })
 

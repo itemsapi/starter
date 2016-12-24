@@ -20,14 +20,9 @@
     "port": 6379,
     "auth_pass": ""
   },
+
   "cookie": {
     "maxAge": 86400000,
     "domain": ""
-  },
-  "template_variables": {
-    "logo": "/assets/images/logo.jpg",
-    "title": "ItemsAPI starter",
-    "image": "http://placehold.it/300x400",
-    "hints": false
   }
 }
