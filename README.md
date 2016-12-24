@@ -19,11 +19,6 @@ Deploy ItemsAPI starter instantly to heroku and start your app (backend creator)
 
 Open localhost:3000 and follow instruction in web creator
 
-## Docker installation
-
-Run itemsapi starter: 
-- `docker run --rm -p 3000:3000 --name=starter -e="ELASTICSEARCH_URL=http://172.17.0.2:9200" -it itemsapi/starter`
-(You need to provide elasticsearch url to make it working)
 
 ## Features 
 
