@@ -63,7 +63,7 @@ module.exports = function(app) {
 
   app.get(['/installation'], function(req, res) {
 
-    if (!req.settings.is_installation) {
+    if (req.settings && !req.settings.is_installation) {
       return res.status(404).json({
         message: 'Not found'
       });
@@ -163,6 +163,11 @@ module.exports = function(app) {
     })
     .then(function(result) {
       var fields = ['tags'];
+
+      if (req.settings.recommendation_field) {
+        fields = [req.settings.recommendation_field];
+      }
+
       return Promise.all([
         req.client.similar(id, {
           fields: fields,
