@@ -100,13 +100,7 @@ app.use('/admin', admin)
  * middleware route
  */
 app.all('*', function(req, res, next) {
-
-  //res.locals.logo = config.template_variables.logo
-  //res.locals.title = config.template_variables.title
-  //res.locals.image = config.template_variables.image
-  //res.locals.hints = config.template_variables.hints
-
-  res.locals  = _.assignIn(res.locals, config.template_variables)
+  //res.locals  = _.assignIn(res.locals, config.template_variables)
   res.locals.settings  = req.settings
   next();
 })

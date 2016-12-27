@@ -1,0 +1,136 @@
+{% extends "layout.html.twig" %}
+/
+{% block content %}
+
+<section class="content">
+
+{% if configured_images %}
+
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Images</h3>
+        </div>
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <tbody>
+            <tr>
+              <th>Image</th>
+              <th>Thumb</th>
+              <th>Medium</th>
+              <th>Large</th>
+              <th>Delete</th>
+            </tr>
+
+            {% for row in rows %}
+            <tr>
+              <td>
+                <img style="width: 70px;" src="{{ row.thumb_url }}">
+              </td>
+              <td>
+                {{ row.thumb_url }}
+              </td>
+              <td>
+                {{ row.medium_url }}
+              </td>
+              <td></td>
+              <td><a onclick="return confirm('Are you sure?')" href="/admin/images/delete/{{ row.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="box-footer clearfix">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Add image</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form" enctype="multipart/form-data" action="/admin/images/upload" method="POST">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="">Image URL</label>
+              <input type="text" name="url" class="form-control" value="" placeholder="Image URL..">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputFile">File input</label>
+              <input type="file" name="file">
+            </div>
+          </div>
+
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          {#<i class="fa fa-text-width"></i>#}
+          <h3 class="box-title">Images management</h3>
+        </div>
+        <div class="box-body">
+
+          <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-warning"></i> Images uploader is not configured!</h4>
+            This is why you don't see list of images and uploader
+          </div>
+
+
+          <p>In order to upload and manage images from here: </p>
+          <ul>
+            <li>Add AWS S3 credentials to config/local.json or config/root.json file</li>
+            {#<li>or Add Cloudinary credentials to config</li>
+            <li>or configure local storage</li>#}
+          </ul>
+
+          <p>Images configuration example: </p>
+
+          <pre>
+"images": {
+  "filesystem": "s3",
+  "settings": {
+    "path": "images/",
+    "region": "eu-central-1",
+    "acl": "public-read",
+    "accessKeyId": "",
+    "secretAccessKey": ""
+  }
+}
+          </pre>
+
+          <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-info"></i> Coming soon!</h4>
+            In the next version there is a plan for uploading images locally and integration with cloudinary
+          </div>
+
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+
+{% endif %}
+
+</section>
+{% endblock %}

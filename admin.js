@@ -2,6 +2,7 @@ var express = require('express')
 var admin = express();
 
 var Promise = require('bluebird')
+var fs = Promise.promisifyAll(require('fs'));
 var bodyParser = require('body-parser')
 
 var cookieParser = require('cookie-parser')
@@ -21,9 +22,14 @@ var config = require('./config/index').get();
 var session = require('express-session');
 var urlHelper = require('./src/helpers/url');
 var configService = require('./src/services/config');
+var imageService = require('./src/services/image');
 //var uiHelper = require('./src/helpers/ui');
 
 var nunjucks = require('nunjucks');
+var multer  = require('multer')
+
+const UPLOAD_DEST = 'uploads/temp'
+var upload = multer({ dest: UPLOAD_DEST })
 
 var nunenv = new nunjucks.Environment(
   new nunjucks.FileSystemLoader('admin/views', {
@@ -144,6 +150,62 @@ admin.get(['/', '/dashboard'], function (req, res) {
     return res.render('dashboard', {
       items_count: items.pagination.total
     })
+  })
+})
+
+/**
+ * show images list
+ */
+admin.get(['/images'], function (req, res) {
+  Promise.all([imageService.find()])
+  .spread(function(images) {
+    return res.render('images/list', {
+      rows: images,
+      configured_images: !!config.images
+    })
+  })
+})
+
+/**
+ * image delete
+ */
+admin.all(['/images/delete/:id'], function(req, res) {
+  var id = req.params.id;
+  imageService.delete(id)
+  .then(function(result) {
+    return res.redirect('/admin/images');
+  })
+});
+
+/**
+ * show images list
+ */
+admin.post(['/images/upload'], upload.single('file'), function (req, res) {
+
+  var promise = Promise.resolve()
+  var filename = req.body.url
+  var temp_filename
+
+  if (req.file) {
+    temp_filename = req.file.path
+    promise = imageService.upload(req.file.path)
+  } else {
+    promise = imageService.download(req.body.url, UPLOAD_DEST)
+    .then(function(filename) {
+      temp_filename = filename
+      return imageService.upload(filename)
+    })
+  }
+
+  promise
+  .then(function(image) {
+    return fs.unlinkAsync(temp_filename)
+  })
+  .then(function(image) {
+    return res.redirect('/admin/images')
+  })
+  .catch(function(result) {
+    return res.status(500).send('error');
   })
 })
 
