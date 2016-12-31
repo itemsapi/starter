@@ -15,7 +15,7 @@ var figlet = require('figlet')
 var mongoose = require('./config/mongoose')
 
 console.log(figlet.textSync('itemsapi'))
-console.log('Ideas or issues - https://github.com/itemsapi/itemsapi/issues');
+console.log('Ideas or issues - https://github.com/itemsapi/starter/issues');
 console.log();
 
 
@@ -31,6 +31,7 @@ itemsapi.init({
   collections: {
     db: 'mongodb'
   },
+  //allowed_methods: []
   /*collections: {
     db: 'json',
     filename:  'collections.json'

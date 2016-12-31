@@ -38,9 +38,22 @@ module.exports = function(app) {
     return string
   })
 
-  .addFilter('ceil', function(str) {
-    return Math.ceil(str);
+  .addFilter('split', function(string, delimiter) {
+    return string.split(delimiter || ',')
   })
+
+  .addFilter('shuffle', function(array) {
+    return _.shuffle(array)
+  })
+
+  .addFilter('join', function(array, delimiter) {
+    return array.join(delimiter || ',')
+  })
+
+  .addFilter('ceil', function(str) {
+    return Math.ceil(str)
+  })
+
   .addFilter('build', function(str, data) {
     return urlHelper.build(str, data);
   })

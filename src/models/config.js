@@ -6,6 +6,8 @@ var Config = new Schema({
   name: String,
   // google analytics id
   ga_id: String,
+  // comma delimited
+  popular_queries: String,
   logo: { type: String, default: '/assets/images/logo.jpg' },
   title: { type: String, default: 'ItemsAPI starter' },
   recommendation_field: { type: String, default: 'tags' },

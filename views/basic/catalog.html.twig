@@ -67,19 +67,14 @@
     </div>
     <div class="col-md-10">
 
-
-      {#<ul class="subnav" style="">
+      {% if settings.popular_queries %}
+      <ul class="subnav" style="">
         <li>Random: </li>
-        <li><a href="/catalog?query=classifieds">Classifieds</a></li>
-        <li><a href="/catalog?query=videos">Videos</a></li>
-        <li><a href="/catalog?query=startups">Startups</a></li>
-        <li><a href="/catalog?query=community">Community</a></li>
-        <li><a href="/catalog?query=shopping">Shopping</a></li>
-        <li><a href="/catalog?query=marketplace">Marketplace</a></li>
-        <li><a href="/catalog?query=software">Software</a></li>
-        <li><a href="/catalog?query=javascript">Javascript</a></li>
-      </ul>#}
-
+        {% for val in settings.popular_queries | split | shuffle | slice(0, 10) %}
+          <li><a href="/catalog?query={{ val }}">{{ val }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
 
 
       <div class="breadcrumbs">

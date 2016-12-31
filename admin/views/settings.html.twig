@@ -33,7 +33,11 @@
             </div>
             <div class="form-group">
               <label for="">Google analytics ID</label>
-              <input type="text" name="ga_id" class="form-control" placeholder="Enter ID..">
+              <input type="text" name="ga_id" value="{{ row.ga_id }}" class="form-control" placeholder="Enter ID..">
+            </div>
+            <div class="form-group">
+              <label for="">Popular queries</label>
+              <input type="text" name="popular_queries" value="{{ row.popular_queries }}" class="form-control" placeholder="Shoes,Clothes,Hats">
             </div>
             <div class="checkbox">
               <label>
