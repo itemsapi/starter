@@ -20,7 +20,7 @@
     "port": 6379,
     "auth_pass": ""
   },
-
+  "allowed_ips": ["127.0.0.1"],
   "cookie": {
     "maxAge": 86400000,
     "domain": ""

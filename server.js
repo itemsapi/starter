@@ -31,11 +31,7 @@ itemsapi.init({
   collections: {
     db: 'mongodb'
   },
-  //allowed_methods: []
-  /*collections: {
-    db: 'json',
-    filename:  'collections.json'
-  }*/
+  allowed_ips: config.allowed_ips
 })
 
 // standard app syntax
