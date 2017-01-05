@@ -1,6 +1,18 @@
 # ItemsAPI starter
 
-This starter let you generate search application quickly!
+This starter let you generate search application quickly! 
+
+- vertical search engine
+- meta search
+- catalog
+- jobs search
+- marketplace prototype
+- classifieds prototype
+- comparison website
+- various rankings
+
+This starter is based on ItemsAPI (<a target="_blank" href="https://github.com/itemsapi/itemsapi">ItemsAPI repository</a>)
+
 
 ## Heroku installation
 
