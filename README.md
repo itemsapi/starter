@@ -19,7 +19,6 @@ Deploy ItemsAPI starter instantly to heroku and start your app (backend creator)
 
 Open localhost:3000 and follow instruction in web creator
 
-
 ## Features 
 
 - auto-generated filters
@@ -28,9 +27,9 @@ Open localhost:3000 and follow instruction in web creator
 - items recommendation
 - item details
 - sitemap
+- administration panel
 
 ## Todo
 
 - reviews system
 - views counter
-- simple administration panel for data management
