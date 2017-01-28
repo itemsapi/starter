@@ -1,0 +1,31 @@
+<div class="clearfix"></div>
+<div class="pagination-bar text-center">
+  <ul class="pagination">
+    {% set total_pages_count = ((pagination.total | int) / (pagination.per_page | int)) | ceil  %}
+    {% set pages_count = total_pages_count %}
+
+    {% if pages_count > 8 %}
+      {% set pages_count = 8 %}
+    {% endif %}
+
+
+    {% if pages_count > 1 %}
+
+
+      {% if pagination.page > 1 %}
+        <li><a class="pagination-btn" href="{{ url | build({page: pagination.page - 1}) }}">&laquo; Prev </a></li>
+      {% endif %}
+
+      {% for current_page in range(1, pages_count + 1) %}
+        <li {% if (not pagination.page and current_page == 1) or current_page == pagination.page %}class="active"{% endif %}><a href="{{ url | build({page: current_page}) }}">{{ current_page }}</a></li>
+      {% endfor %}
+
+
+      {% if pagination.page < total_pages_count %}
+      <li><a class="pagination-btn" href="{{ url | build({page: pagination.page + 1}) }}">Next &raquo;</a></li>
+      {% endif %}
+
+    {% endif %}
+
+  </ul>
+</div>

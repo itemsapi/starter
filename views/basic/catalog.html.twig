@@ -11,7 +11,7 @@
       <div id="custom-search-input">
         <form action="/catalog" method="GET">
           <div class="input-group col-md-12">
-            <input type="text" class="form-control input-lg" name="query" value="{{ query }}" placeholder="Search items.." />
+            <input type="text" id="main_query" class="form-control input-lg" name="query" value="{{ query }}" placeholder="Search items.." />
             <span class="input-group-btn">
               <button class="btn btn-info btn-lg" type="button">
                 <i class="glyphicon glyphicon-search"></i>
@@ -110,7 +110,7 @@
         <div class="items">
           {% for item in items %}
           <div class="col-xs-3 col-md-3" style="height: 350px;">
-            <a href="/item/{{ item.id }}" class="">
+            <a href="{% if item.permalink %}/item/{{ item.permalink }}{% else %}/id/{{ item.id }}{% endif %}" class="">
               <img class="img-thumbnail" src="{% if item.image %}{{ item.image }}{% else %}{{ image }} {% endif %}" alt="{{ item.name }}">
               <p>{{ item.name }}</p>
             </a>
@@ -124,24 +124,48 @@
           <p class="bg-success" style="padding: 15px;">To change this layout go to: <strong>/views/catalog.html.twig</strong></p>
         {% endif %}
 
+        {% include "general/pagination.html.twig" ignore missing %}
 
-        <div class="pagination-bar text-center">
-          <ul class="pagination">
-            {% set pages_count = ((pagination.total | int) / (pagination.per_page | int)) | ceil  %}
-            {% if pages_count > 8 %}
-            {% set pages_count = 8 %}
-            {% endif %}
-            {% for pag in range(1, pages_count + 1) %}
-            <li {% if (not page and pag == 1) or pag == page %}class="active"{% endif %}><a href="{{ url | build({page: pag}) }}">{{ pag }}</a></li>
-            {% endfor %}
-            {% set next = page + 1 %}
-            <li><a class="pagination-btn" href="/catalog?page={{ page + 1 }}">Next &raquo;</a></li>
-          </ul>
-        </div>
 
       {% endif %}
     </div>
   </div>
 </div>
+{% endblock %}
 
+
+
+
+{% block before_head_end %}
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/start/jquery-ui.css" />
+{% endblock %}
+
+{% block before_body_end %}
+{#<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'></script>#}
+
+<script>
+$( function() {
+
+  $( "#main_query" ).autocomplete({
+    minLength: 0,
+    //source: projects,
+    source: "/autocomplete",
+    focus: function( event, ui ) {
+      $( "#project" ).val( ui.item.label );
+      return false;
+    },
+    select: function( event, ui ) {
+      $(location).attr('href', '/id/' + ui.item.value)
+      console.log( "Selected: " + ui.item.value + " aka " + ui.item.label );
+      return false;
+    }
+  })
+  .autocomplete( "instance" )._renderItem = function( ul, item ) {
+    return $( "<li>" )
+      {#.append( "<div>" + item.label + "<br>" + item.desc + "</div>" )#}
+      .append( "<div>" + item.label + "</div>" )
+      .appendTo( ul );
+  };
+} );
+</script>
 {% endblock %}

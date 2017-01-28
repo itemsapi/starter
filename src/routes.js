@@ -80,17 +80,42 @@ module.exports = function(app) {
   app.get('/category/:name', function(req, res) {
     var name = req.params.name;
     req.client.aggregation(name, {
-      per_page: 1000,
+      page: req.query.page || 1,
+      per_page: req.query.per_page || 50,
       sort: '_term',
       order: 'asc',
-      size: 500,
+      size: 10000,
       query_string: 'enabled:true OR _missing_:enabled'
     })
     .then(function(result) {
+      console.log(result);
       res.render('basic/category', {
         aggregation: result,
+        pagination: result.pagination,
         name: name
       })
+    })
+  })
+
+  /**
+   * generate autocomplete for main search
+   */
+  app.get('/autocomplete', function(req, res) {
+
+    var term = req.query.term
+
+    req.client.search({
+      per_page: 6,
+      query_string: '(enabled:true OR _missing_:enabled) AND name:/' + term + '.*/',
+    })
+    .then(function(result) {
+      return res.json(_.map(result.data.items, function(val) {
+        return {
+          //value: val.permalink,
+          value: val.id,
+          label: val.name
+        }
+      }))
     })
   })
 
@@ -140,22 +165,22 @@ module.exports = function(app) {
     res.render('api');
   })
 
-  app.get('/item/:id', function(req, res) {
+  app.get(['/id/:id', '/item/:permalink'], function(req, res) {
 
     var getItemAsync;
     var item;
     var id = req.params.id
 
-    if (true) {
+    if (req.params.id) {
       getItemAsync = req.client.getItem(req.params.id)
     } else {
       getItemAsync = req.client.getItemByKeyValue('permalink', req.params.permalink)
     }
 
-
     return getItemAsync
     .then(function(result) {
       item = result;
+      id = item.id
 
       if (!item || item.enabled === false) {
         return Promise.reject('Not found')
