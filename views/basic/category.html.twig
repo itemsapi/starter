@@ -14,7 +14,7 @@
       <div class="col-md-4 col-sm-4">
         <ul class="list-unstyled list-underlined">
 
-          {% set size = (buckets.length / columns) | intval %}
+          {% set size = (buckets.length / columns) | ceil %}
           {% set start = (nb) * size %}
           {% set end = start + size %}
 
@@ -31,6 +31,8 @@
         </ul>
       </div>
       {% endfor %}
+
+      {% include "general/pagination.html.twig" ignore missing %}
 
     </div>
   </div>

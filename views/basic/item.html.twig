@@ -10,7 +10,7 @@
       <li class="active">{{ item.name }}</li>
     </ol>
     <div class="pull-right">
-      <a href="/catalog">
+      <a href="/catalog" class="previous-page">
         <i class="fa fa-angle-double-left"></i> Back to results
       </a>
     </div>
@@ -72,11 +72,11 @@
                 {% for element in similar %}
                   <div class="col-sm-3 col-md-3">
                     <div class="thumbnail" title="">
-                      <a href="/item/{{ element.id }}">
+                      <a href="{% if element.permalink %}/item/{{ element.permalink }}{% else %}/id/{{ element.id }}{% endif %}">
                         <img src="{{ element.image }}" alt="{{ element.name }}">
                       </a>
                       <div class="caption">
-                        <p><a href="/item/{{ element.permalink }}">{{ element.name }}</a></p>
+                        <p><a href="{% if element.permalink %}/item/{{ element.permalink }}{% else %}/id/{{ element.id }}{% endif %}">{{ element.name }}</a></p>
                       </div>
                     </div>
                   </div>
