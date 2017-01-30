@@ -1,0 +1,96 @@
+{% extends "basic/layout.html.twig" %}
+
+{% block content %}
+
+<div class="main-container">
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md-9 page-content">
+        <div class="inner-box category-content">
+          <h2 class="title-2 uppercase">
+            <strong> <i class="icon-briefcase"></i>
+              Add new item
+          </strong></h2>
+          <div class="row">
+            <div class="col-sm-12">
+
+              {% if flash.length %}
+              <span style="color: green; font-size: 16px;">Thank you for your contribution.
+                We will review and accept your request as soon as possible</span>
+              {% else %}
+              Please fill below form to add new item the list.<br />
+              {% endif %}
+              <br />
+              <br />
+              <br />
+
+
+              <form class="form-horizontal" id="" action="/add" method="POST">
+                <fieldset>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label" for="Name">Name</label>
+                    <div class="col-md-8">
+                      <input id="name" name="name" placeholder="Name" class="form-control input-md" type="text" required="">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-md-3 control-label" for="jobTitle">Tags</label>
+                    <div class="col-md-8">
+                      <input id="tags" name="tags" placeholder="Tags" class="form-control input-md" type="text">
+                      <span class="help-block">
+                        {#{% for val in ['tag1', 'tag2', 'tag3'] %}
+                          +<a href="#" class="tags-example">{{ val }}</a>
+                        {% endfor %}#}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <button type="submit" class="btn btn-info pull-left btn btn-success btn-lg" style="margin-left: 5px;" id="sh-editor-submit">Save</button>
+                  </div>
+                </fieldset>
+              </form>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block before_head_end %}
+  <link href="/libs/jquery.tagsinput/src/jquery.tagsinput.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/start/jquery-ui.css" />
+{% endblock %}
+
+{% block before_body_end %}
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'></script>
+  <script src="/libs/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+  <script>
+
+  {% for field in ['tags'] %}
+    $('#{{ field }}').tagsInput({
+      width: '100%',
+      height: '50px',
+      autocomplete_url:'/field-autocomplete?field={{ field }}',
+      autocomplete:{selectFirst:true,width:'100px',autoFill:true}
+    });
+
+    $(".{{ field }}-example").click(function(event) {
+      event.preventDefault();
+      $('#{{ field }}').addTag($(this).text());
+    });
+
+  {% endfor %}
+
+  </script>
+{% endblock %}
+

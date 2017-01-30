@@ -119,6 +119,68 @@ module.exports = function(app) {
     })
   })
 
+
+  /**
+   * add item by users
+   */
+  app.get('/add', function(req, res) {
+    res.render('basic/add')
+  })
+
+  /**
+   * add item by users
+   */
+  app.post('/add', function(req, res) {
+    console.log(req.body)
+
+    var data = req.body
+    //data.enabled = !!req.project.items_enabled
+    data.created_at = new Date()
+    data.modified_at = new Date()
+
+    /*if (data.name) {
+      data.permalink = slug(data.name, {
+        lower: true
+      })
+    }*/
+
+    return req.client.addItem(data)
+    .then(function(result) {
+      req.flash('info', 'hello!')
+      console.log('print flash - session - locals');
+      console.log(req.session.flash)
+      console.log(res.locals.flash);
+      res.redirect('/add')
+    })
+  })
+
+  /**
+   * generate autocomplete for specific field
+   */
+  app.get('/field-autocomplete', function(req, res) {
+
+    var field = req.query.field
+    /*if (['tags'].indexOf(field) === -1) {
+      return res.status(400).json({
+      })
+      }*/
+
+    return req.client.fieldAggregation(field, {
+      per_page: 5,
+      aggregation_query: req.query.term,
+      query_string: 'enabled:true OR _missing_:enabled'
+    })
+    .then(function(result) {
+      return res.json(_.map(result.data.buckets, function(val) {
+        return {
+          id: val.key,
+          label: val.key,
+          value: val.key
+        }
+      }))
+    })
+  })
+
   /**
    * generate sitemap for website
    */
