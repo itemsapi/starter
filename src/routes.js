@@ -61,6 +61,9 @@ module.exports = function(app) {
     }
   })
 
+  /**
+   * for experimenting purposes now
+   */
   app.get(['/landing2'], function(req, res) {
 
     var filters = JSON.parse(req.query.filters || '{}');
@@ -295,6 +298,40 @@ module.exports = function(app) {
     res.render('api');
   })
 
+  /**
+   * compare two or more items
+   */
+  app.get(['/compare/:id1/:id2', '/compare/:id1/:id2/:id3'], function(req, res) {
+
+    var array = [
+      req.client.getItem(req.params.id1),
+      req.client.getItem(req.params.id2),
+    ]
+
+    if (req.params.id3) {
+      array.push(req.client.getItem(req.params.id3))
+    }
+
+    return Promise.all(array)
+    .spread(function(item1, item2, item3) {
+      console.log(item1);
+      console.log(item2);
+      return res.render('basic/compare', {
+        item1: item1,
+        item2: item2,
+        item3: item3
+      })
+    })
+    .catch(function(result) {
+      console.log(result);
+      return res.status(404).send('Sorry cant find that!');
+    })
+  })
+
+
+  /**
+   * get item by id or permalink
+   */
   app.get(['/id/:id', '/item/:permalink'], function(req, res) {
 
     var getItemAsync;

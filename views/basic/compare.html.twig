@@ -1,0 +1,108 @@
+{% extends "basic/layout.html.twig" %}
+
+{% block content %}
+<div class="main-container">
+  <div class="container" style="padding-left: 0">
+  </div>
+  <div class="container" style="padding-left: 0">
+    <div class="row">
+
+{#
+table{
+    table-layout: fixed;
+}
+then set TD Style
+
+td{
+    word-wrap:break-word
+}
+#}
+
+      <div class="col-sm-12">
+        {% if item3 %}
+        <h2 style="text-align: center;">{{ item1.name }} vs {{ item2.name }} vs {{ item3.name}}</h2>
+        {% else %}
+        <h2 style="text-align: center;">{{ item1.name }} vs {{ item2.name }}</h2>
+        {% endif %}
+        <table class="table table-striped" style="table-layout: fixed; width:100%;">
+          <tbody>
+
+          <tr>
+            <td><b>{{ key }}</b></td>
+            <td>
+              <div class="thumbnail show-info">
+                <img src="{{ item1.image }}" alt="{{ item1.name }}">
+              </div>
+            </td>
+            <td>
+              <div class="thumbnail show-info">
+                <img src="{{ item2.image }}" alt="{{ item2.name }}">
+              </div>
+            </td>
+            {% if item3 %}
+            <td>
+              <div class="thumbnail show-info">
+                <img src="{{ item3.image }}" alt="{{ item3.name }}">
+              </div>
+            </td>
+            {% endif %}
+          </tr>
+          {% for key, val in item1 %}
+          <tr>
+            <td class="" style=""><b>{{ key | capitalize }}</b></td>
+            <td class="" style="word-wrap:break-word;">
+              {{ item1[key] }}
+            </td>
+            <td class="" style="word-wrap:break-word;">
+              {{ item2[key] }}
+            </td>
+            {% if item3 %}
+            <td class="" style="word-wrap:break-word;">
+              {{ item3[key] }}
+            </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {#<div class="col-sm-6">
+        <div class="">
+          <h1>{{ item1.name }}</h1>
+          <div class="thumbnail show-info">
+            <a href="{% if item1.permalink %}/item/{{ item1.permalink }}{% else %}/id/{{ item1.id }}{% endif %}">
+              <img src="{{ item1.image }}" alt="{{ item1.name }}">
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="">
+          <h1>{{ item2.name }}</h1>
+          <div class="thumbnail show-info">
+            <a href="{% if item2.permalink %}/item/{{ item2.permalink }}{% else %}/id/{{ item2.id }}{% endif %}">
+              <img src="{{ item2.image }}" alt="{{ item2.name }}">
+            </a>
+          </div>
+        </div>
+
+      </div>#}
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block before_body_end %}
+  <script>
+    $('.show-info').popover({
+      delay: 300,
+      placement: 'bottom',
+      trigger: 'hover'
+    })
+  </script>
+{% endblock %}
