@@ -16,6 +16,8 @@ var Config = new Schema({
   is_sitemap: { type: Boolean, default: true },
   hints: { type: Boolean, default: true },
   is_installation: { type: Boolean, default: true },
+  // is item auto enabled after user form request
+  item_auto_enabled: { type: Boolean, default: true },
   enabled: { type: Boolean, default: true },
   modified_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now }

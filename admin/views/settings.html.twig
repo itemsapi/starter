@@ -54,6 +54,11 @@
                 <input name="hints" {% if row.hints %}checked="checked"{% endif %} type="checkbox"> Hints
               </label>
             </div>
+            <div class="checkbox">
+              <label>
+                <input name="item_auto_enabled" {% if row.item_auto_enabled %}checked="checked"{% endif %} type="checkbox"> Items auto-enabled
+              </label>
+            </div>
 
             {#{{ row | debug }}#}
             {#<div class="checkbox">

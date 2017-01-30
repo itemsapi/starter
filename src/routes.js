@@ -134,7 +134,7 @@ module.exports = function(app) {
     console.log(req.body)
 
     var data = req.body
-    //data.enabled = !!req.project.items_enabled
+    data.enabled = !!req.settings.item_auto_enabled
     data.created_at = new Date()
     data.modified_at = new Date()
 

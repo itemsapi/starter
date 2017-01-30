@@ -204,7 +204,8 @@ admin.post(['/settings'], function (req, res) {
   var default_form_values = {
     is_installation: false,
     is_sitemap: false,
-    hints: false
+    hints: false,
+    item_auto_enabled: false
   }
 
   var merge = _.chain(default_form_values)
