@@ -3,9 +3,9 @@
 This starter let you generate search application quickly! 
 
 - vertical search engine
-- meta search
+- meta search engine
 - catalog
-- jobs search
+- jobs search engine
 - marketplace prototype
 - classifieds prototype
 - comparison website
@@ -41,7 +41,5 @@ Open localhost:3000 and follow instruction in web creator
 - sitemap
 - administration panel
 
-## Todo
-
-- reviews system
-- views counter
+## License
+ItemsAPI is created by Mateusz Rzepa and licensed under the Apache 2.0. For more information, see the LICENSE file in this repository.
