@@ -1,0 +1,24 @@
+<script>
+  $(function() {
+    $("#main_query" ).autocomplete({
+      minLength: 0,
+      //source: projects,
+      source: "/autocomplete",
+      focus: function( event, ui ) {
+        $( "#project" ).val( ui.item.label );
+        return false;
+      },
+      select: function( event, ui ) {
+        $(location).attr('href', '/id/' + ui.item.value)
+        console.log( "Selected: " + ui.item.value + " aka " + ui.item.label );
+        return false;
+      }
+    })
+    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        {#.append( "<div>" + item.label + "<br>" + item.desc + "</div>" )#}
+        .append( "<div>" + item.label + "</div>" )
+        .appendTo( ul );
+    };
+  });
+</script>

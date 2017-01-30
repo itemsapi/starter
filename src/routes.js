@@ -61,6 +61,74 @@ module.exports = function(app) {
     }
   })
 
+  app.get(['/landing2'], function(req, res) {
+
+    var filters = JSON.parse(req.query.filters || '{}');
+    var query = {
+      sort: 'most_votes',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: 12
+    }
+
+    var recent
+    var popular
+
+    var promises = []
+    var per_page = 6
+
+    promises.push(req.client.search({
+      sort: 'created_at',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: per_page
+    }))
+
+    promises.push(req.client.search({
+      sort: 'year',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: per_page
+    }))
+
+    /*promises.push(req.itemsapi(req.project.itemsapi).search({
+      sort: 'popular',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: 5
+    }))
+
+    promises.push(commentService.findLast({
+      project: req.project
+    }))
+    promises.push(changeService.findLast({
+      project: req.project.name,
+      is_first: false
+    }))
+    promises.push(userService.findLast())*/
+
+    Promise.all(promises)
+    .spread(function(recent, year, comments, history, users) {
+      console.log(recent);
+
+      res.render('basic/landing2', {
+        recent_items: recent.data.items,
+        items2: year.data.items,
+        aggregations: recent.data.aggregations,
+        //popular_items: popular.data.items,
+        //comments: comments,
+        //history: history,
+        //users: users,
+        //aggregations: popular.data.aggregations,
+        url: req.url
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).render('pages/error');
+    })
+  })
+
   app.get(['/installation'], function(req, res) {
 
     if (req.settings && !req.settings.is_installation) {

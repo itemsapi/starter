@@ -1,6 +1,7 @@
 var nunjucks = require('nunjucks');
 var urlHelper = require('./helpers/url');
 var _ = require('lodash')
+var slug = require('slug')
 
 /**
  * template engine
@@ -20,6 +21,13 @@ module.exports = function(app, path, options) {
 
   .addFilter('intval', function(obj) {
     return parseInt(obj || 0, 10);
+  })
+
+  .addFilter('slug', function(val) {
+    if (val) {
+      return slug(val, {lower: true})
+    }
+    return val;
   })
 
   .addGlobal('in_array', function(element, array) {

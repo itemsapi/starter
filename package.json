@@ -46,6 +46,7 @@
     "redis": "^2.6.3",
     "request": "^2.72.0",
     "s3-uploader": "^2.0.3",
+    "slug": "^0.9.1",
     "tcp-port-used": "^0.1.2",
     "underscore": "^1.8.3",
     "unicode": "^0.6.1",

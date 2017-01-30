@@ -9,7 +9,8 @@ var cookieParser = require('cookie-parser')
 var moment = require('moment')
 var _ = require('lodash')
 
-admin.use('/lte/plugins', express.static('bower_components/AdminLTE/plugins'));
+admin.use('/lte/plugins', express.static('bower_components/AdminLTE/plugins'))
+admin.use('/assets', express.static('admin/assets'))
 admin.use('/lte/bootstrap', express.static('bower_components/AdminLTE/bootstrap'));
 admin.use('/lte/dist', express.static('bower_components/AdminLTE/dist'));
 admin.use('/codemirror', express.static('bower_components/codemirror'));

@@ -21,6 +21,7 @@
 
   <script src="/admin/codemirror/lib/codemirror.js"></script>
   <link rel="stylesheet" href="/admin/codemirror/lib/codemirror.css">
+  <link rel="stylesheet" href="/admin/assets/css/custom.css">
   <script src="/admin/codemirror/mode/javascript/javascript.js"></script>
 
 
@@ -161,9 +162,9 @@
 
 <script>
 $(function() {
-  CodeMirror.fromTextArea(document.getElementById('codemirror'), {
-    // your settings here
+  var codemirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
   });
+  {#codemirror.setSize(null, 600);#}
 
 });
 </script>

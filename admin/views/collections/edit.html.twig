@@ -1,16 +1,6 @@
 {% extends "layout.html.twig" %}
 
 {% macro form2(form, options = {}) %}
-<form class="form-horizontal" action="{{ options.action }}" method="POST">
-  <div class="box-body">
-    <textarea id="codemirror" name="row" style="width: 100%; height: 800px;">
-      {{ collection | stringify }}
-    </textarea>
-    <div class="box-footer">
-      <button type="submit" class="btn btn-info pull-right" style="margin-left: 5px;">Save</button>
-    </div>
-  </div>
-</form>
 {% endmacro %}
 
 
@@ -135,10 +125,19 @@
       <!-- Horizontal Form -->
       <div class="box box-info">
         <div class="box-header with-border">
-          <h3 class="box-title">Edit collection</h3>
+          <h3 class="box-title">Edit collection (manually)</h3>
         </div>
 
-        {{ form2(form, {}) }}
+        <form class="form-horizontal" action="" method="POST">
+          <div class="box-body">
+            <textarea id="codemirror" name="row" style="width: 100%; height: 1000px;">
+              {{ collection | stringify }}
+            </textarea>
+            <div class="box-footer">
+              <button type="submit" class="btn btn-info pull-right" style="margin-left: 5px;">Save</button>
+            </div>
+          </div>
+        </form>
       </div>
 
       <!-- Horizontal Form -->
