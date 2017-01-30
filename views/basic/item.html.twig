@@ -11,7 +11,8 @@
     </ol>
     <div class="pull-right">
       <a href="/catalog" class="previous-page">
-        <i class="fa fa-angle-double-left"></i> Back to results
+        {#<i class="fa fa-angle-double-left"></i> Back to results#}
+        <i class="fa fa-angle-double-left"></i> Previous page
       </a>
     </div>
   </div>
@@ -71,7 +72,7 @@
                 <div class="row">
                 {% for element in similar %}
                   <div class="col-sm-3 col-md-3">
-                    <div class="thumbnail" title="">
+                    <div class="thumbnail show-info" title="Similar properties" data-content="{{ item[settings.recommendation_field] | intersection(element[settings.recommendation_field]) }}">
                       <a href="{% if element.permalink %}/item/{{ element.permalink }}{% else %}/id/{{ element.id }}{% endif %}">
                         <img src="{{ element.image }}" alt="{{ element.name }}">
                       </a>
@@ -173,8 +174,15 @@
   </div>
 </div>
 
+
 {% endblock %}
 
 {% block before_body_end %}
+  <script>
+    $('.show-info').popover({
+      delay: 300,
+      placement: 'bottom',
+      trigger: 'hover'
+    })
+  </script>
 {% endblock %}
-

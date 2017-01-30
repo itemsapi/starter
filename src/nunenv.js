@@ -27,6 +27,10 @@ module.exports = function(app, path, options) {
     return array.indexOf(element) !== -1;
   })
 
+  .addFilter('intersection', function(a, b) {
+    return _.intersection(a, b)
+  })
+
   .addFilter('stringify', function(json) {
     return JSON.stringify(json, null, 4)
   })
