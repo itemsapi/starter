@@ -81,14 +81,14 @@ module.exports = function(app) {
     var name = req.params.name;
     req.client.aggregation(name, {
       page: req.query.page || 1,
-      per_page: req.query.per_page || 50,
+      per_page: req.query.per_page || 100,
       sort: '_term',
       order: 'asc',
       size: 10000,
       query_string: 'enabled:true OR _missing_:enabled'
     })
     .then(function(result) {
-      console.log(result);
+      /*console.log(result);*/
       res.render('basic/category', {
         aggregation: result,
         pagination: result.pagination,

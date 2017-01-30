@@ -38,7 +38,11 @@ itemsapi.init({
 var app = itemsapi.get('express');
 var urlHelper = require('./src/helpers/url');
 var statusHelper = require('./src/helpers/status');
-var nunenv = require('./src/nunenv')(app)
+var nunenv = require('./src/nunenv')(app, 'views', {
+  autoescape: true,
+  watch: true,
+  noCache: true
+})
 
 app.use('/bootstrap', express.static('node_modules/bootstrap'));
 app.use('/assets', express.static('assets'));

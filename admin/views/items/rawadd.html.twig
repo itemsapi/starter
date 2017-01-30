@@ -1,0 +1,29 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<section class="content">
+
+  <!-- Horizontal Form -->
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Horizontal Form -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Edit item</h3>
+          <form class="form-horizontal" action="/admin/items/rawadd" method="POST">
+            <div class="box-body">
+              <textarea id="codemirror" name="row" style="width: 100%; height: 800px;">
+                {{ collection | stringify }}
+              </textarea>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-info pull-right" style="margin-left: 5px;">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+{% endblock %}

@@ -1,6 +1,5 @@
 {% extends "layout.html.twig" %}
 
-
 {% block content %}
 <section class="content">
 
@@ -11,7 +10,6 @@
       <div class="box box-info">
         <div class="box-header with-border">
           <h3 class="box-title">Edit item</h3>
-
           <form class="form-horizontal" action="/admin/items/rawedit/{{ id }}" method="POST">
             <div class="box-body">
               <textarea id="codemirror" name="row" style="width: 100%; height: 800px;">
@@ -22,11 +20,57 @@
               </div>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+      <!-- Horizontal Form -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Images search</h3>
+
 
         </div>
 
+        <div class="box-body">
+          {#<a href="/admin/items/process-image/{{ id }}" type="button" class="btn btn-default btn-block">Process image</a>#}
+          <a target="_blank" href="/id/{{ item.id }}" type="button" class="btn btn-default btn-block">Preview</a>
+
+          {#<a href="/admin/items/update-date/{{ id }}" type="button" class="btn btn-default btn-block">Update date</a>#}
+          {% if item.enabled == false %}
+          <a href="/admin/items/enable/{{ id }}?enabled=true" type="button" class="btn btn-default btn-block btn-success">Enable</a>
+          {% else %}
+          <a href="/admin/items/enable/{{ id }}?enabled=false" type="button" class="btn btn-default btn-block btn-danger">Disable</a>
+          {% endif %}
+
+          {#<br />
+
+          <div class="input-group input-group-sm">
+            <input type="text" value="{{ item.name }}" data-id="{{ id }}" class="form-control">
+            <span class="input-group-btn">
+              <button id="show-images" type="button" class="btn btn-info btn-flat">Show images</button>
+            </span>
+          </div>
+
+          <br />
+
+          <div class="row" id="search-images-box">
+          </div>#}
+
+        </div>
+
+
       </div>
     </div>
+
+
+
+
+
+
   </div>
 
 </section>

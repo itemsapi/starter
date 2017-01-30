@@ -41,15 +41,17 @@
       </div>
       {% endfor %}#}
 
-      {% for val, key in aggregations %}
+      {#{{ aggregations | debug }}#}
+      {#{% for val in (aggregations | sortObject('position', 'desc')) %}#}
+      {% for val in (aggregations | sortObject('position', 'desc')) %}
       <div class="">
-        <h5 style="margin-bottom: 5px;"><strong style="color: #337ab7;">{{ aggregations[val].title }}</strong></h5>
+        <h5 style="margin-bottom: 5px;"><strong style="color: #337ab7;">{{ aggregations[val.key].title }}</strong></h5>
         <ul class="browse-list list-unstyled long-list" style="margin-bottom: 0;">
-          {% for term in aggregations[val].buckets %}
+          {% for term in aggregations[val.key].buckets %}
           <li ng-repeat="bucket in agg.buckets">
           <div class="checkbox block" style="margin-top: 0; margin-bottom: 0;">
             <label>
-              <input class="checkbox" type="checkbox" {% if (filter and filter.val == term.key and filter.key == val) or in_array(term.key, filters[val]) %}checked="checked"{% endif %} onclick="onAggregationClick(this, '{{aggregations[val].name}}', '{{ term.key }}');">
+              <input class="checkbox" type="checkbox" {% if (filter and filter.val == term.key and filter.key == val.key) or in_array(term.key, filters[val.key]) %}checked="checked"{% endif %} onclick="onAggregationClick(this, '{{aggregations[val.key].name}}', '{{ term.key }}');">
               {{ term.key }} ({{ term.doc_count }})
             </label>
           </div>
@@ -57,8 +59,8 @@
           {% endfor %}
         </ul>
 
-        {% if aggregations[val].type == 'terms' %}
-          <p class=""><a href="/category/{{ aggregations[val].name }}">See all</a></p>
+        {% if aggregations[val.key].type == 'terms' %}
+          <p class=""><a href="/category/{{ aggregations[val.key].name }}">See all</a></p>
         {% endif %}
         <div class="clearfix"></div>
       </div>

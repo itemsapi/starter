@@ -5,14 +5,10 @@ var _ = require('lodash')
 /**
  * template engine
  */
-module.exports = function(app) {
+module.exports = function(app, path, options) {
 
   var nunenv = new nunjucks.Environment(
-    new nunjucks.FileSystemLoader('views', {
-      autoescape: true,
-      watch: true,
-      noCache: true,
-    })
+    new nunjucks.FileSystemLoader(path, options)
   )
 
   nunenv.express(app)
@@ -29,6 +25,26 @@ module.exports = function(app) {
   .addGlobal('in_array', function(element, array) {
     array = array || [];
     return array.indexOf(element) !== -1;
+  })
+
+  .addFilter('stringify', function(json) {
+    return JSON.stringify(json, null, 4)
+  })
+
+  .addFilter('sortObject', function(array, field, order) {
+    return _.chain(array)
+    .cloneDeep()
+    .map(function(val, key) {
+      val.key = key
+      return val
+    })
+    .sortBy([function(o) {
+      if (order === 'asc') {
+        return o[field]
+      }
+      return -o[field]
+    }])
+    .value();
   })
 
   .addFilter('slice', function(string, a, b) {

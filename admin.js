@@ -31,35 +31,10 @@ var multer  = require('multer')
 const UPLOAD_DEST = 'uploads/temp'
 var upload = multer({ dest: UPLOAD_DEST })
 
-var nunenv = new nunjucks.Environment(
-  new nunjucks.FileSystemLoader('admin/views', {
-    autoescape: true,
-    watch: true,
-    noCache: true,
-  })
-)
-
-nunenv.express(admin)
-
-nunenv
-
-.addFilter('debug', function(obj) {
-  return JSON.stringify(obj, null, 2);
-}).addFilter('build', function(str, data) {
-  return urlHelper.build(str, data);
-}).addFilter('slice', function(string, a, b) {
-  if (_.isString(string)) {
-    return string.slice(a, b)
-  }
-  return string
-})
-
-.addFilter('ceil', function(str) {
-  return Math.ceil(str);
-}).addFilter('date', function(obj) {
-  if (obj) {
-    return moment(obj).format('MM/DD/YYYY h:mm a');
-  }
+var nunenv = require('./src/nunenv')(admin, 'admin/views', {
+  autoescape: true,
+  watch: true,
+  noCache: true,
 })
 
 admin.set('view engine', 'html.twig');
@@ -335,6 +310,30 @@ admin.get(['/items/enable/:id'], function(req, res) {
 /**
  * items raw edit
  */
+admin.get(['/items/rawadd'], function(req, res) {
+  return res.render('items/rawadd', {
+    collection: {}
+  })
+})
+
+/**
+ * items raw edit
+ */
+admin.post(['/items/rawadd'], function(req, res) {
+  var id = req.params.id;
+  var json = JSON.parse(req.body.row)
+
+  json.modified_at = new Date()
+  return req.client.addItem(json)
+  .then(function(result) {
+    return res.redirect('/admin/items/rawedit/' + result.id)
+  })
+})
+
+
+/**
+ * items raw edit
+ */
 admin.get(['/items/rawedit/:id'], function(req, res) {
   var id = req.params.id;
   var images
@@ -405,8 +404,12 @@ admin.get(['/collections/edit', '/collections/edit/:id'], function (req, res) {
   Promise.all([req.client.getCollection(), req.client.getMapping()])
   .spread(function(collection, mapping) {
     res.render('collections/edit', {
-      collection: JSON.stringify(collection, null, 4),
-      mapping: JSON.stringify(mapping, null, 4)
+      //collection: JSON.stringify(collection, null, 4),
+      collection: collection,
+      aggregations: collection.aggregations,
+      sortings: collection.sortings,
+      //mapping: JSON.stringify(mapping, null, 4)
+      mapping: mapping
     });
   })
 })
