@@ -18,6 +18,7 @@ console.log(figlet.textSync('itemsapi'))
 console.log('Ideas or issues - https://github.com/itemsapi/starter/issues');
 console.log();
 
+var listeners = require('./src/listeners/index')
 
 var storage = require('./config/storage')
 
@@ -92,10 +93,39 @@ app.all('*', function(req, res, next) {
   })
 })
 
+
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+app.use(cookieParser())
+//app.use(i18n.init);
+var RedisStore = require('connect-redis')(session);
+//var passport = require('passport');
+//var LocalStrategy = require('passport-local').Strategy;
+
+app.use(session({
+  secret: 'itemsapi-starter',
+  saveUninitialized: false,
+  store: new RedisStore({
+    prefix: 'front_sess:',
+    host: config.redis.host,
+    port: config.redis.port,
+    pass: config.redis.auth_pass
+  }),
+  cookie: config.cookie,
+  resave: false
+}));
+
+app.use(require('flash')());
+
 var admin = require('./admin')
 app.use('/admin', admin)
 
-//require('./config/passport')(app)
+require('./config/passport')(app)
+
+app.get('/*', function(req, res, next) {
+  req.session.flash = []
+  next()
+})
 
 /**
  * middleware route

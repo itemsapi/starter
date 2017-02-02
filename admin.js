@@ -9,7 +9,8 @@ var cookieParser = require('cookie-parser')
 var moment = require('moment')
 var _ = require('lodash')
 
-admin.use('/lte/plugins', express.static('bower_components/AdminLTE/plugins'));
+admin.use('/lte/plugins', express.static('bower_components/AdminLTE/plugins'))
+admin.use('/assets', express.static('admin/assets'))
 admin.use('/lte/bootstrap', express.static('bower_components/AdminLTE/bootstrap'));
 admin.use('/lte/dist', express.static('bower_components/AdminLTE/dist'));
 admin.use('/codemirror', express.static('bower_components/codemirror'));
@@ -66,30 +67,9 @@ admin.use(session({
 admin.use(passport.initialize());
 admin.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  done(null, id)
-});
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-
-    if (username !== config.auth.username || password !== config.auth.password) {
-      return done(null, false, { message: 'Incorrect credentials' });
-    }
-
-    return done(null, {
-      username: username
-    })
-  }
-));
-
 admin.get('/login', function(req, res) {
-  return res.render('auth/login');
-});
+  return res.render('auth/login')
+})
 
 admin.post('/login', passport.authenticate('local', {
   successRedirect: '/admin',
@@ -204,7 +184,8 @@ admin.post(['/settings'], function (req, res) {
   var default_form_values = {
     is_installation: false,
     is_sitemap: false,
-    hints: false
+    hints: false,
+    item_auto_enabled: false
   }
 
   var merge = _.chain(default_form_values)
@@ -238,6 +219,23 @@ admin.get(['/reset'], function(req, res) {
     return res.redirect('/installation')
   })
 })
+
+
+/**
+ * users list
+ */
+admin.get('/users', function (req, res) {
+
+  var users = [{
+    username: 'admin',
+    is_admin: true
+  }]
+
+  res.render('users/list', {
+    rows: users,
+  })
+})
+
 
 /**
  * items list
@@ -401,15 +399,25 @@ admin.get(['/collections/edit', '/collections/edit/:id'], function (req, res) {
     req.client.setName(req.params.id)
   }
 
+
+
   Promise.all([req.client.getCollection(), req.client.getMapping()])
   .spread(function(collection, mapping) {
+
+    var keys = _.keys(mapping)
+    //console.log(keys);
+    var mappings = mapping[keys[0]]['mappings']
+    var keys = _.keys(mappings)
+    var properties = mappings[keys[0]]['properties']
+
     res.render('collections/edit', {
       //collection: JSON.stringify(collection, null, 4),
       collection: collection,
       aggregations: collection.aggregations,
       sortings: collection.sortings,
       //mapping: JSON.stringify(mapping, null, 4)
-      mapping: mapping
+      mapping: mapping,
+      properties: properties
     });
   })
 })

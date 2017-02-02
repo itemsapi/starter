@@ -1,0 +1,100 @@
+{% extends "basic/layout.html.twig" %}
+{% block title %}Wyszukiwarka ziół lecznicych{% endblock %}
+{#{% block description %}{% if (filter) %}See the list of software development companies specialized in writing applications in technology like {{ filter.val }}{% else %}List of {{ pagination.total }} skilled software development companies. Check the technological skills and company information!{% endif %}{% endblock %}#}
+{% block description %}Wyszukiwarka ziół. Łatwo wyszukuj zioła o konkretnym działaniu a także pomóż w budowaniu bazy!{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12" style="padding-left: 0;">
+      <div id="custom-search-input">
+        <form action="/catalog" method="GET">
+          <div class="input-group col-md-12">
+            <input type="text" id="main_query" class="form-control input-lg" name="query" value="{{ query }}" placeholder="Search items.." />
+            <span class="input-group-btn">
+              <button class="btn btn-info btn-lg" type="button">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 page-content col-thin-left">
+
+      <h3 style="font-size:20px;"><a href="/?sort=created_at" style="color: #333;">Recently added items</a></h3>
+
+      {% for item in recent_items.slice(0,6) %}
+      <div class="col-xs-2 col-md-2" style="height: 270px;">
+        <a href="{% if item.permalink %}/item/{{ item.permalink }}{% else %}/id/{{ item.id }}{% endif %}" class="">
+          <img class="img-thumbnail" src="{% if item.image %}{{ item.image }}{% else %}{{ image }} {% endif %}" alt="{{ item.name }}">
+          <p>{{ item.name }}</p>
+        </a>
+      </div>
+      {% endfor %}
+
+      <div class="clearfix"></div>
+
+      <h3 style="font-size:20px;"><a href="/?sort=year" style="color: #333;">The oldest movies</a></h3>
+
+      {% for item in items2.slice(0,6) %}
+      <div class="col-xs-2 col-md-2" style="height: 270px;">
+        <a href="{% if item.permalink %}/item/{{ item.permalink }}{% else %}/id/{{ item.id }}{% endif %}" class="">
+          <img class="img-thumbnail" src="{% if item.image %}{{ item.image }}{% else %}{{ image }} {% endif %}" alt="{{ item.name }}">
+          <p>{{ item.name }}</p>
+        </a>
+      </div>
+      {% endfor %}
+
+      <div class="clearfix"></div>
+
+
+      <div class="col-sm-4" style="margin-left: -15px;">
+        <h3 style="font-size:20px;"><a href="/category/tags" style="color: #333;">Tags</a></h3>
+        {% for chunk in aggregations.tags.buckets.slice(0,50) %}
+        <a href="/filter/tags/{{ chunk.key | slug }}">{{ chunk.key }}</a>
+        ({{ chunk.doc_count }})
+        {% endfor %}
+      </div>
+
+      <div class="col-sm-4">
+        <h3 style="font-size:20px;"><a href="/category/actors" style="color: #333;">Actors</a></h3>
+        {% for chunk in aggregations.actors.buckets.slice(0,50) %}
+        <a href="/filter/actors/{{ chunk.key | slug }}">{{ chunk.key }}</a>
+        ({{ chunk.doc_count }})
+        {% endfor %}
+      </div>
+      <div class="col-sm-4">
+        <h3 style="font-size:20px;"><a href="/category/director" style="color: #333;">Directors</a></h3>
+        {% for chunk in aggregations.director.buckets.slice(0,50) %}
+        <a href="/filter/director/{{ chunk.key | slug }}">{{ chunk.key }}</a>
+        ({{ chunk.doc_count }})
+        {% endfor %}
+      </div>
+
+
+      <div class="clearfix"></div>
+
+
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block before_head_end %}
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/start/jquery-ui.css" />
+{% endblock %}
+
+{% block before_body_end %}
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'></script>
+
+{% include "general/autocomplete.html.twig" ignore missing %}
+{% endblock %}
+

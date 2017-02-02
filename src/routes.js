@@ -7,6 +7,7 @@ var config = require('./../config/index').get();
 var redis_client = require('./../config/redis')
 var Promise = require('bluebird')
 var _ = require('lodash')
+var emitter = require('./../config/emitter');
 
 /**
  * list of all routes
@@ -59,6 +60,77 @@ module.exports = function(app) {
         });
       })
     }
+  })
+
+  /**
+   * for experimenting purposes now
+   */
+  app.get(['/landing2'], function(req, res) {
+
+    var filters = JSON.parse(req.query.filters || '{}');
+    var query = {
+      sort: 'most_votes',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: 12
+    }
+
+    var recent
+    var popular
+
+    var promises = []
+    var per_page = 6
+
+    promises.push(req.client.search({
+      sort: 'created_at',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: per_page
+    }))
+
+    promises.push(req.client.search({
+      sort: 'year',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: per_page
+    }))
+
+    /*promises.push(req.itemsapi(req.project.itemsapi).search({
+      sort: 'popular',
+      query_string: 'enabled:true OR _missing_:enabled',
+      page: 1,
+      per_page: 5
+    }))
+
+    promises.push(commentService.findLast({
+      project: req.project
+    }))
+    promises.push(changeService.findLast({
+      project: req.project.name,
+      is_first: false
+    }))
+    promises.push(userService.findLast())*/
+
+    Promise.all(promises)
+    .spread(function(recent, year, comments, history, users) {
+      console.log(recent);
+
+      res.render('basic/landing2', {
+        recent_items: recent.data.items,
+        items2: year.data.items,
+        aggregations: recent.data.aggregations,
+        //popular_items: popular.data.items,
+        //comments: comments,
+        //history: history,
+        //users: users,
+        //aggregations: popular.data.aggregations,
+        url: req.url
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).render('pages/error');
+    })
   })
 
   app.get(['/installation'], function(req, res) {
@@ -119,6 +191,71 @@ module.exports = function(app) {
     })
   })
 
+
+  /**
+   * add item by users
+   */
+  app.get('/add', function(req, res) {
+    res.render('basic/add')
+  })
+
+  /**
+   * add item by users
+   */
+  app.post('/add', function(req, res) {
+    console.log(req.body)
+
+    var data = req.body
+    data.enabled = !!req.settings.item_auto_enabled
+    data.created_at = new Date()
+    data.modified_at = new Date()
+
+    /*if (data.name) {
+      data.permalink = slug(data.name, {
+        lower: true
+      })
+    }*/
+
+    return req.client.addItem(data)
+    .then(function(item) {
+      return emitter.emitAsync('item.add', item, req.user)
+    })
+    .then(function(result) {
+      req.flash('info', 'hello!')
+      console.log('print flash - session - locals');
+      console.log(req.session.flash)
+      console.log(res.locals.flash);
+      res.redirect('/add')
+    })
+  })
+
+  /**
+   * generate autocomplete for specific field
+   */
+  app.get('/field-autocomplete', function(req, res) {
+
+    var field = req.query.field
+    /*if (['tags'].indexOf(field) === -1) {
+      return res.status(400).json({
+      })
+      }*/
+
+    return req.client.fieldAggregation(field, {
+      per_page: 5,
+      aggregation_query: req.query.term,
+      query_string: 'enabled:true OR _missing_:enabled'
+    })
+    .then(function(result) {
+      return res.json(_.map(result.data.buckets, function(val) {
+        return {
+          id: val.key,
+          label: val.key,
+          value: val.key
+        }
+      }))
+    })
+  })
+
   /**
    * generate sitemap for website
    */
@@ -165,6 +302,40 @@ module.exports = function(app) {
     res.render('api');
   })
 
+  /**
+   * compare two or more items
+   */
+  app.get(['/compare/:id1/:id2', '/compare/:id1/:id2/:id3'], function(req, res) {
+
+    var array = [
+      req.client.getItem(req.params.id1),
+      req.client.getItem(req.params.id2),
+    ]
+
+    if (req.params.id3) {
+      array.push(req.client.getItem(req.params.id3))
+    }
+
+    return Promise.all(array)
+    .spread(function(item1, item2, item3) {
+      console.log(item1);
+      console.log(item2);
+      return res.render('basic/compare', {
+        item1: item1,
+        item2: item2,
+        item3: item3
+      })
+    })
+    .catch(function(result) {
+      console.log(result);
+      return res.status(404).send('Sorry cant find that!');
+    })
+  })
+
+
+  /**
+   * get item by id or permalink
+   */
   app.get(['/id/:id', '/item/:permalink'], function(req, res) {
 
     var getItemAsync;
@@ -185,6 +356,8 @@ module.exports = function(app) {
       if (!item || item.enabled === false) {
         return Promise.reject('Not found')
       }
+
+      return emitter.emitAsync('item.view', item, req.user)
     })
     .then(function(result) {
       var fields = ['tags'];

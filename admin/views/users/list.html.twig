@@ -1,0 +1,56 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Users</h3>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody>
+                <tr>
+                  <th>Id</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Is admin</th>
+                  {#<th>Edit</th>
+                  <th>Delete</th>#}
+                </tr>
+                    {% for row in rows %}
+                    <tr>
+                      <td>{{ row.id }}</td>
+                      <td>{{ row.username }}</td>
+                      <td>{{ row.email }}</td>
+                      {% if row.is_admin == false %}
+                      {#<td style="color: red;">False</td>#}
+                        <td style="color: red;">False</td>
+                      {% else %}
+                      <td style="color: green;">True</td>
+                      {% endif %}
+
+                      {#<td><a href="/admin/items/rawedit/{{ row.id }}">Edit</a></td>
+                      <td><a onclick="return confirm('Are you sure?')" href="/admin/items/delete/{{ row.id }}">Delete</a></td>#}
+
+                  </tr>
+
+                {% endfor %}
+              </tbody>
+
+            </table>
+            </div>
+            <!-- /.box-body -->
+
+            <div class="box-footer clearfix">
+            </div>
+
+
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+{% endblock %}
