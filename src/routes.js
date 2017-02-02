@@ -7,6 +7,7 @@ var config = require('./../config/index').get();
 var redis_client = require('./../config/redis')
 var Promise = require('bluebird')
 var _ = require('lodash')
+var emitter = require('./../config/emitter');
 
 /**
  * list of all routes
@@ -216,6 +217,9 @@ module.exports = function(app) {
     }*/
 
     return req.client.addItem(data)
+    .then(function(item) {
+      return emitter.emitAsync('item.add', item, req.user)
+    })
     .then(function(result) {
       req.flash('info', 'hello!')
       console.log('print flash - session - locals');
@@ -352,6 +356,8 @@ module.exports = function(app) {
       if (!item || item.enabled === false) {
         return Promise.reject('Not found')
       }
+
+      return emitter.emitAsync('item.view', item, req.user)
     })
     .then(function(result) {
       var fields = ['tags'];

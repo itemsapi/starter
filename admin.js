@@ -67,30 +67,9 @@ admin.use(session({
 admin.use(passport.initialize());
 admin.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  done(null, id)
-});
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-
-    if (username !== config.auth.username || password !== config.auth.password) {
-      return done(null, false, { message: 'Incorrect credentials' });
-    }
-
-    return done(null, {
-      username: username
-    })
-  }
-));
-
 admin.get('/login', function(req, res) {
-  return res.render('auth/login');
-});
+  return res.render('auth/login')
+})
 
 admin.post('/login', passport.authenticate('local', {
   successRedirect: '/admin',
@@ -240,6 +219,23 @@ admin.get(['/reset'], function(req, res) {
     return res.redirect('/installation')
   })
 })
+
+
+/**
+ * users list
+ */
+admin.get('/users', function (req, res) {
+
+  var users = [{
+    username: 'admin',
+    is_admin: true
+  }]
+
+  res.render('users/list', {
+    rows: users,
+  })
+})
+
 
 /**
  * items list
@@ -403,15 +399,25 @@ admin.get(['/collections/edit', '/collections/edit/:id'], function (req, res) {
     req.client.setName(req.params.id)
   }
 
+
+
   Promise.all([req.client.getCollection(), req.client.getMapping()])
   .spread(function(collection, mapping) {
+
+    var keys = _.keys(mapping)
+    //console.log(keys);
+    var mappings = mapping[keys[0]]['mappings']
+    var keys = _.keys(mappings)
+    var properties = mappings[keys[0]]['properties']
+
     res.render('collections/edit', {
       //collection: JSON.stringify(collection, null, 4),
       collection: collection,
       aggregations: collection.aggregations,
       sortings: collection.sortings,
       //mapping: JSON.stringify(mapping, null, 4)
-      mapping: mapping
+      mapping: mapping,
+      properties: properties
     });
   })
 })

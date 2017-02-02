@@ -22,6 +22,7 @@
               <th>Type</th>
               <th>Store</th>
               <th>Index</th>
+              <th>Is indexed</th>
             </tr>
 
             {% for key, val in collection.schema %}
@@ -30,6 +31,11 @@
               <td>{{ val.type }}</td>
               <td>{{ val.store }}</td>
               <td>{{ val.index }}</td>
+              {% if properties[key]['index'] == val.index and properties[key]['store'] == val.store %}
+                <td style="color: green;">True</td>
+              {% else %}
+                <td style="color: red;">False</td>
+              {% endif %}
             </tr>
             {% endfor %}
             </tbody>
@@ -178,6 +184,7 @@
         <div class="box-body">
           {#<p class="lead">Lead to emphasize importance</p>#}
           <pre>
+            {#{{ properties | stringify }}#}
             {{ mapping | stringify }}
           </pre>
         </div>

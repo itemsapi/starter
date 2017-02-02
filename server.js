@@ -18,6 +18,7 @@ console.log(figlet.textSync('itemsapi'))
 console.log('Ideas or issues - https://github.com/itemsapi/starter/issues');
 console.log();
 
+var listeners = require('./src/listeners/index')
 
 var storage = require('./config/storage')
 
@@ -119,7 +120,7 @@ app.use(require('flash')());
 var admin = require('./admin')
 app.use('/admin', admin)
 
-//require('./config/passport')(app)
+require('./config/passport')(app)
 
 app.get('/*', function(req, res, next) {
   req.session.flash = []
