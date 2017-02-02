@@ -22,6 +22,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/index').get();
 var session = require('express-session');
 var urlHelper = require('./src/helpers/url');
+var generalHelper = require('./src/helpers/general');
 var configService = require('./src/services/config');
 var imageService = require('./src/services/image');
 //var uiHelper = require('./src/helpers/ui');
@@ -370,7 +371,7 @@ admin.post(['/items/rawedit/:id'], function(req, res) {
 admin.get(['/collections/reindex'], function (req, res) {
   req.client.getCollection()
   .then(function(result) {
-    var new_index = result.index + '1'
+    var new_index = generalHelper.incrementName(result.index || result.name)
     return req.client.collectionReindex(undefined, {
       new_index: new_index,
       new_type: new_index
