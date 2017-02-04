@@ -19,12 +19,13 @@ admin.use('/codemirror', express.static('bower_components/codemirror'));
 //var mongoose = require('./config/mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var config = require('./config/index').get();
-var session = require('express-session');
-var urlHelper = require('./src/helpers/url');
-var generalHelper = require('./src/helpers/general');
-var configService = require('./src/services/config');
-var imageService = require('./src/services/image');
+var config = require('./config/index').get()
+var session = require('express-session')
+var urlHelper = require('./src/helpers/url')
+var generalHelper = require('./src/helpers/general')
+var configService = require('./src/services/config')
+var imageService = require('./src/services/image')
+var subscriberService = require('./src/services/subscriber')
 //var uiHelper = require('./src/helpers/ui');
 
 var nunjucks = require('nunjucks');
@@ -237,6 +238,18 @@ admin.get('/users', function (req, res) {
   })
 })
 
+/**
+ * subscribers list
+ */
+admin.get('/subscribers', function (req, res) {
+  subscriberService.find()
+  .then(function(result) {
+    res.render('subscribers/list', {
+      rows: result
+    })
+  })
+})
+
 
 /**
  * items list
@@ -400,8 +413,6 @@ admin.get(['/collections/edit', '/collections/edit/:id'], function (req, res) {
     req.client.setName(req.params.id)
   }
 
-
-
   Promise.all([req.client.getCollection(), req.client.getMapping()])
   .spread(function(collection, mapping) {
 
@@ -420,6 +431,53 @@ admin.get(['/collections/edit', '/collections/edit/:id'], function (req, res) {
       mapping: mapping,
       properties: properties
     });
+  })
+})
+
+/**
+ * deregister aggregation from collection
+ */
+admin.get('/aggregations/delete/:name', function (req, res) {
+  req.client.getCollection()
+  .then(function(json) {
+    if (json.aggregations) {
+      delete json.aggregations[req.params.name]
+    }
+    return req.client.updateCollection(json)
+  })
+  .then(function(result) {
+    res.redirect('/admin/collections/edit');
+  })
+})
+
+/**
+ * deregister sorting from collection
+ */
+admin.get('/sortings/delete/:name', function (req, res) {
+  req.client.getCollection()
+  .then(function(json) {
+    if (json.sortings) {
+      delete json.sortings[req.params.name]
+    }
+    return req.client.updateCollection(json)
+  })
+  .then(function(result) {
+    res.redirect('/admin/collections/edit');
+  })
+})
+
+/**
+ * make default sorting in collection
+ */
+admin.get('/sortings/set-default/:name', function (req, res) {
+  req.client.getCollection()
+  .then(function(json) {
+    json.defaults = json.defaults || {}
+    json.defaults.sort = req.params.name
+    return req.client.updateCollection(json)
+  })
+  .then(function(result) {
+    res.redirect('/admin/collections/edit');
   })
 })
 

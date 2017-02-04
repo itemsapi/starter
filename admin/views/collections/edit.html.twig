@@ -58,8 +58,9 @@
               <th>Type</th>
               <th>Size</th>
               <th>Title</th>
-              <th>Slugs</th>
+              <th>Is slug</th>
               <th>Position</th>
+              <th>Delete</th>
             </tr>
 
             {#{{ collection.aggregations | debug }}#}
@@ -79,6 +80,7 @@
                 <td></td>
               {% endif %}
               <td>{{ val.position }}</td>
+              <td><a href="/admin/aggregations/delete/{{ val.key }}"><i class="fa fa-fw fa-remove"></i></a></td>
             </tr>
             {% endfor %}
             </tbody>
@@ -100,7 +102,9 @@
               <th>Type</th>
               <th>Field</th>
               <th>Order</th>
+              <th>Title</th>
               <th>Default</th>
+              <th>Delete</th>
             </tr>
 
             {% for key, val in collection.sortings %}
@@ -109,11 +113,13 @@
               <td>{{ val.type }}</td>
               <td>{{ val.field }}</td>
               <td>{{ val.order }}</td>
+              <td>{{ val.title }}</td>
               {% if collection.defaults.sort == key %}
-                <td>true</td>
+                <td style="color: green;">True</td>
               {% else %}
-                <td></td>
+                <td><a href="/admin/sortings/set-default/{{ key }}">set</a></td>
               {% endif %}
+              <td><a href="/admin/sortings/delete/{{ key }}"><i class="fa fa-fw fa-remove"></i></a></td>
             </tr>
             {% endfor %}
             </tbody>

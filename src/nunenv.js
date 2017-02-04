@@ -2,6 +2,7 @@ var nunjucks = require('nunjucks');
 var urlHelper = require('./helpers/url');
 var _ = require('lodash')
 var slug = require('slug')
+var moment = require('moment')
 
 /**
  * template engine
@@ -85,6 +86,22 @@ module.exports = function(app, path, options) {
   .addFilter('build', function(str, data) {
     return urlHelper.build(str, data);
   })
+
+  .addFilter('date', function(obj) {
+    if (obj) {
+      return moment(obj).format('MM/DD/YYYY h:mm a');
+    }
+  })
+
+  .addFilter('dateFrom', function(obj, locales) {
+    if (obj) {
+      moment.locale('en')
+      return moment(obj).fromNow();
+    }
+  })
+
+
+
 
   return nunenv
 }

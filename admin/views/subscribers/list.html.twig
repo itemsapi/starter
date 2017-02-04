@@ -1,0 +1,43 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Subscribers</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Source</th>
+                  <th>Updated At</th>
+                  <th>Created At</th>
+                </tr>
+
+                {% for row in rows %}
+                  <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.source }}</td>
+                    <td>{{ row.updated_at | date }}</td>
+                    <td>{{ row.created_at | date }}</td>
+                  </tr>
+
+                {% endfor %}
+              </tbody></table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+    </section>
+{% endblock %}

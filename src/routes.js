@@ -8,6 +8,7 @@ var redis_client = require('./../config/redis')
 var Promise = require('bluebird')
 var _ = require('lodash')
 var emitter = require('./../config/emitter');
+var Subscriber = require('./models/subscriber');
 
 /**
  * list of all routes
@@ -95,22 +96,6 @@ module.exports = function(app) {
       per_page: per_page
     }))
 
-    /*promises.push(req.itemsapi(req.project.itemsapi).search({
-      sort: 'popular',
-      query_string: 'enabled:true OR _missing_:enabled',
-      page: 1,
-      per_page: 5
-    }))
-
-    promises.push(commentService.findLast({
-      project: req.project
-    }))
-    promises.push(changeService.findLast({
-      project: req.project.name,
-      is_first: false
-    }))
-    promises.push(userService.findLast())*/
-
     Promise.all(promises)
     .spread(function(recent, year, comments, history, users) {
       console.log(recent);
@@ -119,11 +104,6 @@ module.exports = function(app) {
         recent_items: recent.data.items,
         items2: year.data.items,
         aggregations: recent.data.aggregations,
-        //popular_items: popular.data.items,
-        //comments: comments,
-        //history: history,
-        //users: users,
-        //aggregations: popular.data.aggregations,
         url: req.url
       })
     })
@@ -388,6 +368,13 @@ module.exports = function(app) {
 
   // not necessary anymore because system create that out of the box
   app.post('/add-collection', function(req, res) {
+
+    if (req.settings && !req.settings.is_installation) {
+      return res.status(404).json({
+        message: 'Not found'
+      });
+    }
+
     var json = JSON.parse(req.body.collection)
 
     req.client.addCollection(json)
@@ -411,7 +398,12 @@ module.exports = function(app) {
   });
 
   app.post('/add-data', function(req, res) {
-    //return Promise.resolve()
+
+    if (req.settings && !req.settings.is_installation) {
+      return res.status(404).json({
+        message: 'Not found'
+      });
+    }
 
     var data = {
     }
@@ -440,8 +432,34 @@ module.exports = function(app) {
         name: result.name
       })
     })
+    .then(function(item) {
+      return emitter.emitAsync('project.created')
+    })
     .then(function(result) {
       res.redirect('/installation');
+    })
+  });
+
+  app.post('/subscribe', function(req, res) {
+    var subscriber = new Subscriber({
+      email: req.body.email,
+      name: req.body.name,
+      source: req.body.source
+    })
+
+    if (!req.body.email) {
+      return res.status(400).json({})
+    }
+
+    return subscriber.save()
+    .then(function(result) {
+      return emitter.emitAsync('subscriber.created', result)
+    })
+    .then(function(result) {
+      return res.json({});
+    })
+    .catch(function(result) {
+      return res.status(400).json({})
     })
   });
 
@@ -505,8 +523,4 @@ module.exports = function(app) {
       });
     })
   });
-
 }
-
-
-
