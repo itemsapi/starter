@@ -14,5 +14,8 @@ Add starter as your remote repository:
 
 After that, fetch your new repository and merge with master. There is a high chance you will need to resolve conflicts.
 
+If you merge your current repo with starter, don't forget:
+- `npm install`
+
 More info here:
 http://stackoverflow.com/questions/244695/how-to-combine-two-branches-from-two-different-repositories-in-a-single-reposito
