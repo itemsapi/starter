@@ -33,8 +33,8 @@ Open localhost:3000 and follow instruction in web creator
 
 ## Docs
 
-- <a href="https://github.com/itemsapi/starter/blob/master/docs/ROADMAP.md">Roadmap</a>
 - <a href="https://github.com/itemsapi/starter/blob/master/docs/FEATURES.md">Features</a>
+- <a href="https://github.com/itemsapi/starter/blob/master/docs/ROADMAP.md">Roadmap</a>
 - <a href="https://github.com/itemsapi/starter/blob/master/docs/UPGRADE.md">Upgrade</a>
 
 ## License
