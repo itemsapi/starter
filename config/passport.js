@@ -41,7 +41,8 @@ module.exports = function(app) {
           }
 
           return done(null, {
-            username: username
+            username: username,
+            is_admin: true
           })
         } else {
           user.authenticate(password, function(err, user) {
@@ -58,6 +59,39 @@ module.exports = function(app) {
     }
   ))
 
+  if (config.auth && config.auth.facebook) {
+    passport.use(new FacebookStrategy({
+      clientID: config.auth.facebook.clientID,
+      clientSecret: config.auth.facebook.clientSecret,
+      callbackURL: config.auth.facebook.callbackURL,
+      profileFields: config.auth.facebook.profileFields
+    }, function(accessToken, refreshToken, profile, done) {
+      process.nextTick(function() {
+        console.log('test');
+        console.log(accessToken);
+        userService.updateFacebookUser(accessToken, refreshToken, profile)
+        .then(function(user) {
+          done(null, user)
+        })
+        .catch(function(err) {
+          done(err)
+        })
+      })
+    }))
+  }
+
+  app.get('/auth/facebook', function(req, res, next) {
+    //req.session.last_domain = req.protocol + '://' + req.get('Host')
+    return next()
+  }, passport.authenticate('facebook', { scope: config.auth.facebook.scope}))
+
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/login'
+  }), function(req, res) {
+    var url = '/'
+    return res.redirect(url);
+  });
+
   /*app.get('/login', function(req, res) {
     return res.render('auth/login');
   });*/
@@ -66,4 +100,11 @@ module.exports = function(app) {
     successRedirect: '/',
     failureRedirect: '/login'
   }));
+
+  app.get('/logout', function(req, res) {
+    req.logout();
+    return res.redirect('/');
+  })
+
+
 }

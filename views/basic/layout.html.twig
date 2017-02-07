@@ -39,9 +39,19 @@
       </button>
       <a class="navbar-brand" href="/"><img style="float: left; margin-right:10px; height: 25px;" src="{{ settings.logo }}" />{{ settings.title }}</a>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/">Home</a></li>
+        {% if user.is_admin %}
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="/admin">Admin</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>

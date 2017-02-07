@@ -61,4 +61,54 @@ setup.makeSuite('user manager', function() {
       done()
     })
   })
+
+  it('should update user with facebook data', function test(done) {
+    service.updateFacebookUser('', '', {
+      emails: [{
+        value: 'joe@mailinator.com'
+      }],
+      photos: [{
+        value: 'image.jpg'
+      }],
+      id: 12345,
+      displayName: 'Joe Joe'
+    })
+    .then(function(result) {
+      result.facebook.should.have.property('name', 'Joe Joe')
+      result.facebook.should.have.property('id', 12345)
+      result.should.have.property('email', 'joe@mailinator.com')
+      result.should.have.property('picture', 'image.jpg')
+      done()
+    })
+  })
+
+  it('should register facebook user', function test(done) {
+    service.updateFacebookUser('', '', {
+      emails: [{
+        value: 'mark@mailinator.com'
+      }],
+      id: 12345,
+      displayName: 'Mark Zuck'
+    })
+    .then(function(result) {
+      result.facebook.should.have.property('name', 'Mark Zuck')
+      result.facebook.should.have.property('id', 12345)
+      result.should.have.property('email', 'mark@mailinator.com')
+      done()
+    })
+  })
+
+  it('should register facebook user without email', function test(done) {
+    service.updateFacebookUser('', '', {
+      id: 333,
+      displayName: 'No Email'
+    })
+    .then(function(result) {
+      result.facebook.should.have.property('name', 'No Email')
+      result.facebook.should.have.property('id', 333)
+      done()
+    })
+  })
+
+
 })

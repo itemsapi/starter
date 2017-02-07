@@ -85,7 +85,7 @@ admin.get('/logout', function(req, res) {
 
 
 admin.all('*', function(req, res, next) {
-  if (!req.user) {
+  if (!req.user || !req.user.is_admin) {
     return res.redirect('/admin/login');
   }
 

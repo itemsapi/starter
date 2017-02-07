@@ -13,7 +13,14 @@
   },
   "auth": {
     "username": "admin",
-    "password": "itemsapi"
+    "password": "itemsapi",
+    "facebook" : {
+      "clientID" : "",
+      "clientSecret": "",
+      "callbackURL": "http://localhost:4000/auth/facebook/callback",
+      "scope": ["public_profile", "email"],
+      "profileFields": ["id", "displayName", "email", "birthday", "first_name", "last_name", "middle_name", "gender", "link", "picture.type(large)"]
+    }
   },
   "redis": {
     "host": "localhost",
