@@ -1,6 +1,6 @@
 # ItemsAPI starter
 
-This starter let you generate search application quickly! 
+This starter let you generate search application quickly only by providing JSON file:
 
 - vertical search engine
 - meta search engine
@@ -31,15 +31,11 @@ Deploy ItemsAPI starter instantly to heroku and start your app (backend creator)
 
 Open localhost:3000 and follow instruction in web creator
 
-## Features 
+## Docs
 
-- auto-generated filters
-- search
-- basic layout
-- items recommendation
-- item details
-- sitemap
-- administration panel
+- <a href="https://github.com/itemsapi/starter/blob/master/docs/ROADMAP.md">Roadmap</a>
+- <a href="https://github.com/itemsapi/starter/blob/master/docs/FEATURES.md">Features</a>
+- <a href="https://github.com/itemsapi/starter/blob/master/docs/UPGRADE.md">Upgrade</a>
 
 ## License
 ItemsAPI is created by Mateusz Rzepa and licensed under the Apache 2.0. For more information, see the LICENSE file in this repository.
