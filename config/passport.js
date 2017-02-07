@@ -59,7 +59,7 @@ module.exports = function(app) {
     }
   ))
 
-  if (config.auth && config.auth.facebook) {
+  if (config.auth && config.auth.facebook && config.auth.facebook.clientID && config.auth.facebook.clientSecret) {
     passport.use(new FacebookStrategy({
       clientID: config.auth.facebook.clientID,
       clientSecret: config.auth.facebook.clientSecret,
