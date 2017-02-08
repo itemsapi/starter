@@ -36,7 +36,11 @@ module.exports = function(app) {
           return done(null, false, { message: err })
         }
         if (!user) {
-          if (username !== config.auth.username || password !== config.auth.password) {
+          // login by inmemory credentials
+          if (!config.auth.memory || config.auth.memory.enabled === false) {
+            return done(null, false, { message: 'Incorrect credentials' })
+          }
+          if (username !== config.auth.memory.username || password !== config.auth.memory.password) {
             return done(null, false, { message: 'Incorrect credentials' })
           }
 
@@ -67,8 +71,6 @@ module.exports = function(app) {
       profileFields: config.auth.facebook.profileFields
     }, function(accessToken, refreshToken, profile, done) {
       process.nextTick(function() {
-        console.log('test');
-        console.log(accessToken);
         userService.updateFacebookUser(accessToken, refreshToken, profile)
         .then(function(user) {
           done(null, user)
@@ -81,6 +83,9 @@ module.exports = function(app) {
   }
 
   app.get('/auth/facebook', function(req, res, next) {
+    if (!config.auth || !config.auth.facebook || !config.auth.facebook.clientID || !config.auth.facebook.clientSecret) {
+      return res.status(500).send('Facebook Auth is not configured');
+    }
     //req.session.last_domain = req.protocol + '://' + req.get('Host')
     return next()
   }, passport.authenticate('facebook', { scope: config.auth.facebook.scope}))

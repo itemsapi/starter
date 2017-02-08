@@ -16,6 +16,10 @@ var User = new Schema({
     required: false
   },
   password: String,
+  enabled: {
+    type: Boolean,
+    default: true
+  },
   is_admin: {
     type: Boolean,
     default: false

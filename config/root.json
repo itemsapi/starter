@@ -12,8 +12,11 @@
     "uri": "localhost:27017/itemsapi-starter"
   },
   "auth": {
-    "username": "admin",
-    "password": "itemsapi",
+    "memory": {
+      "username": "admin",
+      "password": "itemsapi",
+      "enabled": true
+    },
     "facebook" : {
       "clientID" : "",
       "clientSecret": "",

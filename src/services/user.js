@@ -33,6 +33,14 @@ exports.register = function(data) {
 }
 
 /**
+ * find users
+ */
+exports.find = function(data) {
+  return User.find(data)
+  .sort({ created_at: -1 })
+}
+
+/**
  * find last users
  */
 exports.findLast = function(data) {
