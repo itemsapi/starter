@@ -133,6 +133,8 @@ app.get('/*', function(req, res, next) {
 app.all('*', function(req, res, next) {
   //res.locals  = _.assignIn(res.locals, config.template_variables)
   res.locals.settings  = req.settings
+  res.locals.user  = req.user
+  //console.log(req.user);
   next();
 })
 

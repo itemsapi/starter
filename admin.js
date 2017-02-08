@@ -26,7 +26,7 @@ var generalHelper = require('./src/helpers/general')
 var configService = require('./src/services/config')
 var imageService = require('./src/services/image')
 var subscriberService = require('./src/services/subscriber')
-//var uiHelper = require('./src/helpers/ui');
+var userService = require('./src/services/user')
 
 var nunjucks = require('nunjucks');
 var multer  = require('multer')
@@ -85,7 +85,7 @@ admin.get('/logout', function(req, res) {
 
 
 admin.all('*', function(req, res, next) {
-  if (!req.user) {
+  if (!req.user || !req.user.is_admin) {
     return res.redirect('/admin/login');
   }
 
@@ -228,13 +228,17 @@ admin.get(['/reset'], function(req, res) {
  */
 admin.get('/users', function (req, res) {
 
-  var users = [{
+  /*var users = [{
     username: 'admin',
     is_admin: true
-  }]
+  }]*/
 
-  res.render('users/list', {
-    rows: users,
+  userService.find()
+  .then(function(result) {
+    res.render('users/list', {
+      rows: result,
+      memory_user: config.auth ? config.auth.memory : {}
+    })
   })
 })
 
