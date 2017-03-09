@@ -3,7 +3,12 @@
     "description": "ItemsAPI is an open source full text search backend",
     "website": "http://www.itemsapi.com",
     "success_url": "/",
-    "addons": ["searchbox", "redistogo", "mongolab"],
+    "addons": [{
+      "plan": "bonsai:sandbox-10",
+      "options": {
+        "version": "1.7"
+      }
+    }, "redistogo", "mongolab"],
     "env": {
         "NODE_ENV": "production",
         "PORT": "3000"

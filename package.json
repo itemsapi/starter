@@ -33,7 +33,7 @@
     "flash": "^1.1.0",
     "fs-extra": "^1.0.0",
     "image-downloader": "^2.0.0",
-    "itemsapi": "^1.0.72",
+    "itemsapi": "^1.0.73",
     "itemsapi-node": "^1.0.18",
     "lodash": "^4.11.1",
     "moment": "^2.17.1",

@@ -38,7 +38,9 @@ if (process.env.PORT) {
   nconf.set('server:port', process.env.PORT);
 }
 
-if (process.env.SEARCHBOX_URL) {
+if (process.env.BONSAI_URL) {
+  nconf.set('elasticsearch:host', process.env.BONSAI_URL);
+} else if (process.env.SEARCHBOX_URL) {
   nconf.set('elasticsearch:host', process.env.SEARCHBOX_URL);
 } else if (process.env.ELASTICSEARCH_URL) {
   nconf.set('elasticsearch:host', process.env.ELASTICSEARCH_URL);
