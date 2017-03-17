@@ -2,9 +2,19 @@
 var _ = require('lodash');
 
 exports.parseRedisUrl = function(url) {
+
   var chunks = url.split(':')
+
+  if (chunks.length === 2) {
+    return {
+      host: chunks[0],
+      auth_pass: undefined,
+      port: parseInt(chunks[1], 10)
+    }
+  }
+
   if (chunks.length < 4) {
-    return null
+    return null;
   }
 
   var chunks2 = chunks[2].split('@')

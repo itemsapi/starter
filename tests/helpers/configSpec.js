@@ -15,6 +15,17 @@ describe('config', function() {
     done();
   });
 
+  it('should parse simple redis url', function test(done) {
+    helper.parseRedisUrl('url:20000')
+    .should.deepEqual({
+      host: 'url',
+      auth_pass: undefined,
+      port: 20000
+    })
+    done();
+  });
+
+
   it('should parse redis to go url', function test(done) {
     helper.parseRedisUrl('redis://redistogo:pass123@url:9092/')
     .should.deepEqual({
