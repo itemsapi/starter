@@ -1,41 +1,23 @@
 # ItemsAPI starter
 
-This starter let you generate search application quickly only by providing JSON file:
+It was created because developing catalogs, prototyping marketplaces and booking systems was very time consuming. Also current solutions like wordpress are slow, complicated and old. 
 
-- vertical search engine
-- meta search engine
-- catalog
-- jobs search engine
-- marketplace prototype
-- classifieds prototype
+This starter let you generate search application quickly just by providing JSON file - https://www.itemsapi.com/docs/starter/overview/.
+
+## Purposes
+
+- vertical search engines
+- meta search engines
+- catalogs
+- jobs search engines
+- prototyping marketplaces
+- prototyping classifieds
 - comparison website
 - various rankings
 
-This starter is based on ItemsAPI (<a target="_blank" href="https://github.com/itemsapi/itemsapi">ItemsAPI repository</a>)
+## Getting started 
 
-
-## Heroku installation
-
-Deploy ItemsAPI starter instantly to heroku and start your app (backend creator) immediately!
-
-<a target="_blank" href="https://heroku.com/deploy?template=https://github.com/itemsapi/starter"><img src="https://camo.githubusercontent.com/c0824806f5221ebb7d25e559568582dd39dd1170/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e706e67" alt="Deploy" data-canonical-src="https://www.herokucdn.com/deploy/button.png"></a>
-
-
-## Manual installation
-
-- Install elasticsearch, redis and mongodb on your computer
-- `git clone git@github.com:itemsapi/starter.git`
-- `cd starter`
-- `npm install`
-- `PORT=3000 npm start`
-
-Open localhost:3000 and follow instruction in web creator
-
-## Docs
-
-- <a href="https://github.com/itemsapi/starter/blob/master/docs/FEATURES.md">Features</a>
-- <a href="https://github.com/itemsapi/starter/blob/master/docs/ROADMAP.md">Roadmap</a>
-- <a href="https://github.com/itemsapi/starter/blob/master/docs/UPGRADE.md">Upgrade</a>
+- https://www.itemsapi.com/docs/starter/overview/
 
 ## License
 ItemsAPI is created by Mateusz Rzepa and licensed under the Apache 2.0. For more information, see the LICENSE file in this repository.
