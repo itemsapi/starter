@@ -10,3 +10,7 @@ emitter.on('user.registration_success', function(user) {
   log.info('user "' + user.email + '" called second time')
   return Promise.delay(100)
 })
+
+emitter.on('user.login_success', function(user) {
+  log.info('user "' + user.email + '" has logged in successfully')
+})

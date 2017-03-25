@@ -198,7 +198,7 @@ module.exports = function(app) {
 
     return req.client.addItem(data)
     .then(function(item) {
-      return emitter.emitAsync('item.add', item, req.user)
+      return emitter.emitAsync('item.created', item, req.user)
     })
     .then(function(result) {
       req.flash('info', 'hello!')

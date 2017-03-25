@@ -48,6 +48,64 @@ exports.findLast = function(data) {
   .sort({ created_at: -1 })
 }
 
+exports.updateGithubUser = function(accessToken, refreshToken, profile) {
+  var email
+  if (profile.emails && _.isArray(profile.emails)) {
+    email = profile.emails[0].value
+  }
+
+  var getUser = User.findOne({email: email})
+  var isUserNew = false
+
+  if (!email) {
+    getUser = User.findOne({'github.id': profile.id})
+  }
+
+  return getUser
+  .then(function(user) {
+    if (!user) {
+      user = new User();
+      isUserNew = true
+    }
+
+    var picture
+    if (_.isArray(profile.photos) && profile.photos.length > 0) {
+      picture = profile.photos[0].value
+      user.picture = picture
+    }
+
+    user.github = {
+      id: profile.id,
+      profileUrl: profile.profileUrl,
+      gender: profile.gender,
+      picture: picture,
+      username: profile.username,
+      json: profile._json,
+      name: profile.displayName
+    }
+
+    if (email) {
+      user.email = email;
+      user.github.email = email;
+    }
+
+    return user.save()
+    .then(function(result) {
+      if (isUserNew) {
+        emitter.emitAsync('user.registration_success', user);
+      } else {
+        emitter.emitAsync('user.login_success', user);
+      }
+    })
+    .then(function(result) {
+      return user
+    })
+    .catch(function(err) {
+      return Promise.reject(err)
+    })
+  })
+}
+
 exports.updateFacebookUser = function(accessToken, refreshToken, profile) {
   var email
   if (profile.emails && _.isArray(profile.emails)) {

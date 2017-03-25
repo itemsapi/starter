@@ -7,13 +7,11 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GithubStrategy = require('passport-github').Strategy;
 
 module.exports = function(app) {
   app.use(passport.initialize());
   app.use(passport.session());
-  //passport.use(new LocalStrategy(User.authenticate()))
-  //passport.serializeUser(User.serializeUser())
-  //passport.deserializeUser(User.deserializeUser())
 
   passport.serializeUser(function(user, done) {
     done(null, user);
@@ -82,13 +80,48 @@ module.exports = function(app) {
     }))
   }
 
+  if (config.auth && config.auth.github && config.auth.github.clientID && config.auth.github.clientSecret) {
+    passport.use(new GithubStrategy({
+      clientID: config.auth.github.clientID,
+      clientSecret: config.auth.github.clientSecret,
+      callbackURL: config.auth.github.callbackURL
+    }, function(accessToken, refreshToken, profile, done) {
+      process.nextTick(function() {
+        userService.updateGithubUser(accessToken, refreshToken, profile)
+        .then(function(user) {
+          done(null, user)
+        })
+        .catch(function(err) {
+          done(err)
+        })
+      })
+    }))
+  }
+
+  app.get('/auth/github', function(req, res, next) {
+    if (!config.auth || !config.auth.github || !config.auth.github.clientID || !config.auth.github.clientSecret) {
+      return res.status(500).send('Github auth is not configured');
+    }
+    return next();
+  }, passport.authenticate('github', {
+    scope: config.auth.github.scope
+  }));
+
+  app.get('/auth/github/callback', passport.authenticate('github', {
+    failureRedirect: '/login'
+  }), function(req, res) {
+    var url = '/'
+    return res.redirect(url);
+  });
+
   app.get('/auth/facebook', function(req, res, next) {
     if (!config.auth || !config.auth.facebook || !config.auth.facebook.clientID || !config.auth.facebook.clientSecret) {
       return res.status(500).send('Facebook Auth is not configured');
     }
-    //req.session.last_domain = req.protocol + '://' + req.get('Host')
     return next()
-  }, passport.authenticate('facebook', { scope: config.auth.facebook.scope}))
+  }, passport.authenticate('facebook', {
+    scope: config.auth.facebook.scope
+  }));
 
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/login'
@@ -96,6 +129,9 @@ module.exports = function(app) {
     var url = '/'
     return res.redirect(url);
   });
+
+
+
 
   /*app.get('/login', function(req, res) {
     return res.render('auth/login');

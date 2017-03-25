@@ -110,5 +110,42 @@ setup.makeSuite('user manager', function() {
     })
   })
 
+  it('should register github user', function test(done) {
+
+    var data = {
+      id: '123456789',
+      displayName: 'Joe Joe',
+      username: 'joejoejoe',
+      profileUrl: 'https://github.com/joejoejoe',
+      photos: [ { value: 'https://avatars3.githubusercontent.com/u/123456789?v=3' } ],
+      provider: 'github'
+    }
+
+    service.updateGithubUser('', '', data)
+    .then(function(result) {
+      result.github.should.have.property('name', 'Joe Joe');
+      result.github.should.have.property('id', '123456789');
+      done()
+    })
+  })
+
+  it('should update github user', function test(done) {
+
+    var data = {
+      id: '123456789',
+      displayName: 'Joe Joe 2',
+      username: 'joejoejoe',
+      profileUrl: 'https://github.com/joejoejoe',
+      photos: [ { value: 'https://avatars3.githubusercontent.com/u/123456789?v=3' } ],
+      provider: 'github'
+    }
+
+    service.updateGithubUser('', '', data)
+    .then(function(result) {
+      result.github.should.have.property('name', 'Joe Joe 2');
+      result.github.should.have.property('id', '123456789');
+      done()
+    })
+  })
 
 })
