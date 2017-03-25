@@ -48,6 +48,76 @@ exports.findLast = function(data) {
   .sort({ created_at: -1 })
 }
 
+/**
+ * github, facebook, google+, linkedin should be merged eventually
+ */
+
+exports.updateLinkedinUser = function(accessToken, refreshToken, profile) {
+  var email
+  if (profile.emails && _.isArray(profile.emails)) {
+    email = profile.emails[0].value
+  }
+
+  var getUser = User.findOne({email: email})
+  var isUserNew = false
+
+  if (!email) {
+    getUser = User.findOne({'linkedin.id': profile.id})
+  }
+
+  return getUser
+  .then(function(user) {
+    if (!user) {
+      user = new User();
+      isUserNew = true
+    }
+
+    var picture
+    if (_.isArray(profile.photos) && profile.photos.length > 0) {
+      picture = profile.photos[0].value
+      user.picture = picture
+    }
+
+    if (profile._json.pictureUrl) {
+      picture = profile._json.pictureUrl
+      user.picture = picture
+    }
+
+    user.linkedin = {
+      id: profile.id,
+      json: profile._json,
+      name: profile.displayName
+    }
+
+    user.name = profile.displayName;
+
+    if (email) {
+      user.email = email
+      user.linkedin.email = email
+    }
+
+    // save the user
+    return user.save()
+    .then(function(result) {
+      if (isUserNew) {
+        emitter.emitAsync('user.registration_success', user)
+      } else {
+        emitter.emitAsync('user.login_success', user)
+      }
+    })
+    .then(function(result) {
+      return user
+    })
+    .catch(function(err) {
+      //log.error(err)
+      console.log(err)
+      return Promise.reject(err)
+    })
+  })
+}
+
+
+
 exports.updateGithubUser = function(accessToken, refreshToken, profile) {
   var email
   if (profile.emails && _.isArray(profile.emails)) {
@@ -83,6 +153,8 @@ exports.updateGithubUser = function(accessToken, refreshToken, profile) {
       json: profile._json,
       name: profile.displayName
     }
+
+    user.name = profile.displayName;
 
     if (email) {
       user.email = email;
@@ -147,6 +219,8 @@ exports.updateFacebookUser = function(accessToken, refreshToken, profile) {
       user.email = email
       user.facebook.email = email
     }
+
+    user.name = profile.displayName;
 
     // save the user
     return user.save()

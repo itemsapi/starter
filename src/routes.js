@@ -9,6 +9,7 @@ var Promise = require('bluebird')
 var _ = require('lodash')
 var emitter = require('./../config/emitter');
 var Subscriber = require('./models/subscriber');
+var slug = require('slug')
 
 /**
  * list of all routes
@@ -190,11 +191,11 @@ module.exports = function(app) {
     data.created_at = new Date()
     data.modified_at = new Date()
 
-    /*if (data.name) {
+    if (data.name) {
       data.permalink = slug(data.name, {
         lower: true
       })
-    }*/
+    }
 
     return req.client.addItem(data)
     .then(function(item) {
@@ -202,9 +203,6 @@ module.exports = function(app) {
     })
     .then(function(result) {
       req.flash('info', 'hello!')
-      console.log('print flash - session - locals');
-      console.log(req.session.flash)
-      console.log(res.locals.flash);
       res.redirect('/add')
     })
   })

@@ -7,6 +7,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var LinkedinStrategy = require('passport-linkedin').Strategy;
 var GithubStrategy = require('passport-github').Strategy;
 
 module.exports = function(app) {
@@ -80,6 +81,25 @@ module.exports = function(app) {
     }))
   }
 
+  if (config.auth && config.auth.linkedin && config.auth.linkedin.clientID && config.auth.linkedin.clientSecret) {
+    passport.use(new LinkedinStrategy({
+      consumerKey: config.auth.linkedin.clientID,
+      consumerSecret: config.auth.linkedin.clientSecret,
+      callbackURL: config.auth.linkedin.callbackURL,
+      profileFields: config.auth.linkedin.profileFields
+    }, function(accessToken, refreshToken, profile, done) {
+      process.nextTick(function() {
+        userService.updateLinkedinUser(accessToken, refreshToken, profile)
+        .then(function(user) {
+          done(null, user)
+        })
+        .catch(function(err) {
+          done(err)
+        })
+      })
+    }))
+  }
+
   if (config.auth && config.auth.github && config.auth.github.clientID && config.auth.github.clientSecret) {
     passport.use(new GithubStrategy({
       clientID: config.auth.github.clientID,
@@ -130,12 +150,27 @@ module.exports = function(app) {
     return res.redirect(url);
   });
 
+  app.get('/auth/linkedin', function(req, res, next) {
+    if (!config.auth || !config.auth.linkedin || !config.auth.linkedin.clientID || !config.auth.linkedin.clientSecret) {
+      return res.status(500).send('Linkedin auth is not configured');
+    }
+    return next()
+  }, passport.authenticate('linkedin', {
+    scope: config.auth.linkedin.scope
+  }));
+
+  app.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
+    failureRedirect: '/login'
+  }), function(req, res) {
+    var url = '/'
+    return res.redirect(url);
+  });
 
 
 
-  /*app.get('/login', function(req, res) {
-    return res.render('auth/login');
-  });*/
+  app.get('/login', function(req, res) {
+    return res.render('general/login');
+  });
 
   app.post('/login', passport.authenticate('local', {
     successRedirect: '/',

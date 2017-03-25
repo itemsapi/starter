@@ -73,11 +73,12 @@ setup.makeSuite('user manager', function() {
       id: 12345,
       displayName: 'Joe Joe'
     })
-    .then(function(result) {
-      result.facebook.should.have.property('name', 'Joe Joe')
-      result.facebook.should.have.property('id', 12345)
-      result.should.have.property('email', 'joe@mailinator.com')
-      result.should.have.property('picture', 'image.jpg')
+    .then(function(user) {
+      user.facebook.should.have.property('name', 'Joe Joe')
+      user.facebook.should.have.property('id', 12345)
+      user.should.have.property('name', 'Joe Joe')
+      user.should.have.property('email', 'joe@mailinator.com')
+      user.should.have.property('picture', 'image.jpg')
       done()
     })
   })
@@ -90,10 +91,10 @@ setup.makeSuite('user manager', function() {
       id: 12345,
       displayName: 'Mark Zuck'
     })
-    .then(function(result) {
-      result.facebook.should.have.property('name', 'Mark Zuck')
-      result.facebook.should.have.property('id', 12345)
-      result.should.have.property('email', 'mark@mailinator.com')
+    .then(function(user) {
+      user.facebook.should.have.property('name', 'Mark Zuck')
+      user.facebook.should.have.property('id', 12345)
+      user.should.have.property('email', 'mark@mailinator.com')
       done()
     })
   })
@@ -103,9 +104,9 @@ setup.makeSuite('user manager', function() {
       id: 333,
       displayName: 'No Email'
     })
-    .then(function(result) {
-      result.facebook.should.have.property('name', 'No Email')
-      result.facebook.should.have.property('id', 333)
+    .then(function(user) {
+      user.facebook.should.have.property('name', 'No Email')
+      user.facebook.should.have.property('id', 333)
       done()
     })
   })
@@ -122,9 +123,10 @@ setup.makeSuite('user manager', function() {
     }
 
     service.updateGithubUser('', '', data)
-    .then(function(result) {
-      result.github.should.have.property('name', 'Joe Joe');
-      result.github.should.have.property('id', '123456789');
+    .then(function(user) {
+      user.github.should.have.property('name', 'Joe Joe');
+      user.github.should.have.property('id', '123456789');
+      user.should.have.property('name', 'Joe Joe');
       done()
     })
   })
@@ -141,9 +143,39 @@ setup.makeSuite('user manager', function() {
     }
 
     service.updateGithubUser('', '', data)
-    .then(function(result) {
-      result.github.should.have.property('name', 'Joe Joe 2');
-      result.github.should.have.property('id', '123456789');
+    .then(function(user) {
+      user.github.should.have.property('name', 'Joe Joe 2');
+      user.github.should.have.property('id', '123456789');
+      done()
+    })
+  })
+
+
+  it('should register linkedin user', function test(done) {
+
+    var data = {
+      provider: 'linkedin',
+      id: 'abcdefgh',
+      displayName: 'Joe Novak',
+      name: { familyName: 'Joe', givenName: 'Novak' },
+      emails: [ { value: 'joe@mailinator.com' } ],
+      _json: {
+        emailAddress: 'joe@mailinator.com',
+        firstName: 'Joe',
+        headline: 'Windows 95 specialist',
+        id: 'abcdefgh',
+        pictureUrl: 'picture.jpg',
+        lastName: 'Novak'
+      }
+    }
+
+
+    service.updateLinkedinUser('', '', data)
+    .then(function(user) {
+      user.linkedin.should.have.property('name', 'Joe Novak');
+      user.linkedin.should.have.property('id', 'abcdefgh');
+      user.should.have.property('name', 'Joe Novak')
+      user.should.have.property('picture', 'picture.jpg');
       done()
     })
   })

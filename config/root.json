@@ -3,7 +3,7 @@
     "port": 4000,
     "host": "0.0.0.0",
     "logger": false,
-    "logging_level": "debug"
+    "logging_level": "info"
   },
   "elasticsearch": {
     "host": "127.0.0.1:9200",
@@ -23,6 +23,13 @@
       "clientSecret": "",
       "scope": ["user:email"],
       "callbackURL": "http://localhost:4000/auth/github/callback"
+    },
+    "linkedin" : {
+      "clientID" : "",
+      "clientSecret": "",
+      "scope": ["r_basicprofile", "r_emailaddress"],
+      "profileFields": ["id", "first-name", "last-name", "email-address", "headline", "picture-url"],
+      "callbackURL": "http://localhost:4000/auth/linkedin/callback"
     },
     "facebook" : {
       "clientID" : "",

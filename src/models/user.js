@@ -16,6 +16,7 @@ var User = new Schema({
     required: false
   },
   password: String,
+  picture: String,
   enabled: {
     type: Boolean,
     default: true
