@@ -12,6 +12,7 @@
     "env": {
       "DATA_URL": {
         "description": "URL to data in JSON",
+        "value": "",
         "required": false
       }
     },

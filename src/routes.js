@@ -331,7 +331,10 @@ module.exports = function(app) {
     return getItemAsync
     .then(function(result) {
       item = result;
-      id = item.id
+
+      if (item.id) {
+        id = item.id
+      }
 
       if (!item || item.enabled === false) {
         return Promise.reject('Not found')
@@ -354,6 +357,7 @@ module.exports = function(app) {
       ])
     })
     .spread(function(similar) {
+      console.log(similar);
       return res.render('basic/item', {
         item: item,
         id: id,
