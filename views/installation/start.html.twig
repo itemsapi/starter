@@ -70,10 +70,9 @@
         {% if step <= 2 %}
         <h3>1. First step</h3>
         <form method="POST" action="/add-data">
-          <p>Put link with json data (items) here (i.e. copy that link <a href="https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/items/movies-processed.json" target="_blank">that</a> here)</p>
+          <p>Put link with json data here (i.e. copy that link <a href="https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/items/movies-processed.json" target="_blank">that</a> here)</p>
           <div class="form-group">
-            {#<label for="exampleInputEmail1">Url with json data</label>#}
-            <input type="text" class="form-control" name="url" value="https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/items/movies-processed.json" placeholder="url with json data">
+            <input type="text" class="form-control" name="url" value="{{ data_url }}" placeholder="url with json data">
           </div>
           <p>or raw json data</p>
           <div class="form-group">

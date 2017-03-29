@@ -10,8 +10,10 @@
       }
     }, "redistogo", "mongolab"],
     "env": {
-        "NODE_ENV": "production",
-        "PORT": "3000"
+      "DATA_URL": {
+        "description": "URL to data in JSON",
+        "required": false
+      }
     },
     "logo": "https://pbs.twimg.com/profile_images/776731186026704896/t2BmYaxc.jpg",
     "repository": "https://github.com/itemsapi/starter",
