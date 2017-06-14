@@ -12,6 +12,7 @@ services:
     # TODO - cover all relevant js files
     volumes:
      - "./src:/app/src"
+     - "./views:/app/views"
      - "./tests:/app/tests"
     networks:
      - front
@@ -20,7 +21,7 @@ services:
     networks:
      - front
   elasticsearch:
-    image: "elasticsearch:1.7.6"
+    image: "elasticsearch:2.4.5"
     networks:
      - front
   redis:
