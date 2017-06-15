@@ -12,6 +12,7 @@ services:
     # TODO - cover all relevant js files
     volumes:
      - "./src:/app/src"
+     - "./views:/app/views"
      - "./tests:/app/tests"
     networks:
      - front
