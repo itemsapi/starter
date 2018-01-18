@@ -6,7 +6,7 @@
     "addons": [{
       "plan": "bonsai:sandbox-10",
       "options": {
-        "version": "1.7"
+        "version": "1.7.5"
       }
     }, "redistogo", "mongolab"],
     "env": {
