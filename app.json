@@ -4,9 +4,9 @@
     "website": "http://www.itemsapi.com",
     "success_url": "/",
     "addons": [{
-      "plan": "bonsai:sandbox-10",
+      "plan": "searchbox:starter",
       "options": {
-        "version": "1.7"
+        "version": "1.7.5"
       }
     }, "redistogo", "mongolab"],
     "env": {
