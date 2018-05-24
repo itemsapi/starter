@@ -47,7 +47,8 @@ var nunenv = require('./src/nunenv')(app, 'views', {
 
 app.use('/bootstrap', express.static('node_modules/bootstrap'));
 app.use('/assets', express.static('assets'));
-app.use('/libs', express.static('node_modules/@bower_components'));
+//app.use('/libs', express.static('node_modules/@bower_components'));
+app.use('/libs', express.static('bower_components'));
 
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));

@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "postinstall": "node ./src/post_install.js"
+    "postinstall": "./node_modules/.bin/bower cache clean --allow-root && ./node_modules/.bin/bower install --allow-root && node ./src/post_install.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "bootstrap": "^3.3.6",
     "colors": "^1.1.2",
     "connect-redis": "^3.2.0",
+    "bower": "^1.8.0",
     "cookie-parser": "^1.4.3",
     "eventemitter2": "^3.0.0",
     "express": "^4.13.4",
